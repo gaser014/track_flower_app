@@ -20,14 +20,14 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  FCMService().initialize();
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // FCMService().initialize();
+  // FlutterError.onError = (errorDetails) {
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  // };
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
 
   // Initialize notification badge service
   // await getIt.get<NotificationBadgeService>().initialize();
