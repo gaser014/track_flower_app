@@ -72,9 +72,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => dioModule.internetConnection(),
     );
     gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
-    gh.factory<_i325.LoginLocalDataSourceContract>(
-      () => _i438.LoginLocalDataSourceImpl(),
-    );
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
     );
@@ -86,6 +83,9 @@ extension GetItInjectableX on _i174.GetIt {
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.factory<_i325.LoginLocalDataSourceContract>(
+      () => _i438.LoginLocalDataSourceImpl(),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
@@ -99,20 +99,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i89.MainProfileApiClient>(),
       ),
     );
-    gh.factory<_i902.LoginRepositoryContract>(
-      () => _i1066.LoginRepositoryImpl(
-        gh<_i736.LoginRemoteDataSourceContract>(),
-        gh<_i325.LoginLocalDataSourceContract>(),
-      ),
-    );
     gh.factory<_i488.MainProfileRepositoryContract>(
       () => _i164.MainProfileRepositoryImpl(
         gh<_i525.MainProfileRemoteDataSourceContract>(),
       ),
     );
-    gh.factory<_i818.GetMainProfileUseCase>(
-      () => _i818.GetMainProfileUseCase(
-        gh<_i488.MainProfileRepositoryContract>(),
+    gh.factory<_i902.LoginRepositoryContract>(
+      () => _i1066.LoginRepositoryImpl(
+        gh<_i736.LoginRemoteDataSourceContract>(),
+        gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
     gh.factory<_i12.GetUserUseCase>(
@@ -124,15 +119,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i71.SaveUserUseCase>(
       () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.factory<_i60.MainProfileCubit>(
-      () => _i60.MainProfileCubit(
-        gh<_i818.GetMainProfileUseCase>(),
-        gh<_i71.SaveUserUseCase>(),
+    gh.factory<_i818.GetMainProfileUseCase>(
+      () => _i818.GetMainProfileUseCase(
+        gh<_i488.MainProfileRepositoryContract>(),
       ),
     );
     gh.factory<_i753.LoginCubit>(
       () => _i753.LoginCubit(
         gh<_i191.LoginUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
+      ),
+    );
+    gh.factory<_i60.MainProfileCubit>(
+      () => _i60.MainProfileCubit(
+        gh<_i818.GetMainProfileUseCase>(),
         gh<_i71.SaveUserUseCase>(),
       ),
     );
