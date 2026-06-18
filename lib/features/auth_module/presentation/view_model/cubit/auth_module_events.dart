@@ -1,1 +1,22 @@
-// TODO: presentation Auth_moduleEvents
+import 'package:track_flowers_app/config/uses_cases/login_params.dart';
+
+sealed class AuthModuleEvent {}
+
+
+class LoginEvent extends AuthModuleEvent {
+  final LoginParams params;
+  LoginEvent({required this.params});
+}
+
+class RememberMeEvent extends AuthModuleEvent {
+  final bool rememberMe;
+  RememberMeEvent({required this.rememberMe});
+}
+
+class ShowPasswordEvent extends AuthModuleEvent {
+  final bool showPassword;
+  ShowPasswordEvent({required this.showPassword});
+}
+
+class LogoutEvent extends AuthModuleEvent {}
+
