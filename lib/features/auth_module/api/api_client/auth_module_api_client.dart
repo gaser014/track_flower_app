@@ -1,1 +1,1 @@
-class AuthModuleApiClient {}
+  class AuthModuleApiClient {}
