@@ -14,4 +14,5 @@ abstract class Routes {
   static const String profile = "/profile";
   static const String home = "/home";
   static const String occasionPage = "/occasion";
+  static const String applicationSubmitted = "/application-submitted";
 }
