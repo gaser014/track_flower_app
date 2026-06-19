@@ -8,11 +8,23 @@ import 'dart:async' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:track_flowers_app/config/base_response/result.dart' as _i4;
-import 'package:track_flowers_app/config/uses_cases/login_params.dart' as _i6;
+import 'package:track_flowers_app/config/uses_cases/use_cases.dart' as _i9;
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart'
+    as _i6;
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart'
     as _i5;
-import 'package:track_flowers_app/features/auth_module/domain/repositories/auth_module_repository.dart'
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart'
+    as _i13;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart'
+    as _i10;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart'
     as _i2;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart'
+    as _i8;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart'
+    as _i12;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_token_use_case.dart'
+    as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -29,102 +41,143 @@ import 'package:track_flowers_app/features/auth_module/domain/repositories/auth_
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-/// A class which mocks [AuthModuleRepository].
+/// A class which mocks [LoginDriverUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthModuleRepository extends _i1.Mock
-    implements _i2.AuthModuleRepository {
-  MockAuthModuleRepository() {
+class MockLoginDriverUseCase extends _i1.Mock
+    implements _i2.LoginDriverUseCase {
+  MockLoginDriverUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i4.Result<_i5.DriverLoginResponseEntity>> loginDriver(
-    _i6.LoginParams? params,
+  _i3.Future<_i4.Result<_i5.DriverLoginResponseEntity>> call(
+    _i6.DriverLoginRequestEntity? params,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#loginDriver, [params]),
+            Invocation.method(#call, [params]),
             returnValue:
                 _i3.Future<_i4.Result<_i5.DriverLoginResponseEntity>>.value(
                   _i7.dummyValue<_i4.Result<_i5.DriverLoginResponseEntity>>(
                     this,
-                    Invocation.method(#loginDriver, [params]),
+                    Invocation.method(#call, [params]),
                   ),
                 ),
           )
           as _i3.Future<_i4.Result<_i5.DriverLoginResponseEntity>>);
+}
+
+/// A class which mocks [LogoutDriverUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLogoutDriverUseCase extends _i1.Mock
+    implements _i8.LogoutDriverUseCase {
+  MockLogoutDriverUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i3.Future<_i4.Result<void>> saveDriverToken(String? token) =>
+  _i3.Future<_i4.Result<void>> call(_i9.NoParams? params) =>
       (super.noSuchMethod(
-            Invocation.method(#saveDriverToken, [token]),
+            Invocation.method(#call, [params]),
             returnValue: _i3.Future<_i4.Result<void>>.value(
               _i7.dummyValue<_i4.Result<void>>(
                 this,
-                Invocation.method(#saveDriverToken, [token]),
+                Invocation.method(#call, [params]),
               ),
             ),
           )
           as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [GetSavedCredentialsUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetSavedCredentialsUseCase extends _i1.Mock
+    implements _i10.GetSavedCredentialsUseCase {
+  MockGetSavedCredentialsUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i3.Future<_i4.Result<void>> deleteDriverToken() =>
+  _i3.Future<_i4.Result<Map<String, String?>>> call(_i9.NoParams? params) =>
       (super.noSuchMethod(
-            Invocation.method(#deleteDriverToken, []),
-            returnValue: _i3.Future<_i4.Result<void>>.value(
-              _i7.dummyValue<_i4.Result<void>>(
-                this,
-                Invocation.method(#deleteDriverToken, []),
-              ),
-            ),
-          )
-          as _i3.Future<_i4.Result<void>>);
-
-  @override
-  _i3.Future<_i4.Result<void>> saveCredentials({
-    required String? email,
-    required String? password,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#saveCredentials, [], {
-              #email: email,
-              #password: password,
-            }),
-            returnValue: _i3.Future<_i4.Result<void>>.value(
-              _i7.dummyValue<_i4.Result<void>>(
-                this,
-                Invocation.method(#saveCredentials, [], {
-                  #email: email,
-                  #password: password,
-                }),
-              ),
-            ),
-          )
-          as _i3.Future<_i4.Result<void>>);
-
-  @override
-  _i3.Future<_i4.Result<void>> deleteCredentials() =>
-      (super.noSuchMethod(
-            Invocation.method(#deleteCredentials, []),
-            returnValue: _i3.Future<_i4.Result<void>>.value(
-              _i7.dummyValue<_i4.Result<void>>(
-                this,
-                Invocation.method(#deleteCredentials, []),
-              ),
-            ),
-          )
-          as _i3.Future<_i4.Result<void>>);
-
-  @override
-  _i3.Future<_i4.Result<Map<String, String?>>> getSavedCredentials() =>
-      (super.noSuchMethod(
-            Invocation.method(#getSavedCredentials, []),
+            Invocation.method(#call, [params]),
             returnValue: _i3.Future<_i4.Result<Map<String, String?>>>.value(
               _i7.dummyValue<_i4.Result<Map<String, String?>>>(
                 this,
-                Invocation.method(#getSavedCredentials, []),
+                Invocation.method(#call, [params]),
               ),
             ),
           )
           as _i3.Future<_i4.Result<Map<String, String?>>>);
+}
+
+/// A class which mocks [SaveDriverTokenUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSaveDriverTokenUseCase extends _i1.Mock
+    implements _i11.SaveDriverTokenUseCase {
+  MockSaveDriverTokenUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<void>> call(String? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i7.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [SaveDriverCredentialsUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSaveDriverCredentialsUseCase extends _i1.Mock
+    implements _i12.SaveDriverCredentialsUseCase {
+  MockSaveDriverCredentialsUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<void>> call(_i12.SaveDriverCredentialsParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i7.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [DeleteDriverCredentialsUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteDriverCredentialsUseCase extends _i1.Mock
+    implements _i13.DeleteDriverCredentialsUseCase {
+  MockDeleteDriverCredentialsUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<void>> call(_i9.NoParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i7.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
 }

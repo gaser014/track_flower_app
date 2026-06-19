@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
-import 'package:track_flowers_app/config/uses_cases/login_params.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_font_style.dart';
@@ -16,6 +16,9 @@ import 'package:track_flowers_app/features/auth_module/presentation/view_model/c
 class AuthModulePage extends StatefulWidget {
   const AuthModulePage({super.key});
 
+  static Page<void> page() => const MaterialPage<void>(child: AuthModulePage());
+  static Route<void> route() => MaterialPageRoute<void>(builder: (_) => const AuthModulePage());
+
   @override
   State<AuthModulePage> createState() => _AuthModulePageState();
 }
@@ -24,18 +27,26 @@ class _AuthModulePageState extends State<AuthModulePage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final AuthModuleCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = getIt.get<AuthModuleCubit>()..loadSavedCredentials();
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _cubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt.get<AuthModuleCubit>()..loadSavedCredentials(),
+    return BlocProvider.value(
+      value: _cubit,
       child: BlocConsumer<AuthModuleCubit, AuthModuleState>(
         listenWhen: (previous, current) =>
             previous.loginState != current.loginState ||
@@ -61,7 +72,6 @@ class _AuthModulePageState extends State<AuthModulePage> {
           }
         },
         builder: (context, state) {
-          final cubit = context.read<AuthModuleCubit>();
           return Scaffold(
             backgroundColor: AppColors.white,
             appBar: AppBar(
@@ -86,21 +96,21 @@ class _AuthModulePageState extends State<AuthModulePage> {
               isLoading: state.loginState.isLoading,
               onTogglePasswordVisibility: () {
                 final isVisible = state.showPasswordState.data ?? false;
-                cubit.doIndented(
+                _cubit.doIndented(
                   ShowPasswordEvent(showPassword: !isVisible),
                 );
               },
               onRememberMeChanged: (value) {
-                cubit.doIndented(RememberMeEvent(rememberMe: value));
+                _cubit.doIndented(RememberMeEvent(rememberMe: value));
               },
               onForgotPasswordTapped: () {
                 // TODO: navigate to forgot password
               },
               onSubmit: () {
                 if (_formKey.currentState?.validate() ?? false) {
-                  cubit.doIndented(
+                  _cubit.doIndented(
                     LoginEvent(
-                      params: LoginParams(
+                      params: DriverLoginRequestEntity(
                         email: _emailController.text,
                         password: _passwordController.text,
                         remember: state.rememberMeState.data ?? false,

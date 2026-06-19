@@ -32,6 +32,18 @@ import '../../features/auth_module/data/repositories/auth_module_repository_impl
     as _i848;
 import '../../features/auth_module/domain/repositories/auth_module_repository.dart'
     as _i1015;
+import '../../features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart'
+    as _i935;
+import '../../features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart'
+    as _i766;
+import '../../features/auth_module/domain/use_cases/login_driver_use_case.dart'
+    as _i645;
+import '../../features/auth_module/domain/use_cases/logout_driver_use_case.dart'
+    as _i413;
+import '../../features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart'
+    as _i915;
+import '../../features/auth_module/domain/use_cases/save_driver_token_use_case.dart'
+    as _i549;
 import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
     as _i575;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
@@ -131,8 +143,26 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i435.AuthModuleLocalDataSourceContract>(),
       ),
     );
-    gh.factory<_i575.AuthModuleCubit>(
-      () => _i575.AuthModuleCubit(gh<_i1015.AuthModuleRepository>()),
+    gh.factory<_i935.DeleteDriverCredentialsUseCase>(
+      () => _i935.DeleteDriverCredentialsUseCase(
+        gh<_i1015.AuthModuleRepository>(),
+      ),
+    );
+    gh.factory<_i766.GetSavedCredentialsUseCase>(
+      () => _i766.GetSavedCredentialsUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i645.LoginDriverUseCase>(
+      () => _i645.LoginDriverUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i413.LogoutDriverUseCase>(
+      () => _i413.LogoutDriverUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i915.SaveDriverCredentialsUseCase>(
+      () =>
+          _i915.SaveDriverCredentialsUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i549.SaveDriverTokenUseCase>(
+      () => _i549.SaveDriverTokenUseCase(gh<_i1015.AuthModuleRepository>()),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
       () => _i164.MainProfileRepositoryImpl(
@@ -143,6 +173,16 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1066.LoginRepositoryImpl(
         gh<_i736.LoginRemoteDataSourceContract>(),
         gh<_i325.LoginLocalDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i575.AuthModuleCubit>(
+      () => _i575.AuthModuleCubit(
+        gh<_i645.LoginDriverUseCase>(),
+        gh<_i413.LogoutDriverUseCase>(),
+        gh<_i766.GetSavedCredentialsUseCase>(),
+        gh<_i549.SaveDriverTokenUseCase>(),
+        gh<_i915.SaveDriverCredentialsUseCase>(),
+        gh<_i935.DeleteDriverCredentialsUseCase>(),
       ),
     );
     gh.factory<_i12.GetUserUseCase>(

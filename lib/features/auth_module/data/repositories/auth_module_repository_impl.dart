@@ -1,7 +1,7 @@
 
 import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/base_response/result.dart';
-import 'package:track_flowers_app/config/uses_cases/login_params.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 import 'package:track_flowers_app/features/auth_module/data/datasources/auth_module_local_data_source_contract.dart';
 import 'package:track_flowers_app/features/auth_module/data/datasources/auth_module_remote_data_source_contract.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
@@ -17,13 +17,14 @@ class AuthModuleRepositoryImpl implements AuthModuleRepository {
 
   @override
   Future<Result<DriverLoginResponseEntity>> loginDriver(
-    LoginParams params,
+    DriverLoginRequestEntity params,
   ) async {
     final result = await _remote.loginDriver(params);
     return result.when(
       success: (response) {
-        // Assuming response is the model which has .toEntity()
-        return Success<DriverLoginResponseEntity>(data: response?.toEntity());
+        return Success<DriverLoginResponseEntity>(
+          data: response?.toEntity(),
+        );
       },
       error: (error) => Error(exception: error),
     );

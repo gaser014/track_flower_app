@@ -1,10 +1,10 @@
-import 'package:track_flowers_app/config/uses_cases/login_params.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 
 sealed class AuthModuleEvent {}
 
 
 class LoginEvent extends AuthModuleEvent {
-  final LoginParams params;
+  final DriverLoginRequestEntity params;
   LoginEvent({required this.params});
 }
 

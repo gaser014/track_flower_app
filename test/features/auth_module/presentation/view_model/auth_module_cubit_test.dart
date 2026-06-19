@@ -3,20 +3,37 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:track_flowers_app/config/base_response/result.dart';
-import 'package:track_flowers_app/config/base_state/base_state.dart';
-import 'package:track_flowers_app/config/uses_cases/login_params.dart';
+import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
-import 'package:track_flowers_app/features/auth_module/domain/repositories/auth_module_repository.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_token_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_events.dart';
 
 import 'auth_module_cubit_test.mocks.dart';
 
-@GenerateMocks([AuthModuleRepository])
+@GenerateMocks([
+  LoginDriverUseCase,
+  LogoutDriverUseCase,
+  GetSavedCredentialsUseCase,
+  SaveDriverTokenUseCase,
+  SaveDriverCredentialsUseCase,
+  DeleteDriverCredentialsUseCase,
+])
 void main() {
   late AuthModuleCubit cubit;
-  late MockAuthModuleRepository mockRepository;
+  late MockLoginDriverUseCase mockLoginDriverUseCase;
+  late MockLogoutDriverUseCase mockLogoutDriverUseCase;
+  late MockGetSavedCredentialsUseCase mockGetSavedCredentialsUseCase;
+  late MockSaveDriverTokenUseCase mockSaveDriverTokenUseCase;
+  late MockSaveDriverCredentialsUseCase mockSaveDriverCredentialsUseCase;
+  late MockDeleteDriverCredentialsUseCase mockDeleteDriverCredentialsUseCase;
 
   // ─── Test Data ────────────────────────────────────────────────────────────
   const tEmail = 'driver@test.com';
@@ -38,13 +55,13 @@ void main() {
     driver: tDriver,
   );
 
-  final tLoginParams = LoginParams(
+  final tLoginParams = DriverLoginRequestEntity(
     email: tEmail,
     password: tPassword,
     remember: false,
   );
 
-  final tLoginParamsRemember = LoginParams(
+  final tLoginParamsRemember = DriverLoginRequestEntity(
     email: tEmail,
     password: tPassword,
     remember: true,
@@ -52,8 +69,20 @@ void main() {
 
   // ─── Setup ────────────────────────────────────────────────────────────────
   setUp(() {
-    mockRepository = MockAuthModuleRepository();
-    cubit = AuthModuleCubit(mockRepository);
+    mockLoginDriverUseCase = MockLoginDriverUseCase();
+    mockLogoutDriverUseCase = MockLogoutDriverUseCase();
+    mockGetSavedCredentialsUseCase = MockGetSavedCredentialsUseCase();
+    mockSaveDriverTokenUseCase = MockSaveDriverTokenUseCase();
+    mockSaveDriverCredentialsUseCase = MockSaveDriverCredentialsUseCase();
+    mockDeleteDriverCredentialsUseCase = MockDeleteDriverCredentialsUseCase();
+    cubit = AuthModuleCubit(
+      mockLoginDriverUseCase,
+      mockLogoutDriverUseCase,
+      mockGetSavedCredentialsUseCase,
+      mockSaveDriverTokenUseCase,
+      mockSaveDriverCredentialsUseCase,
+      mockDeleteDriverCredentialsUseCase,
+    );
   });
 
   tearDown(() => cubit.close());
@@ -74,13 +103,13 @@ void main() {
       'should emit [loading, success] when login succeeds',
       build: () {
         when(
-          mockRepository.loginDriver(tLoginParams),
+          mockLoginDriverUseCase(tLoginParams),
         ).thenAnswer((_) async => Success(data: tLoginResponse));
         when(
-          mockRepository.saveDriverToken(tToken),
+          mockSaveDriverTokenUseCase(tToken),
         ).thenAnswer((_) async => const Success(data: null));
         when(
-          mockRepository.deleteCredentials(),
+          mockDeleteDriverCredentialsUseCase(const NoParams()),
         ).thenAnswer((_) async => const Success(data: null));
         return cubit;
       },
@@ -101,20 +130,30 @@ void main() {
       'should save credentials when remember is true',
       build: () {
         when(
-          mockRepository.loginDriver(tLoginParamsRemember),
+          mockLoginDriverUseCase(tLoginParamsRemember),
         ).thenAnswer((_) async => Success(data: tLoginResponse));
         when(
-          mockRepository.saveDriverToken(tToken),
+          mockSaveDriverTokenUseCase(tToken),
         ).thenAnswer((_) async => const Success(data: null));
         when(
-          mockRepository.saveCredentials(email: tEmail, password: tPassword),
+          mockSaveDriverCredentialsUseCase(
+            const SaveDriverCredentialsParams(
+              email: tEmail,
+              password: tPassword,
+            ),
+          ),
         ).thenAnswer((_) async => const Success(data: null));
         return cubit;
       },
       act: (c) => c.doIndented(LoginEvent(params: tLoginParamsRemember)),
       verify: (_) {
         verify(
-          mockRepository.saveCredentials(email: tEmail, password: tPassword),
+          mockSaveDriverCredentialsUseCase(
+            const SaveDriverCredentialsParams(
+              email: tEmail,
+              password: tPassword,
+            ),
+          ),
         ).called(1);
       },
     );
@@ -122,7 +161,7 @@ void main() {
     blocTest<AuthModuleCubit, AuthModuleState>(
       'should emit [loading, error] when login fails',
       build: () {
-        when(mockRepository.loginDriver(tLoginParams)).thenAnswer(
+        when(mockLoginDriverUseCase(tLoginParams)).thenAnswer(
           (_) async => Error(exception: Exception('Invalid credentials')),
         );
         return cubit;
@@ -145,7 +184,7 @@ void main() {
     blocTest<AuthModuleCubit, AuthModuleState>(
       'should not save token when response token is null',
       build: () {
-        when(mockRepository.loginDriver(tLoginParams)).thenAnswer(
+        when(mockLoginDriverUseCase(tLoginParams)).thenAnswer(
           (_) async => Success(
             data: DriverLoginResponseEntity(
               message: 'success',
@@ -155,13 +194,13 @@ void main() {
           ),
         );
         when(
-          mockRepository.deleteCredentials(),
+          mockDeleteDriverCredentialsUseCase(const NoParams()),
         ).thenAnswer((_) async => const Success(data: null));
         return cubit;
       },
       act: (c) => c.doIndented(LoginEvent(params: tLoginParams)),
       verify: (_) {
-        verifyNever(mockRepository.saveDriverToken(any));
+        verifyNever(mockSaveDriverTokenUseCase(any));
       },
     );
   });
@@ -172,7 +211,7 @@ void main() {
       'should emit [loading, success] when logout succeeds',
       build: () {
         when(
-          mockRepository.deleteDriverToken(),
+          mockLogoutDriverUseCase(const NoParams()),
         ).thenAnswer((_) async => const Success(data: null));
         return cubit;
       },
@@ -195,8 +234,10 @@ void main() {
       'should emit [loading, error] when logout fails',
       build: () {
         when(
-          mockRepository.deleteDriverToken(),
-        ).thenAnswer((_) async => Error(exception: Exception('Storage error')));
+          mockLogoutDriverUseCase(const NoParams()),
+        ).thenAnswer(
+          (_) async => Error(exception: Exception('Storage error')),
+        );
         return cubit;
       },
       act: (c) => c.doIndented(LogoutEvent()),
@@ -284,7 +325,7 @@ void main() {
       'should emit savedCredentials and rememberMe=true when credentials exist',
       build: () {
         when(
-          mockRepository.getSavedCredentials(),
+          mockGetSavedCredentialsUseCase(const NoParams()),
         ).thenAnswer((_) async => Success(data: tCredentials));
         return cubit;
       },
@@ -303,7 +344,7 @@ void main() {
     blocTest<AuthModuleCubit, AuthModuleState>(
       'should not emit when credentials are empty',
       build: () {
-        when(mockRepository.getSavedCredentials()).thenAnswer(
+        when(mockGetSavedCredentialsUseCase(const NoParams())).thenAnswer(
           (_) async => Success(
             data: {'driverSavedEmail': null, 'driverSavedPassword': null},
           ),
@@ -318,7 +359,7 @@ void main() {
       'should not emit when getSavedCredentials returns error',
       build: () {
         when(
-          mockRepository.getSavedCredentials(),
+          mockGetSavedCredentialsUseCase(const NoParams()),
         ).thenAnswer((_) async => Error(exception: Exception('Storage error')));
         return cubit;
       },
