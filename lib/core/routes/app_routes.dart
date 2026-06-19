@@ -202,7 +202,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.onboardingDriver,
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
         path: Routes.splash,
@@ -227,20 +227,20 @@ abstract class AppRoutes {
           return LoginPage();
         },
       ),
-      GoRoute(
-        path: Routes.onboardingDriver,
-        name: Routes.onboardingDriver,
-        builder: (BuildContext context, GoRouterState state) {
-          return const OnboardingDriverPage();
-        },
-      ),
-      GoRoute(
-        path: Routes.loginDriver,
-        name: Routes.loginDriver,
-        builder: (BuildContext context, GoRouterState state) {
-          return const AuthModulePage();
-        },
-      ),
+      // GoRoute(
+      //   path: Routes.onboardingDriver,
+      //   name: Routes.onboardingDriver,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const OnboardingDriverPage();
+      //   },
+      // ),
+      // GoRoute(
+      //   path: Routes.loginDriver,
+      //   name: Routes.loginDriver,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const AuthModulePage();
+      //   },
+      // ),
       GoRoute(
         path: Routes.home,
         name: Routes.home,
