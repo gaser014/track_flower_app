@@ -6,6 +6,9 @@ class AuthModuleState extends Equatable {
   final BaseState<bool> showPasswordState;
   final BaseState<dynamic> logoutState;
   final BaseState<Map<String, String?>> savedCredentials;
+  final BaseState<void> sendCodeState;
+  final BaseState<void> verifyCodeState;
+  final BaseState<void> resetPasswordState;
 
   const AuthModuleState({
     this.loginState = const BaseState.initial(),
@@ -13,11 +16,19 @@ class AuthModuleState extends Equatable {
     this.showPasswordState = const BaseState.success(false),
     this.logoutState = const BaseState.initial(),
     this.savedCredentials = const BaseState.initial(),
+    this.sendCodeState = const BaseState.initial(),
+    this.verifyCodeState = const BaseState.initial(),
+    this.resetPasswordState = const BaseState.initial(),
+
   });
 
   AuthModuleState copyWith({
     BaseState<dynamic>? loginState,
     BaseState<bool>? rememberMeState,
+    BaseState<void>? sendCodeState,
+    BaseState<void>? verifyCodeState,
+    BaseState<void>? resetPasswordState,
+
     BaseState<bool>? showPasswordState,
     BaseState<dynamic>? logoutState,
     BaseState<Map<String, String?>>? savedCredentials,
@@ -28,6 +39,10 @@ class AuthModuleState extends Equatable {
       showPasswordState: showPasswordState ?? this.showPasswordState,
       logoutState: logoutState ?? this.logoutState,
       savedCredentials: savedCredentials ?? this.savedCredentials,
+      sendCodeState: sendCodeState ?? this.sendCodeState,
+      verifyCodeState: verifyCodeState ?? this.verifyCodeState,
+      resetPasswordState: resetPasswordState ?? this.resetPasswordState,
+
     );
   }
 
@@ -38,5 +53,9 @@ class AuthModuleState extends Equatable {
         showPasswordState,
         logoutState,
         savedCredentials,
-      ];
+    sendCodeState,
+    verifyCodeState,
+    resetPasswordState,
+
+  ];
 }

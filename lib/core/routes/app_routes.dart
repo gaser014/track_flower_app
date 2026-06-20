@@ -6,6 +6,7 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -228,6 +229,13 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
+        path: Routes.forgetPassword,
+        name: Routes.forgetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ForgetPasswordPage();
+        },
+      ),
+      GoRoute(
         path: Routes.onboardingDriver,
         name: Routes.onboardingDriver,
         builder: (BuildContext context, GoRouterState state) {
@@ -256,7 +264,7 @@ abstract class AppRoutes {
         Routes.login,
         Routes.main,
         // Routes.register,
-        // Routes.forgetPassword,
+        Routes.forgetPassword,
         // Routes.resetPassword,
         // AuthRoutes.otpVerification,
         // AuthRoutes.completeProfile,

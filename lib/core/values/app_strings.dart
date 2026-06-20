@@ -236,4 +236,19 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+
+  // Forget Password Flow
+  static const String forgetPasswordTitle = "Forgot Password?";
+  static const String forgetPasswordSubtitle =
+      "Enter your email and we'll send you a reset code";
+  static const String confirmForgetPassword = "Send Code";
+  static const String verificationCodeTitle = "Verification Code";
+  static const String verificationCodeSubtitle =
+      "Enter the 4-digit code sent to your email";
+  static const String resetPasswordTitle = "Reset Password";
+  static const String resetPasswordSubtitle = "Create a new password below";
+  static const String newPassword = "New Password";
+  static const String confirmNewPassword = "Confirm New Password";
+  static const String passwordResetSuccess =
+      "Password reset successfully. Please login.";
 }

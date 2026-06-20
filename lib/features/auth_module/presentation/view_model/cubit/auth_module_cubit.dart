@@ -13,6 +13,11 @@ import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_d
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_token_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_events.dart';
+import 'package:track_flowers_app/config/base_state/base_event.dart';
+import 'package:track_flowers_app/config/base_state/base_state.dart';
+import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/forget_password_params.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/forget_password_use_cases.dart';
 
 part 'auth_module_states.dart';
 
@@ -24,6 +29,9 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
   final SaveDriverTokenUseCase _saveDriverTokenUseCase;
   final SaveDriverCredentialsUseCase _saveDriverCredentialsUseCase;
   final DeleteDriverCredentialsUseCase _deleteDriverCredentialsUseCase;
+  final SendForgetPasswordCodeUseCase _sendForgetPasswordCodeUseCase;
+  final VerifyForgetPasswordCodeUseCase _verifyForgetPasswordCodeUseCase;
+  final ResetPasswordUseCase _resetPasswordUseCase;
 
   AuthModuleCubit(
     this._loginDriverUseCase,
@@ -32,6 +40,10 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
     this._saveDriverTokenUseCase,
     this._saveDriverCredentialsUseCase,
     this._deleteDriverCredentialsUseCase,
+      this._sendForgetPasswordCodeUseCase,
+      this._verifyForgetPasswordCodeUseCase,
+      this._resetPasswordUseCase,
+
   ) : super(const AuthModuleState());
 
   void doIndented(AuthModuleEvent event) {
@@ -44,6 +56,13 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
         _showPassword(event.showPassword);
       case LogoutEvent():
         _logout();
+      case SendCodeEvent():
+        _sendCode(event.params);
+      case VerifyCodeEvent():
+        _verifyCode(event.params);
+      case ResetPasswordEvent():
+        _resetPassword(event.params);
+
     }
   }
 
@@ -113,13 +132,51 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
     );
   }
 
-  // ===========================================================================
-  // [3] Sign Up Feature Methods (For the Team to Implement)
-  // ===========================================================================
-  // TODO (Team): Add _signUp logic here
-  // Future<void> _signUp(SignUpParams params) async {
-  //   emit(state.copyWith(signUpState: BaseState.loading()));
-  //   final result = await _signUpUseCase(params);
-  //   ...
-  // }
+  Future<void> _sendCode(ForgetPasswordParams params) async {
+    emit(state.copyWith(sendCodeState: const BaseState.loading()));
+    final result = await _sendForgetPasswordCodeUseCase.call(params);
+    result.when(
+      success: (_) {
+        emit(state.copyWith(sendCodeState: const BaseState.success(null)));
+        emitEvent(PageChangeEvent(1));
+      },
+      error: (exception) {
+        emit(state.copyWith(sendCodeState: BaseState.error(exception)));
+        emitEvent(DisplayError(exception.toString()));
+      },
+    );
+  }
+
+  Future<void> _verifyCode(ForgetPasswordParams params) async {
+    emit(state.copyWith(verifyCodeState: const BaseState.loading()));
+    final result = await _verifyForgetPasswordCodeUseCase.call(params);
+    result.when(
+      success: (_) {
+        emit(state.copyWith(verifyCodeState: const BaseState.success(null)));
+        emitEvent(PageChangeEvent(2));
+      },
+      error: (exception) {
+        emit(state.copyWith(verifyCodeState: BaseState.error(exception)));
+        emitEvent(DisplayError(exception.toString()));
+      },
+    );
+  }
+
+  Future<void> _resetPassword(ForgetPasswordParams params) async {
+    emit(state.copyWith(resetPasswordState: const BaseState.loading()));
+    final result = await _resetPasswordUseCase.call(params);
+    result.when(
+      success: (_) {
+        emit(state.copyWith(resetPasswordState: const BaseState.success(null)));
+        emitEvent(DisplaySuccess(AppStrings.passwordResetSuccess));
+        emitEvent(PopEvent());
+      },
+      error: (exception) {
+        emit(state.copyWith(resetPasswordState: BaseState.error(exception)));
+        emitEvent(DisplayError(exception.toString()));
+      },
+    );
+  }
+
 }
+
