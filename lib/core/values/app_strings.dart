@@ -67,6 +67,9 @@ class AppStrings {
 
   // Global
   static const String currencyIQD = "IQD";
+  static const String continueButton = "Continue";
+  static const String welcomeToFlowery = "Welcome to\nFlowery rider app";
+
   static const String ok = "OK";
   static const String confirm = "Confirm";
   static const String cancel = "Cancel";
@@ -121,6 +124,10 @@ class AppStrings {
   static const String signUp = "Sign up";
   static const String loginSuccessfully = "Login successfully";
   static const String loginError = "Invalid Phone Number or Password";
+    static const String driverLoginSuccessfully = "Login successfully";
+    static const String driverSavedEmail = "Driver email saved successfully";
+    static const String driverSavedPassword = "Driver password saved successfully";
+
 
   // Register
   static const String registerTitle = "Sign up";
@@ -197,7 +204,10 @@ class AppStrings {
       "Something went wrong, please try again";
 
   static const String token = "token";
+  static const String driverToken = "driver_token";
   static const String user = "user";
+  static const String driverLoginError = "Invalid email or password";
+
 
   // Home
   static const String categories = "Categories";

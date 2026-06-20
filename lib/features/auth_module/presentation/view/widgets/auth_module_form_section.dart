@@ -1,8 +1,11 @@
-import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/auth_module_form_section.dart';
+import 'package:track_flowers_app/core/widgets/text_field/email_field.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/auth_module_password_field.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/auth_module_submit_button.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/auth_module_remember_me_row.dart';
 import 'package:flutter/material.dart';
 
-class AuthModuleBody extends StatelessWidget {
-  const AuthModuleBody({
+class AuthModuleFormSection extends StatelessWidget {
+  const AuthModuleFormSection({
     super.key,
     required this.formKey,
     required this.emailController,
@@ -20,10 +23,12 @@ class AuthModuleBody extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
 
+  // state values
   final bool isPasswordVisible;
   final bool rememberMe;
   final bool isLoading;
 
+  // callbacks
   final VoidCallback onTogglePasswordVisibility;
   final ValueChanged<bool> onRememberMeChanged;
   final VoidCallback onForgotPasswordTapped;
@@ -31,23 +36,24 @@ class AuthModuleBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Form(
+      key: formKey,
       child: Column(
         spacing: 16,
         children: [
-          AuthModuleFormSection(
-            formKey: formKey,
-            emailController: emailController,
+          EmailField(controller: emailController),
+          AuthModulePasswordField(
             passwordController: passwordController,
-            isPasswordVisible: isPasswordVisible,
+            isVisible: isPasswordVisible,
+            onToggleVisibility: onTogglePasswordVisibility,
+          ),
+          AuthModuleRememberMeRow(
             rememberMe: rememberMe,
-            isLoading: isLoading,
-            onTogglePasswordVisibility: onTogglePasswordVisibility,
             onRememberMeChanged: onRememberMeChanged,
             onForgotPasswordTapped: onForgotPasswordTapped,
-            onSubmit: onSubmit,
           ),
+          const SizedBox(height: 32),
+          AuthModuleSubmitButton(isLoading: isLoading, onPressed: onSubmit),
         ],
       ),
     );
