@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_font_style.dart';
+import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/core/widgets/custom_button.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/country_model.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/vehicle_type_model.dart';
@@ -71,7 +72,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
             children: [
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
+                title: const Text(AppStrings.photoLibrary),
                 onTap: () async {
                   Navigator.of(context).pop();
                   final pickedFile = await _imagePicker.pickImage(
@@ -94,7 +95,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
               ),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
+                title: const Text(AppStrings.camera),
                 onTap: () async {
                   Navigator.of(context).pop();
                   final pickedFile = await _imagePicker.pickImage(
@@ -128,8 +129,8 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
     if (state.vehicleLicense == null) {
       toastification.show(
         context: context,
-        title: const Text("Error"),
-        description: const Text("Please upload vehicle license"),
+        title: const Text(AppStrings.error),
+        description: const Text(AppStrings.uploadVehicleLicenseError),
         type: ToastificationType.error,
         autoCloseDuration: const Duration(seconds: 3),
       );
@@ -139,8 +140,8 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
     if (state.nidImage == null) {
       toastification.show(
         context: context,
-        title: const Text("Error"),
-        description: const Text("Please upload national ID image"),
+        title: const Text(AppStrings.error),
+        description: const Text(AppStrings.uploadNidImageError),
         type: ToastificationType.error,
         autoCloseDuration: const Duration(seconds: 3),
       );
@@ -150,8 +151,8 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
     if (_passwordController.text != _rePasswordController.text) {
       toastification.show(
         context: context,
-        title: const Text("Error"),
-        description: const Text("Passwords do not match"),
+        title: const Text(AppStrings.error),
+        description: const Text(AppStrings.confirmPasswordInvalid),
         type: ToastificationType.error,
         autoCloseDuration: const Duration(seconds: 3),
       );
@@ -180,7 +181,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Apply'), centerTitle: false),
+      appBar: AppBar(title: const Text(AppStrings.apply), centerTitle: false),
       body: BlocConsumer<AuthModuleCubit, AuthModuleState>(
         listenWhen: (previous, current) =>
             previous.applyDriverState != current.applyDriverState,
@@ -191,9 +192,9 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
             success: (data) {
               toastification.show(
                 context: context,
-                title: const Text("Success"),
+                title: const Text(AppStrings.success),
                 description: Text(
-                  data.message ?? "Application submitted successfully!",
+                  data.message ?? AppStrings.applicationSubmittedSuccess,
                 ),
                 type: ToastificationType.success,
                 autoCloseDuration: const Duration(seconds: 3),
@@ -202,7 +203,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
             error: (exception) {
               toastification.show(
                 context: context,
-                title: const Text("Error"),
+                title: const Text(AppStrings.error),
                 description: Text(exception.toString()),
                 type: ToastificationType.error,
                 autoCloseDuration: const Duration(seconds: 3),
@@ -226,12 +227,12 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Welcome!!',
+                    AppStrings.welcomeExclamation,
                     style: AppFontStyle.bold24(context: context),
                   ),
                   const Gap(8),
                   Text(
-                    'You want to be a delivery man?\nJoin our team',
+                    AppStrings.joinOurTeam,
                     style: AppFontStyle.medium16(
                       context: context,
                     ).copyWith(color: AppColors.gray7D),
@@ -240,9 +241,10 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
 
                   // Country Dropdown
                   DropdownButtonFormField<CountryModel>(
+                    isExpanded: true,
                     initialValue: state.selectedCountry,
                     decoration: const InputDecoration(
-                      labelText: 'Country',
+                      labelText: AppStrings.country,
                       border: OutlineInputBorder(),
                     ),
                     items: countries.map((country) {
@@ -250,6 +252,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                         value: country,
                         child: Text(
                           '${country.flag ?? ""} ${country.name ?? ""}',
+                          overflow: TextOverflow.ellipsis,
                         ),
                       );
                     }).toList(),
@@ -267,37 +270,43 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                   TextFormField(
                     controller: _firstNameController,
                     decoration: const InputDecoration(
-                      labelText: 'First legal name',
-                      hintText: 'Enter first legal name',
+                      labelText: AppStrings.firstLegalName,
+                      hintText: AppStrings.enterFirstLegalName,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'Required' : null,
+                    validator: (v) => v == null || v.isEmpty
+                        ? AppStrings.requiredField
+                        : null,
                   ),
                   const Gap(16),
                   TextFormField(
                     controller: _lastNameController,
                     decoration: const InputDecoration(
-                      labelText: 'Second legal name',
-                      hintText: 'Enter second legal name',
+                      labelText: AppStrings.secondLegalName,
+                      hintText: AppStrings.enterSecondLegalName,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'Required' : null,
+                    validator: (v) => v == null || v.isEmpty
+                        ? AppStrings.requiredField
+                        : null,
                   ),
                   const Gap(16),
 
                   // Vehicle Type
                   DropdownButtonFormField<VehicleTypeModel>(
+                    isExpanded: true,
                     initialValue: state.selectedVehicle,
                     decoration: const InputDecoration(
-                      labelText: 'Vehicle type',
+                      labelText: AppStrings.vehicleType,
                       border: OutlineInputBorder(),
                     ),
                     items: vehicles.map((vehicle) {
                       return DropdownMenuItem<VehicleTypeModel>(
                         value: vehicle,
-                        child: Text(vehicle.type ?? ""),
+                        child: Text(
+                          vehicle.type ?? "",
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     }).toList(),
                     onChanged: (val) {
@@ -307,7 +316,8 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                         );
                       }
                     },
-                    validator: (v) => v == null ? 'Required' : null,
+                    validator: (v) =>
+                        v == null ? AppStrings.requiredField : null,
                   ),
                   const Gap(16),
 
@@ -315,12 +325,13 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                   TextFormField(
                     controller: _vehicleNumberController,
                     decoration: const InputDecoration(
-                      labelText: 'Vehicle number',
-                      hintText: 'Enter vehicle number',
+                      labelText: AppStrings.vehicleNumber,
+                      hintText: AppStrings.enterVehicleNumber,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'Required' : null,
+                    validator: (v) => v == null || v.isEmpty
+                        ? AppStrings.requiredField
+                        : null,
                   ),
                   const Gap(16),
 
@@ -329,7 +340,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                     onTap: () => _showImagePickerModal(context, true),
                     child: InputDecorator(
                       decoration: const InputDecoration(
-                        labelText: 'Vehicle license',
+                        labelText: AppStrings.vehicleLicense,
                         border: OutlineInputBorder(),
                       ),
                       child: Row(
@@ -339,7 +350,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                             child: Text(
                               state.vehicleLicense != null
                                   ? state.vehicleLicense!.path.split('/').last
-                                  : 'Upload license photo',
+                                  : AppStrings.uploadLicensePhoto,
                               style: TextStyle(
                                 color: state.vehicleLicense != null
                                     ? AppColors.black
@@ -361,12 +372,13 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter you email',
+                      labelText: AppStrings.email,
+                      hintText: AppStrings.enterEmail,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'Required' : null,
+                    validator: (v) => v == null || v.isEmpty
+                        ? AppStrings.requiredField
+                        : null,
                   ),
                   const Gap(16),
 
@@ -375,12 +387,13 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
-                      labelText: 'Phone number',
-                      hintText: 'Enter phone number',
+                      labelText: AppStrings.phoneNumber,
+                      hintText: AppStrings.enterPhoneNumber,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'Required' : null,
+                    validator: (v) => v == null || v.isEmpty
+                        ? AppStrings.requiredField
+                        : null,
                   ),
                   const Gap(16),
 
@@ -388,12 +401,13 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                   TextFormField(
                     controller: _nidController,
                     decoration: const InputDecoration(
-                      labelText: 'ID number',
-                      hintText: 'Enter national ID number',
+                      labelText: AppStrings.idNumber,
+                      hintText: AppStrings.enterIdNumber,
                       border: OutlineInputBorder(),
                     ),
-                    validator: (v) =>
-                        v == null || v.isEmpty ? 'Required' : null,
+                    validator: (v) => v == null || v.isEmpty
+                        ? AppStrings.requiredField
+                        : null,
                   ),
                   const Gap(16),
 
@@ -402,7 +416,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                     onTap: () => _showImagePickerModal(context, false),
                     child: InputDecorator(
                       decoration: const InputDecoration(
-                        labelText: 'ID image',
+                        labelText: AppStrings.idImage,
                         border: OutlineInputBorder(),
                       ),
                       child: Row(
@@ -412,7 +426,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                             child: Text(
                               state.nidImage != null
                                   ? state.nidImage!.path.split('/').last
-                                  : 'Upload ID image',
+                                  : AppStrings.uploadIdImage,
                               style: TextStyle(
                                 color: state.nidImage != null
                                     ? AppColors.black
@@ -438,12 +452,13 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                           controller: _passwordController,
                           obscureText: true,
                           decoration: const InputDecoration(
-                            labelText: 'Password',
-                            hintText: 'Enter password',
+                            labelText: AppStrings.password,
+                            hintText: AppStrings.enterPassword,
                             border: OutlineInputBorder(),
                           ),
-                          validator: (v) =>
-                              v == null || v.isEmpty ? 'Required' : null,
+                          validator: (v) => v == null || v.isEmpty
+                              ? AppStrings.requiredField
+                              : null,
                         ),
                       ),
                       const Gap(16),
@@ -452,14 +467,15 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                           controller: _rePasswordController,
                           obscureText: true,
                           decoration: const InputDecoration(
-                            labelText: 'Confirm password',
-                            hintText: 'Confirm password',
+                            labelText: AppStrings.confirmPasswordTitle,
+                            hintText: AppStrings.confirmPasswordHint,
                             border: OutlineInputBorder(),
                           ),
                           validator: (v) {
-                            if (v == null || v.isEmpty) return 'Required';
+                            if (v == null || v.isEmpty)
+                              return AppStrings.requiredField;
                             if (v != _passwordController.text)
-                              return 'Mismatch';
+                              return AppStrings.mismatchError;
                             return null;
                           },
                         ),
@@ -472,7 +488,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                   Row(
                     children: [
                       Text(
-                        'Gender',
+                        AppStrings.genderLabel,
                         style: AppFontStyle.semiBold16(
                           context: context,
                         ).copyWith(fontWeight: FontWeight.bold),
@@ -490,7 +506,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                           }
                         },
                       ),
-                      const Text('Femail'),
+                      const Text(AppStrings.femailLabel),
                       const Gap(16),
                       Radio<String>(
                         value: 'male',
@@ -504,14 +520,14 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
                           }
                         },
                       ),
-                      const Text('Male'),
+                      const Text(AppStrings.maleLabel),
                     ],
                   ),
                   const Gap(32),
 
                   // Submit Button
                   CustomButton(
-                    text: 'Continue',
+                    text: AppStrings.continueButton,
                     isLoading: state.applyDriverState.isLoading,
                     onPressed: () => _submitApplication(context, state),
                   ),
