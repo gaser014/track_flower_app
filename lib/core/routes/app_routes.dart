@@ -3,14 +3,16 @@ import 'dart:io';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
-import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
-import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_success_page.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -235,6 +237,20 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.register,
+        name: Routes.register,
+        builder: (BuildContext context, GoRouterState state) {
+          return ApplyPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.applySuccess,
+        name: Routes.applySuccess,
+        builder: (BuildContext context, GoRouterState state) {
+          return ApplySuccessPage();
         },
       ),
       GoRoute(

@@ -14,6 +14,14 @@ class AuthModuleState extends Equatable {
   final BaseState<bool> rememberMeState;
   final BaseState<bool> showPasswordState;
   final BaseState<Map<String, String?>> savedCredentials;
+  final BaseState<VehicleResponseModel> vehiclesState;
+  final BaseState<List<CountryModel>> countriesState;
+  final BaseState<ApplyResponseModel> applyDriverState;
+  final CountryModel? selectedCountry;
+  final VehicleTypeModel? selectedVehicle;
+  final File? vehicleLicense;
+  final File? nidImage;
+  final String gender;
 
   const AuthModuleState({
     this.loginState = const BaseState.initial(),
@@ -29,6 +37,14 @@ class AuthModuleState extends Equatable {
     this.rememberMeState = const BaseState.success(false),
     this.showPasswordState = const BaseState.success(false),
     this.savedCredentials = const BaseState.initial(),
+    this.vehiclesState = const BaseState.initial(),
+    this.countriesState = const BaseState.initial(),
+    this.applyDriverState = const BaseState.initial(),
+    this.selectedCountry,
+    this.selectedVehicle,
+    this.vehicleLicense,
+    this.nidImage,
+    this.gender = 'male',
 
   });
 
@@ -47,6 +63,14 @@ class AuthModuleState extends Equatable {
     BaseState<bool>? showPasswordState,
     BaseState<dynamic>? logoutState,
     BaseState<Map<String, String?>>? savedCredentials,
+    BaseState<VehicleResponseModel>? vehiclesState,
+    BaseState<List<CountryModel>>? countriesState,
+    BaseState<ApplyResponseModel>? applyDriverState,
+    CountryModel? selectedCountry,
+    VehicleTypeModel? selectedVehicle,
+    File? vehicleLicense,
+    File? nidImage,
+    String? gender,
   }) {
     return AuthModuleState(
       loginState: loginState ?? this.loginState,
@@ -62,6 +86,14 @@ class AuthModuleState extends Equatable {
       rememberMeState: rememberMeState ?? this.rememberMeState,
       showPasswordState: showPasswordState ?? this.showPasswordState,
       savedCredentials: savedCredentials ?? this.savedCredentials,
+      vehiclesState: vehiclesState ?? this.vehiclesState,
+      countriesState: countriesState ?? this.countriesState,
+      applyDriverState: applyDriverState ?? this.applyDriverState,
+      selectedCountry: selectedCountry ?? this.selectedCountry,
+      selectedVehicle: selectedVehicle ?? this.selectedVehicle,
+      vehicleLicense: vehicleLicense ?? this.vehicleLicense,
+      nidImage: nidImage ?? this.nidImage,
+      gender: gender ?? this.gender,
 
     );
   }
@@ -81,6 +113,13 @@ class AuthModuleState extends Equatable {
 
     verifyCodeState,
     resetPasswordState,
-
+    vehiclesState,
+    countriesState,
+    applyDriverState,
+    selectedCountry,
+    selectedVehicle,
+    vehicleLicense,
+    nidImage,
+    gender,
   ];
 }

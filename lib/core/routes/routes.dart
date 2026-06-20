@@ -18,5 +18,6 @@ abstract class Routes {
   static const String onboardingDriver = "/onboarding-driver";
   static const String applyNow = "/apply-now";
   static const String applicationSubmitted = "/application-submitted";
+  static const String applySuccess = "/apply-success";
 
 }

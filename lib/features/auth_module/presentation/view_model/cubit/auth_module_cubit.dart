@@ -32,6 +32,9 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
   final SendForgetPasswordCodeUseCase _sendForgetPasswordCodeUseCase;
   final VerifyForgetPasswordCodeUseCase _verifyForgetPasswordCodeUseCase;
   final ResetPasswordUseCase _resetPasswordUseCase;
+  final GetVehiclesUseCase getVehiclesUseCase;
+  final GetCountriesUseCase getCountriesUseCase;
+  final ApplyDriverUseCase applyDriverUseCase;
 
   AuthModuleCubit(
     this._loginDriverUseCase,
@@ -43,8 +46,11 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
       this._sendForgetPasswordCodeUseCase,
       this._verifyForgetPasswordCodeUseCase,
       this._resetPasswordUseCase,
+      this.getVehiclesUseCase,
+      this.getCountriesUseCase,
+      this.applyDriverUseCase,
 
-  ) : super(const AuthModuleState());
+      ) : super(const AuthModuleState());
 
   void doIndented(AuthModuleEvent event) {
     switch (event) {
@@ -68,6 +74,20 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
         _setRememberMe(event.rememberMe);
       case ShowPasswordEvent():
         _setShowPassword(event.showPassword);
+      case GetInitialDataEvent():
+        _getInitialData();
+      case ApplyDriverEvent():
+        _applyDriver(event.params);
+      case ChangeCountryEvent():
+        emit(state.copyWith(selectedCountry: event.country));
+      case ChangeVehicleEvent():
+        emit(state.copyWith(selectedVehicle: event.vehicle));
+      case PickVehicleLicenseEvent():
+        emit(state.copyWith(vehicleLicense: event.file));
+      case PickNidImageEvent():
+        emit(state.copyWith(nidImage: event.file));
+      case ChangeGenderEvent():
+        emit(state.copyWith(gender: event.gender));
 
     }
   }
@@ -213,6 +233,66 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
 
   void _setShowPassword(bool showPassword) {
     emit(state.copyWith(showPasswordState: BaseState.success(showPassword)));
+  }
+  //apply
+
+  Future<void> _getInitialData() async {
+    emit(
+      state.copyWith(
+        vehiclesState: const BaseState.loading(),
+        countriesState: const BaseState.loading(),
+      ),
+    );
+
+    final countriesResult = await getCountriesUseCase.call(const NoParams());
+    countriesResult.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            countriesState: BaseState.success(data),
+            selectedCountry: data?.isNotEmpty == true
+                ? data!.firstWhere(
+                  (c) => c.name == 'Egypt',
+              orElse: () => data.first,
+            )
+                : null,
+          ),
+        );
+      },
+      error: (error) {
+        emit(state.copyWith(countriesState: BaseState.error(error)));
+      },
+    );
+
+    final vehiclesResult = await getVehiclesUseCase.call(const NoParams());
+    vehiclesResult.when(
+      success: (data) {
+        emit(
+          state.copyWith(
+            vehiclesState: BaseState.success(data),
+            selectedVehicle: data?.vehicles?.isNotEmpty == true
+                ? data!.vehicles!.first
+                : null,
+          ),
+        );
+      },
+      error: (error) {
+        emit(state.copyWith(vehiclesState: BaseState.error(error)));
+      },
+    );
+  }
+
+  Future<void> _applyDriver(ApplyDriverParams params) async {
+    emit(state.copyWith(applyDriverState: const BaseState.loading()));
+    final result = await applyDriverUseCase.call(params);
+    result.when(
+      success: (data) {
+        emit(state.copyWith(applyDriverState: BaseState.success(data)));
+      },
+      error: (error) {
+        emit(state.copyWith(applyDriverState: BaseState.error(error)));
+      },
+    );
   }
 }
 

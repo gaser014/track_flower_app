@@ -23,6 +23,26 @@ abstract class AuthModuleApiClient {
     @Field() String password,
   );
 
+  @GET(EndPoints.vehiclesEndpoint)
+  Future<VehicleResponseModel> getVehicles();
+
+  @POST(EndPoints.applyDriverEndpoint)
+  @MultiPart()
+  Future<ApplyResponseModel> applyDriver({
+    @Part(name: "country") required String country,
+    @Part(name: "firstName") required String firstName,
+    @Part(name: "lastName") required String lastName,
+    @Part(name: "vehicleType") required String vehicleType,
+    @Part(name: "vehicleNumber") required String vehicleNumber,
+    @Part(name: "vehicleLicense") required File vehicleLicense,
+    @Part(name: "NID") required String nid,
+    @Part(name: "NIDImg") required File nidImg,
+    @Part(name: "email") required String email,
+    @Part(name: "password") required String password,
+    @Part(name: "rePassword") required String rePassword,
+    @Part(name: "gender") required String gender,
+    @Part(name: "phone") required String phone,
+  });
   @POST(EndPoints.logoutDriver)
   Future<void> logoutDriver();
 

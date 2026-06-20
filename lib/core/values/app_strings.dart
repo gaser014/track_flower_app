@@ -138,6 +138,43 @@ class AppStrings {
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
 
+  // Apply Page
+  static const String photoLibrary = "Photo Library";
+  static const String uploadVehicleLicenseError =
+      "Please upload vehicle license";
+  static const String uploadNidImageError = "Please upload national ID image";
+  static const String apply = "Apply";
+  static const String applicationSubmittedSuccess =
+      "Application submitted successfully!";
+  static const String applicationSubmittedTitle =
+      "Your application has been\nsubmitted!";
+  static const String applicationSubmittedDesc =
+      "Thank you for providing your application, we will review your application and will get back to you soon.";
+  static const String welcomeExclamation = "Welcome!!";
+  static const String joinOurTeam =
+      "You want to be a delivery man?\nJoin our team";
+  static const String country = "Country";
+  static const String firstLegalName = "First legal name";
+  static const String enterFirstLegalName = "Enter first legal name";
+  static const String secondLegalName = "Second legal name";
+  static const String enterSecondLegalName = "Enter second legal name";
+  static const String vehicleType = "Vehicle type";
+  static const String vehicleNumber = "Vehicle number";
+  static const String enterVehicleNumber = "Enter vehicle number";
+  static const String vehicleLicense = "Vehicle license";
+  static const String uploadLicensePhoto = "Upload license photo";
+  static const String idNumber = "ID number";
+  static const String enterIdNumber = "Enter national ID number";
+  static const String idImage = "ID image";
+  static const String uploadIdImage = "Upload ID image";
+  static const String enterPassword = "Enter password";
+  static const String confirmPasswordTitle = "Confirm password";
+  static const String confirmPasswordHint = "Confirm password";
+  static const String femailLabel = "Femail";
+  static const String continueButton = "Continue";
+  static const String requiredField = "Required";
+  static const String mismatchError = "Mismatch";
+
   // Product Details
   static const String inStock = "In stock";
   static const String description = "Description";
