@@ -24,14 +24,24 @@ import '../../features/auth_module/api/datasources/auth_module_local_data_source
     as _i1034;
 import '../../features/auth_module/api/datasources/auth_module_remote_data_source_impl.dart'
     as _i428;
+import '../../features/auth_module/data/datasources/auth_module_datasource.dart'
+    as _i284;
 import '../../features/auth_module/data/datasources/auth_module_local_data_source_contract.dart'
     as _i435;
 import '../../features/auth_module/data/datasources/auth_module_remote_data_source_contract.dart'
     as _i72;
+import '../../features/auth_module/data/repositories/auth_module_repository.dart'
+    as _i529;
 import '../../features/auth_module/data/repositories/auth_module_repository_impl.dart'
     as _i848;
 import '../../features/auth_module/domain/repositories/auth_module_repository.dart'
     as _i1015;
+import '../../features/auth_module/domain/use_cases/apply_driver_use_case.dart'
+    as _i957;
+import '../../features/auth_module/domain/use_cases/get_countries_use_case.dart'
+    as _i324;
+import '../../features/auth_module/domain/use_cases/get_vehicles_use_case.dart'
+    as _i153;
 import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
     as _i575;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
@@ -79,7 +89,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
-    gh.factory<_i575.AuthModuleCubit>(() => _i575.AuthModuleCubit());
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -87,9 +96,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.CancelToken>(() => dioModule.cancelToken());
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
-    );
-    gh.lazySingleton<_i419.AuthModuleApiClient>(
-      () => _i419.AuthModuleApiClient(),
     );
     gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
     gh.factory<_i72.AuthModuleRemoteDataSourceContract>(
@@ -100,6 +106,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1015.AuthModuleRepository>(
       () => _i848.AuthModuleRepositoryImpl(),
+    );
+    gh.lazySingleton<_i419.AuthModuleApiClient>(
+      () => _i419.AuthModuleApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
@@ -116,6 +125,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
+    gh.factory<_i284.AuthModuleDatasource>(
+      () => _i284.AuthModuleDatasourceImpl(gh<_i419.AuthModuleApiClient>()),
+    );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
@@ -127,6 +139,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
       ),
+    );
+    gh.factory<_i529.AuthModuleRepository>(
+      () => _i529.AuthModuleRepositoryImpl(gh<_i284.AuthModuleDatasource>()),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
       () => _i164.MainProfileRepositoryImpl(
@@ -148,9 +163,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i71.SaveUserUseCase>(
       () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
+    gh.factory<_i957.ApplyDriverUseCase>(
+      () => _i957.ApplyDriverUseCase(gh<_i529.AuthModuleRepository>()),
+    );
+    gh.factory<_i324.GetCountriesUseCase>(
+      () => _i324.GetCountriesUseCase(gh<_i529.AuthModuleRepository>()),
+    );
+    gh.factory<_i153.GetVehiclesUseCase>(
+      () => _i153.GetVehiclesUseCase(gh<_i529.AuthModuleRepository>()),
+    );
     gh.factory<_i818.GetMainProfileUseCase>(
       () => _i818.GetMainProfileUseCase(
         gh<_i488.MainProfileRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i575.AuthModuleCubit>(
+      () => _i575.AuthModuleCubit(
+        gh<_i153.GetVehiclesUseCase>(),
+        gh<_i324.GetCountriesUseCase>(),
+        gh<_i957.ApplyDriverUseCase>(),
       ),
     );
     gh.factory<_i753.LoginCubit>(
