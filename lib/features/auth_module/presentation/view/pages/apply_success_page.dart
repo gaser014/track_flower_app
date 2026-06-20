@@ -34,7 +34,7 @@ class ApplySuccessPage extends StatelessWidget {
                 children: [
                   const Spacer(),
                   SvgPicture.asset(
-                    AppAssets.iconsCheckCircle,
+                    AppAssets.checkCircle,
                     width: 150,
                     height: 150,
                   ),
