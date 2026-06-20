@@ -1,1 +1,1 @@
-abstract class AuthModuleRemoteDataSourceContract {}
+abstract interface class AuthModuleRemoteDataSourceContract {}
