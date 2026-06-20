@@ -139,6 +139,10 @@ class AppStrings {
   static const String apply = "Apply";
   static const String applicationSubmittedSuccess =
       "Application submitted successfully!";
+  static const String applicationSubmittedTitle =
+      "Your application has been\nsubmitted!";
+  static const String applicationSubmittedDesc =
+      "Thank you for providing your application, we will review your application and will get back to you soon.";
   static const String welcomeExclamation = "Welcome!!";
   static const String joinOurTeam =
       "You want to be a delivery man?\nJoin our team";

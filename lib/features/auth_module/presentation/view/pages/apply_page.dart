@@ -2,15 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
-import 'package:track_flowers_app/core/values/app_colors.dart';
-import 'package:track_flowers_app/core/values/app_font_style.dart';
+import 'package:track_flowers_app/core/routes/routes.dart';
+
 import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/core/widgets/custom_button.dart';
-import 'package:track_flowers_app/features/auth_module/data/models/country_model.dart';
-import 'package:track_flowers_app/features/auth_module/data/models/vehicle_type_model.dart';
+
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_driver_params.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/apply_header_section.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/apply_personal_info_section.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/apply_vehicle_info_section.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/apply_id_info_section.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/apply_password_section.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/widgets/apply_gender_section.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_events.dart';
 import 'package:gap/gap.dart';
@@ -190,6 +196,7 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
             initial: () {},
             loading: () {},
             success: (data) {
+              context.go(Routes.applySuccess);
               toastification.show(
                 context: context,
                 title: const Text(AppStrings.success),
@@ -216,9 +223,6 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final countries = state.countriesState.data ?? [];
-          final vehicles = state.vehiclesState.data?.vehicles ?? [];
-
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Form(
@@ -226,303 +230,28 @@ class _ApplyPageBodyState extends State<_ApplyPageBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    AppStrings.welcomeExclamation,
-                    style: AppFontStyle.bold24(context: context),
+                  const ApplyHeaderSection(),
+                  ApplyPersonalInfoSection(
+                    firstNameController: _firstNameController,
+                    lastNameController: _lastNameController,
                   ),
-                  const Gap(8),
-                  Text(
-                    AppStrings.joinOurTeam,
-                    style: AppFontStyle.medium16(
-                      context: context,
-                    ).copyWith(color: AppColors.gray7D),
+                  ApplyVehicleInfoSection(
+                    vehicleNumberController: _vehicleNumberController,
+                    onVehicleLicenseTapped: () =>
+                        _showImagePickerModal(context, true),
                   ),
-                  const Gap(24),
-
-                  // Country Dropdown
-                  DropdownButtonFormField<CountryModel>(
-                    isExpanded: true,
-                    initialValue: state.selectedCountry,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.country,
-                      border: OutlineInputBorder(),
-                    ),
-                    items: countries.map((country) {
-                      return DropdownMenuItem<CountryModel>(
-                        value: country,
-                        child: Text(
-                          '${country.flag ?? ""} ${country.name ?? ""}',
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) {
-                        context.read<AuthModuleCubit>().doIndented(
-                          ChangeCountryEvent(val),
-                        );
-                      }
-                    },
+                  ApplyIdInfoSection(
+                    emailController: _emailController,
+                    phoneController: _phoneController,
+                    nidController: _nidController,
+                    onNidImageTapped: () =>
+                        _showImagePickerModal(context, false),
                   ),
-                  const Gap(16),
-
-                  // First & Second Legal Name
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.firstLegalName,
-                      hintText: AppStrings.enterFirstLegalName,
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (v) => v == null || v.isEmpty
-                        ? AppStrings.requiredField
-                        : null,
+                  ApplyPasswordSection(
+                    passwordController: _passwordController,
+                    rePasswordController: _rePasswordController,
                   ),
-                  const Gap(16),
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.secondLegalName,
-                      hintText: AppStrings.enterSecondLegalName,
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (v) => v == null || v.isEmpty
-                        ? AppStrings.requiredField
-                        : null,
-                  ),
-                  const Gap(16),
-
-                  // Vehicle Type
-                  DropdownButtonFormField<VehicleTypeModel>(
-                    isExpanded: true,
-                    initialValue: state.selectedVehicle,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.vehicleType,
-                      border: OutlineInputBorder(),
-                    ),
-                    items: vehicles.map((vehicle) {
-                      return DropdownMenuItem<VehicleTypeModel>(
-                        value: vehicle,
-                        child: Text(
-                          vehicle.type ?? "",
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) {
-                        context.read<AuthModuleCubit>().doIndented(
-                          ChangeVehicleEvent(val),
-                        );
-                      }
-                    },
-                    validator: (v) =>
-                        v == null ? AppStrings.requiredField : null,
-                  ),
-                  const Gap(16),
-
-                  // Vehicle number
-                  TextFormField(
-                    controller: _vehicleNumberController,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.vehicleNumber,
-                      hintText: AppStrings.enterVehicleNumber,
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (v) => v == null || v.isEmpty
-                        ? AppStrings.requiredField
-                        : null,
-                  ),
-                  const Gap(16),
-
-                  // Vehicle license file picker
-                  InkWell(
-                    onTap: () => _showImagePickerModal(context, true),
-                    child: InputDecorator(
-                      decoration: const InputDecoration(
-                        labelText: AppStrings.vehicleLicense,
-                        border: OutlineInputBorder(),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              state.vehicleLicense != null
-                                  ? state.vehicleLicense!.path.split('/').last
-                                  : AppStrings.uploadLicensePhoto,
-                              style: TextStyle(
-                                color: state.vehicleLicense != null
-                                    ? AppColors.black
-                                    : AppColors.grayA6,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const Icon(Icons.upload_outlined),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Gap(16),
-
-                  // Email
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.email,
-                      hintText: AppStrings.enterEmail,
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (v) => v == null || v.isEmpty
-                        ? AppStrings.requiredField
-                        : null,
-                  ),
-                  const Gap(16),
-
-                  // Phone Number
-                  TextFormField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.phoneNumber,
-                      hintText: AppStrings.enterPhoneNumber,
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (v) => v == null || v.isEmpty
-                        ? AppStrings.requiredField
-                        : null,
-                  ),
-                  const Gap(16),
-
-                  // ID number
-                  TextFormField(
-                    controller: _nidController,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.idNumber,
-                      hintText: AppStrings.enterIdNumber,
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (v) => v == null || v.isEmpty
-                        ? AppStrings.requiredField
-                        : null,
-                  ),
-                  const Gap(16),
-
-                  // ID image file picker
-                  InkWell(
-                    onTap: () => _showImagePickerModal(context, false),
-                    child: InputDecorator(
-                      decoration: const InputDecoration(
-                        labelText: AppStrings.idImage,
-                        border: OutlineInputBorder(),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              state.nidImage != null
-                                  ? state.nidImage!.path.split('/').last
-                                  : AppStrings.uploadIdImage,
-                              style: TextStyle(
-                                color: state.nidImage != null
-                                    ? AppColors.black
-                                    : AppColors.grayA6,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const Icon(Icons.upload_outlined),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Gap(16),
-
-                  // Passwords
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: AppStrings.password,
-                            hintText: AppStrings.enterPassword,
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (v) => v == null || v.isEmpty
-                              ? AppStrings.requiredField
-                              : null,
-                        ),
-                      ),
-                      const Gap(16),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _rePasswordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            labelText: AppStrings.confirmPasswordTitle,
-                            hintText: AppStrings.confirmPasswordHint,
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (v) {
-                            if (v == null || v.isEmpty)
-                              return AppStrings.requiredField;
-                            if (v != _passwordController.text)
-                              return AppStrings.mismatchError;
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Gap(24),
-
-                  // Gender Radio
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.genderLabel,
-                        style: AppFontStyle.semiBold16(
-                          context: context,
-                        ).copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const Gap(24),
-                      Radio<String>(
-                        value: 'female',
-                        groupValue: state.gender,
-                        activeColor: AppColors.primerColor,
-                        onChanged: (val) {
-                          if (val != null) {
-                            context.read<AuthModuleCubit>().doIndented(
-                              ChangeGenderEvent(val),
-                            );
-                          }
-                        },
-                      ),
-                      const Text(AppStrings.femailLabel),
-                      const Gap(16),
-                      Radio<String>(
-                        value: 'male',
-                        groupValue: state.gender,
-                        activeColor: AppColors.primerColor,
-                        onChanged: (val) {
-                          if (val != null) {
-                            context.read<AuthModuleCubit>().doIndented(
-                              ChangeGenderEvent(val),
-                            );
-                          }
-                        },
-                      ),
-                      const Text(AppStrings.maleLabel),
-                    ],
-                  ),
+                  const ApplyGenderSection(),
                   const Gap(32),
 
                   // Submit Button

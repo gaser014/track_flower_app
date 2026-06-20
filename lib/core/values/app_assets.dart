@@ -83,4 +83,6 @@ class AppAssets {
   static const String logoTextSplash = "assets/images/flowery-text.png";
   static const String splashLogo = "assets/images/flower.png";
   //!=======
+  
+  static const String bgImage = "assets/images/bg.png";
 }
