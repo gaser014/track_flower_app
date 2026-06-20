@@ -6,8 +6,8 @@ import 'package:retrofit/retrofit.dart';
 
 part 'auth_module_api_client.g.dart';
 
-@Injectable()
-@RestApi()
+  @lazySingleton
+  @RestApi(baseUrl: EndPoints.baseUrl)
 abstract class AuthModuleApiClient {
   @factoryMethod
   factory AuthModuleApiClient(Dio dio) = _AuthModuleApiClient;
