@@ -3,7 +3,6 @@ abstract class EndPoints {
   static const String loginDriver = "/drivers/signin";
 
   static const String login = "/auth/signin";
-  static const String loginDriver = "/drivers/signin";
   static const String register = "/auth/signup";
   static const String forgetPasswordEndpoint = "/auth/forgotPassword";
   static const String verifyResetEndpoint = "/auth/verifyResetCode";

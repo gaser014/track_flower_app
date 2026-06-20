@@ -7,7 +7,6 @@ import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_dr
 
 sealed class AuthModuleEvent {}
 
-
 class LoginEvent extends AuthModuleEvent {
   final DriverLoginRequestEntity params;
   LoginEvent({required this.params});
@@ -25,7 +24,6 @@ class ShowPasswordEvent extends AuthModuleEvent {
 
 class LogoutEvent extends AuthModuleEvent {}
 
-
 // ─── Forget Password Events ───────────────────────────────────────────────────
 
 class SendCodeEvent extends AuthModuleEvent {
@@ -41,18 +39,6 @@ class VerifyCodeEvent extends AuthModuleEvent {
 class ResetPasswordEvent extends AuthModuleEvent {
   final ForgetPasswordParams params;
   ResetPasswordEvent({required this.params});
-}
-
-class LogoutEvent extends AuthModuleEvent {}
-
-class RememberMeEvent extends AuthModuleEvent {
-  final bool rememberMe;
-  RememberMeEvent({required this.rememberMe});
-}
-
-class ShowPasswordEvent extends AuthModuleEvent {
-  final bool showPassword;
-  ShowPasswordEvent({required this.showPassword});
 }
 
 class GetInitialDataEvent extends AuthModuleEvent {}

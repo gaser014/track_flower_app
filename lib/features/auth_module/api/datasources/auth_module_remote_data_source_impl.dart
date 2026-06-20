@@ -29,29 +29,30 @@ class AuthModuleRemoteDataSourceImpl
     DriverLoginRequestEntity params,
   ) async {
     return await executeApi(() async {
-      final response = await _apiClient.loginDriver(params.email, params.password);
-      return DriverLoginResponseModel.fromJson(response as Map<String, dynamic>);
+      final response = await _apiClient.loginDriver(
+        params.email,
+        params.password,
+      );
+      return DriverLoginResponseModel.fromJson(
+        response as Map<String, dynamic>,
+      );
     });
   }
 
   @override
   Future<Result<ForgetPasswordResponse>> sendForgetPasswordCode(
-      ForgetPasswordRequest request,
-      ) =>
-      executeApi(() => _apiClient.sendForgetPasswordCode(request));
+    ForgetPasswordRequest request,
+  ) => executeApi(() => _apiClient.sendForgetPasswordCode(request));
 
   @override
   Future<Result<ForgetPasswordResponse>> verifyForgetPasswordCode(
-      VerifyCodeRequest request,
-      ) =>
-      executeApi(() => _apiClient.verifyForgetPasswordCode(request));
+    VerifyCodeRequest request,
+  ) => executeApi(() => _apiClient.verifyForgetPasswordCode(request));
 
   @override
   Future<Result<ResetPasswordResponse>> resetPassword(
-      ResetPasswordRequest request,
-      ) =>
-      executeApi(() => _apiClient.resetPassword(request));
-
+    ResetPasswordRequest request,
+  ) => executeApi(() => _apiClient.resetPassword(request));
 
   @override
   Future<Result<void>> logoutDriver() async {

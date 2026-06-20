@@ -9,18 +9,20 @@ import 'package:track_flowers_app/features/auth_module/data/models/verify_code_r
 import 'package:track_flowers_app/config/base_response/result.dart';
 
 abstract interface class AuthModuleRemoteDataSourceContract {
-  Future<Result<DriverLoginResponseModel>> loginDriver(DriverLoginRequestEntity params);
+  Future<Result<DriverLoginResponseModel>> loginDriver(
+    DriverLoginRequestEntity params,
+  );
   Future<Result<ForgetPasswordResponse>> sendForgetPasswordCode(
-      ForgetPasswordRequest request,
-      );
+    ForgetPasswordRequest request,
+  );
 
   Future<Result<ForgetPasswordResponse>> verifyForgetPasswordCode(
-      VerifyCodeRequest request,
-      );
+    VerifyCodeRequest request,
+  );
 
   Future<Result<ResetPasswordResponse>> resetPassword(
-      ResetPasswordRequest request,
-      );
+    ResetPasswordRequest request,
+  );
   Future<Result<void>> logoutDriver();
 
 }

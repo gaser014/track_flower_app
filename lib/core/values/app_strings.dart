@@ -124,10 +124,10 @@ class AppStrings {
   static const String signUp = "Sign up";
   static const String loginSuccessfully = "Login successfully";
   static const String loginError = "Invalid Phone Number or Password";
-    static const String driverLoginSuccessfully = "Login successfully";
-    static const String driverSavedEmail = "Driver email saved successfully";
-    static const String driverSavedPassword = "Driver password saved successfully";
-
+  static const String driverLoginSuccessfully = "Login successfully";
+  static const String driverSavedEmail = "Driver email saved successfully";
+  static const String driverSavedPassword =
+      "Driver password saved successfully";
 
   // Register
   static const String registerTitle = "Sign up";
@@ -171,7 +171,6 @@ class AppStrings {
   static const String confirmPasswordTitle = "Confirm password";
   static const String confirmPasswordHint = "Confirm password";
   static const String femailLabel = "Femail";
-  static const String continueButton = "Continue";
   static const String requiredField = "Required";
   static const String mismatchError = "Mismatch";
 
@@ -245,7 +244,6 @@ class AppStrings {
   static const String user = "user";
   static const String driverLoginError = "Invalid email or password";
 
-
   // Home
   static const String categories = "Categories";
   static const String bestSeller = "Best seller";
@@ -293,13 +291,7 @@ class AppStrings {
   static const String passwordResetSuccess =
       "Password reset successfully. Please login.";
   // Driver Auth
-  static const String driverToken = "driver_token";
-  static const String driverSavedEmail = "driver_saved_email";
-  static const String driverSavedPassword = "driver_saved_password";
-  static const String welcomeToFlowery = "Welcome to Flowery";
-  static const String driverLoginSuccessfully = "Login successfully";
-  static const String driverLoginError = "Invalid email or password";
+
   static const String driverLogoutSuccessfully = "Logged out successfully";
   static const String driverLogoutError = "Failed to logout, please try again";
-
 }

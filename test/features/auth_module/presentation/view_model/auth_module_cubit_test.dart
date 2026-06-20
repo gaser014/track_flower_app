@@ -235,9 +235,7 @@ void main() {
       build: () {
         when(
           mockLogoutDriverUseCase(const NoParams()),
-        ).thenAnswer(
-          (_) async => Error(exception: Exception('Storage error')),
-        );
+        ).thenAnswer((_) async => Error(exception: Exception('Storage error')));
         return cubit;
       },
       act: (c) => c.doIndented(LogoutEvent()),

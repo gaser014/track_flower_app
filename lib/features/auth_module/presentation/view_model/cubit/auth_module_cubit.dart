@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,9 +6,17 @@ import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/base_state/base_cubit.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
+import 'package:track_flowers_app/features/auth_module/data/models/apply_response_model.dart';
+import 'package:track_flowers_app/features/auth_module/data/models/country_model.dart';
+import 'package:track_flowers_app/features/auth_module/data/models/vehicle_type_model.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_driver_params.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_countries_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_vehicles_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart';
@@ -22,7 +31,7 @@ import 'package:track_flowers_app/features/auth_module/domain/use_cases/forget_p
 part 'auth_module_states.dart';
 
 @injectable
-class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
+class AuthModuleCubit extends BaseCubit<AuthModuleState, BaseEvent> {
   final LoginDriverUseCase _loginDriverUseCase;
   final LogoutDriverUseCase _logoutDriverUseCase;
   final GetSavedCredentialsUseCase _getSavedCredentialsUseCase;
@@ -32,9 +41,9 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
   final SendForgetPasswordCodeUseCase _sendForgetPasswordCodeUseCase;
   final VerifyForgetPasswordCodeUseCase _verifyForgetPasswordCodeUseCase;
   final ResetPasswordUseCase _resetPasswordUseCase;
-  final GetVehiclesUseCase getVehiclesUseCase;
-  final GetCountriesUseCase getCountriesUseCase;
-  final ApplyDriverUseCase applyDriverUseCase;
+  final GetVehiclesUseCase _getVehiclesUseCase;
+  final GetCountriesUseCase _getCountriesUseCase;
+  final ApplyDriverUseCase _applyDriverUseCase;
 
   AuthModuleCubit(
     this._loginDriverUseCase,
@@ -43,14 +52,13 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
     this._saveDriverTokenUseCase,
     this._saveDriverCredentialsUseCase,
     this._deleteDriverCredentialsUseCase,
-      this._sendForgetPasswordCodeUseCase,
-      this._verifyForgetPasswordCodeUseCase,
-      this._resetPasswordUseCase,
-      this.getVehiclesUseCase,
-      this.getCountriesUseCase,
-      this.applyDriverUseCase,
-
-      ) : super(const AuthModuleState());
+    this._sendForgetPasswordCodeUseCase,
+    this._verifyForgetPasswordCodeUseCase,
+    this._resetPasswordUseCase,
+    this._getVehiclesUseCase,
+    this._getCountriesUseCase,
+    this._applyDriverUseCase,
+  ) : super(AuthModuleState());
 
   void doIndented(AuthModuleEvent event) {
     switch (event) {
@@ -68,12 +76,7 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
         _verifyCode(event.params);
       case ResetPasswordEvent():
         _resetPassword(event.params);
-      case LogoutEvent():
-        _logout();
-      case RememberMeEvent():
-        _setRememberMe(event.rememberMe);
-      case ShowPasswordEvent():
-        _setShowPassword(event.showPassword);
+
       case GetInitialDataEvent():
         _getInitialData();
       case ApplyDriverEvent():
@@ -88,7 +91,6 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
         emit(state.copyWith(nidImage: event.file));
       case ChangeGenderEvent():
         emit(state.copyWith(gender: event.gender));
-
     }
   }
 
@@ -203,37 +205,8 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
       },
     );
   }
-// logout
+  // logout
 
-  Future<void> _logout() async {
-    emit(state.copyWith(logoutState: const BaseState.loading()));
-
-    // Call remote logout endpoint
-    final remoteResult = await _repository.logoutDriver();
-
-    // Always clear local token regardless of remote result
-    await _repository.deleteDriverToken();
-
-    remoteResult.when(
-      success: (_) {
-        emit(state.copyWith(logoutState: const BaseState.success(null)));
-      },
-      error: (_) {
-        // Token already cleared locally — treat as soft success
-        emit(state.copyWith(logoutState: const BaseState.success(null)));
-      },
-    );
-  }
-
-  // ── UI state helpers ──────────────────────────────────────────────────────
-
-  void _setRememberMe(bool rememberMe) {
-    emit(state.copyWith(rememberMeState: BaseState.success(rememberMe)));
-  }
-
-  void _setShowPassword(bool showPassword) {
-    emit(state.copyWith(showPasswordState: BaseState.success(showPassword)));
-  }
   //apply
 
   Future<void> _getInitialData() async {
@@ -244,7 +217,7 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
       ),
     );
 
-    final countriesResult = await getCountriesUseCase.call(const NoParams());
+    final countriesResult = await _getCountriesUseCase.call(const NoParams());
     countriesResult.when(
       success: (data) {
         emit(
@@ -252,9 +225,9 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
             countriesState: BaseState.success(data),
             selectedCountry: data?.isNotEmpty == true
                 ? data!.firstWhere(
-                  (c) => c.name == 'Egypt',
-              orElse: () => data.first,
-            )
+                    (c) => c.name == 'Egypt',
+                    orElse: () => data.first,
+                  )
                 : null,
           ),
         );
@@ -264,7 +237,7 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
       },
     );
 
-    final vehiclesResult = await getVehiclesUseCase.call(const NoParams());
+    final vehiclesResult = await _getVehiclesUseCase.call(const NoParams());
     vehiclesResult.when(
       success: (data) {
         emit(
@@ -284,7 +257,7 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
 
   Future<void> _applyDriver(ApplyDriverParams params) async {
     emit(state.copyWith(applyDriverState: const BaseState.loading()));
-    final result = await applyDriverUseCase.call(params);
+    final result = await _applyDriverUseCase.call(params);
     result.when(
       success: (data) {
         emit(state.copyWith(applyDriverState: BaseState.success(data)));
@@ -295,4 +268,3 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
     );
   }
 }
-

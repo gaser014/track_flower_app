@@ -209,15 +209,6 @@ abstract class AppRoutes {
     initialLocation: Routes.onboardingDriver,
     routes: [
       GoRoute(
-        path: Routes.splash,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const MainView(),
-          animationType: AnimationType.fade,
-        ),
-      ),
-
-      GoRoute(
         path: Routes.applicationSubmitted,
         name: Routes.applicationSubmitted,
         builder: (BuildContext context, GoRouterState state) {
@@ -273,13 +264,6 @@ abstract class AppRoutes {
         name: Routes.loginDriver,
         builder: (BuildContext context, GoRouterState state) {
           return const AuthModulePage();
-        },
-      ),
-      GoRoute(
-        path: Routes.home,
-        name: Routes.home,
-        builder: (BuildContext context, GoRouterState state) {
-          return const MainView();
         },
       ),
     ],

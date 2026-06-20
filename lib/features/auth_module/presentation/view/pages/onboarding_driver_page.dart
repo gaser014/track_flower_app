@@ -72,7 +72,7 @@ class _OnboardingDriverPageState extends State<OnboardingDriverPage>
                 opacity: _fadeAnimation,
                 child: OnboardingActionButtons(
                   onLoginTapped: () => context.push(Routes.loginDriver),
-                  onApplyTapped: () => context.push(Routes.applyNow),
+                  onApplyTapped: () => context.push(Routes.register),
                 ),
               ),
             ],
