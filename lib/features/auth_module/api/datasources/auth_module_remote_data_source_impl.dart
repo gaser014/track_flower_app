@@ -12,6 +12,10 @@ import 'package:track_flowers_app/features/auth_module/data/models/forget_passwo
 import 'package:track_flowers_app/features/auth_module/data/models/forget_password_response_models.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/reset_password_request.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/verify_code_request.dart';
+import 'package:injectable/injectable.dart';
+import 'package:track_flowers_app/config/api/api_execute.dart';
+import 'package:track_flowers_app/config/base_response/result.dart';
+import 'package:track_flowers_app/features/auth_module/api/api_client/auth_module_api_client.dart';
 
 @Injectable(as: AuthModuleRemoteDataSourceContract)
 class AuthModuleRemoteDataSourceImpl
@@ -48,4 +52,9 @@ class AuthModuleRemoteDataSourceImpl
       ) =>
       executeApi(() => _apiClient.resetPassword(request));
 
+
+  @override
+  Future<Result<void>> logoutDriver() async {
+    return executeApi(() => _apiClient.logoutDriver());
+  }
 }

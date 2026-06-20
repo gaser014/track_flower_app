@@ -135,4 +135,73 @@ class AuthModuleRepositoryImpl implements AuthModuleRepository {
       error: (e) => Error<void>(exception: e),
     );
   }
+  //logout
+
+  // ── Remote ────────────────────────────────────────────────────────────────
+
+  @override
+  Future<Result<void>> logoutDriver() async {
+    final result = await _remote.logoutDriver();
+    return result.when(
+      success: (_) => const Success(data: null),
+      error: (e) => Error(exception: e),
+    );
+  }
+
+  // ── Local — token ─────────────────────────────────────────────────────────
+
+  @override
+  Future<Result<void>> saveDriverToken(String token) async {
+    try {
+      await _local.saveDriverToken(token);
+      return const Success(data: null);
+    } on Exception catch (e) {
+      return Error(exception: e);
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteDriverToken() async {
+    try {
+      await _local.deleteDriverToken();
+      return const Success(data: null);
+    } on Exception catch (e) {
+      return Error(exception: e);
+    }
+  }
+
+  // ── Local — credentials ───────────────────────────────────────────────────
+
+  @override
+  Future<Result<void>> saveCredentials({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _local.saveCredentials(email: email, password: password);
+      return const Success(data: null);
+    } on Exception catch (e) {
+      return Error(exception: e);
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteCredentials() async {
+    try {
+      await _local.deleteCredentials();
+      return const Success(data: null);
+    } on Exception catch (e) {
+      return Error(exception: e);
+    }
+  }
+
+  @override
+  Future<Result<Map<String, String?>>> getSavedCredentials() async {
+    try {
+      final credentials = await _local.getSavedCredentials();
+      return Success(data: credentials);
+    } on Exception catch (e) {
+      return Error(exception: e);
+    }
+  }
 }

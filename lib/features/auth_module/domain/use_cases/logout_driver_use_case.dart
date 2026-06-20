@@ -10,6 +10,6 @@ class LogoutDriverUseCase extends UseCase<void, NoParams> {
 
   @override
   Future<Result<void>> call(NoParams params) async {
-    return await _repository.deleteDriverToken();
+    return await _repository.logoutDriver();
   }
 }

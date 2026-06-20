@@ -62,6 +62,12 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
         _verifyCode(event.params);
       case ResetPasswordEvent():
         _resetPassword(event.params);
+      case LogoutEvent():
+        _logout();
+      case RememberMeEvent():
+        _setRememberMe(event.rememberMe);
+      case ShowPasswordEvent():
+        _setShowPassword(event.showPassword);
 
     }
   }
@@ -177,6 +183,36 @@ class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
       },
     );
   }
+// logout
 
+  Future<void> _logout() async {
+    emit(state.copyWith(logoutState: const BaseState.loading()));
+
+    // Call remote logout endpoint
+    final remoteResult = await _repository.logoutDriver();
+
+    // Always clear local token regardless of remote result
+    await _repository.deleteDriverToken();
+
+    remoteResult.when(
+      success: (_) {
+        emit(state.copyWith(logoutState: const BaseState.success(null)));
+      },
+      error: (_) {
+        // Token already cleared locally — treat as soft success
+        emit(state.copyWith(logoutState: const BaseState.success(null)));
+      },
+    );
+  }
+
+  // ── UI state helpers ──────────────────────────────────────────────────────
+
+  void _setRememberMe(bool rememberMe) {
+    emit(state.copyWith(rememberMeState: BaseState.success(rememberMe)));
+  }
+
+  void _setShowPassword(bool showPassword) {
+    emit(state.copyWith(showPasswordState: BaseState.success(showPassword)));
+  }
 }
 

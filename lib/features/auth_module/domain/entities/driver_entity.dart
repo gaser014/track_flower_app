@@ -1,4 +1,6 @@
-class DriverEntity {
+import 'package:equatable/equatable.dart';
+
+class DriverEntity extends Equatable {
   final String? id;
   final String? firstName;
   final String? lastName;
@@ -8,7 +10,7 @@ class DriverEntity {
   final String? role;
   final DateTime? createdAt;
 
-  DriverEntity({
+  const DriverEntity({
     this.id,
     this.firstName,
     this.lastName,
@@ -22,7 +24,7 @@ class DriverEntity {
   factory DriverEntity.fromJson(Map<String, dynamic>? json) {
     if (json == null) return DriverEntity();
     return DriverEntity(
-      id: json['id']?.toString(),
+      id: json['id']?.toString()??json['_id'] as String?,
       firstName: json['first_name']?.toString() ?? json['firstName']?.toString(),
       lastName: json['last_name']?.toString() ?? json['lastName']?.toString(),
       email: json['email']?.toString(),
@@ -35,7 +37,7 @@ class DriverEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+
       'first_name': firstName,
       'last_name': lastName,
       'email': email,
@@ -45,4 +47,7 @@ class DriverEntity {
       'created_at': createdAt?.toIso8601String(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, firstName, lastName, email, phone, role];
 }

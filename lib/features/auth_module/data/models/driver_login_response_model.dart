@@ -1,3 +1,4 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/driver_model.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,10 +9,10 @@ part 'driver_login_response_model.g.dart';
 class DriverLoginResponseModel {
   @JsonKey(name: "message")
   final String? message;
-  
+
   @JsonKey(name: "token")
   final String? token;
-  
+
   @JsonKey(name: "driver")
   final DriverModel? driver;
 

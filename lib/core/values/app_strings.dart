@@ -251,4 +251,14 @@ class AppStrings {
   static const String confirmNewPassword = "Confirm New Password";
   static const String passwordResetSuccess =
       "Password reset successfully. Please login.";
+  // Driver Auth
+  static const String driverToken = "driver_token";
+  static const String driverSavedEmail = "driver_saved_email";
+  static const String driverSavedPassword = "driver_saved_password";
+  static const String welcomeToFlowery = "Welcome to Flowery";
+  static const String driverLoginSuccessfully = "Login successfully";
+  static const String driverLoginError = "Invalid email or password";
+  static const String driverLogoutSuccessfully = "Logged out successfully";
+  static const String driverLogoutError = "Failed to logout, please try again";
+
 }

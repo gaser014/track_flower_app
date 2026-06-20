@@ -6,6 +6,7 @@ import 'package:track_flowers_app/features/auth_module/data/models/forget_passwo
 import 'package:track_flowers_app/features/auth_module/data/models/forget_password_response_models.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/reset_password_request.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/verify_code_request.dart';
+import 'package:track_flowers_app/config/base_response/result.dart';
 
 abstract interface class AuthModuleRemoteDataSourceContract {
   Future<Result<DriverLoginResponseModel>> loginDriver(DriverLoginRequestEntity params);
@@ -20,4 +21,6 @@ abstract interface class AuthModuleRemoteDataSourceContract {
   Future<Result<ResetPasswordResponse>> resetPassword(
       ResetPasswordRequest request,
       );
+  Future<Result<void>> logoutDriver();
+
 }

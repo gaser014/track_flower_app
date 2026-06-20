@@ -23,6 +23,9 @@ abstract class AuthModuleApiClient {
     @Field() String password,
   );
 
+  @POST(EndPoints.logoutDriver)
+  Future<void> logoutDriver();
+
   @POST(EndPoints.forgetPasswordEndpoint)
   Future<ForgetPasswordResponse> sendForgetPasswordCode(
     @Body() ForgetPasswordRequest request,

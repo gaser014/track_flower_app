@@ -229,12 +229,13 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.forgetPassword,
-        name: Routes.forgetPassword,
+        path: Routes.home,
+        name: Routes.home,
         builder: (BuildContext context, GoRouterState state) {
-          return const ForgetPasswordPage();
+          return const MainView();
         },
       ),
+
       GoRoute(
         path: Routes.onboardingDriver,
         name: Routes.onboardingDriver,
