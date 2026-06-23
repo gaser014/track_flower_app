@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:track_flowers_app/config/base_response/result.dart';
 import 'package:track_flowers_app/config/uses_cases/login_params.dart';
 import 'package:track_flowers_app/features/login/data/datasources/login_local_data_source_contract.dart';
@@ -52,5 +53,47 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
     } on Exception catch (e) {
       return Error(exception: e);
     }
+  }
+
+  @override
+  Future<Result<LoginResponseEntity>> getProfile() async {
+    final result = await _loginRemoteDataSourceContract.getProfile();
+    return result.when(
+      success: (response) {
+        LoginResponseEntity? loginResponseEntity = response?.toEntity();
+        return Success<LoginResponseEntity>(data: loginResponseEntity);
+      },
+      error: (error) {
+        return Error(exception: error);
+      },
+    );
+  }
+
+  @override
+  Future<Result<LoginResponseEntity>> editProfile(Map<String, dynamic> body) async {
+    final result = await _loginRemoteDataSourceContract.editProfile(body);
+    return result.when(
+      success: (response) {
+        LoginResponseEntity? loginResponseEntity = response?.toEntity();
+        return Success<LoginResponseEntity>(data: loginResponseEntity);
+      },
+      error: (error) {
+        return Error(exception: error);
+      },
+    );
+  }
+
+  @override
+  Future<Result<LoginResponseEntity>> updateProfilePhoto(File file) async {
+    final result = await _loginRemoteDataSourceContract.updateProfilePhoto(file);
+    return result.when(
+      success: (response) {
+        LoginResponseEntity? loginResponseEntity = response?.toEntity();
+        return Success<LoginResponseEntity>(data: loginResponseEntity);
+      },
+      error: (error) {
+        return Error(exception: error);
+      },
+    );
   }
 }

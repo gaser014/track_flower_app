@@ -8,7 +8,6 @@ import 'package:gap/gap.dart';
 import 'package:track_flowers_app/core/values/app_assets.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_font_style.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/main_profile_events.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/main_profile_cubit.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view/widgets/profile_header_widget.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view/widgets/profile_menu_item_widget.dart';
@@ -22,7 +21,7 @@ class MainProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          getIt.get<MainProfileCubit>()..doIndented(GetMainProfileEvent()),
+          getIt.get<MainProfileCubit>()..fetchProfile(),
       child: SafeArea(
         child: Column(
           children: [
@@ -44,9 +43,7 @@ class MainProfilePage extends StatelessWidget {
                     final user = state.profileState.data!;
                     return RefreshIndicator(
                       onRefresh: () async {
-                        context.read<MainProfileCubit>().doIndented(
-                          GetMainProfileEvent(),
-                        );
+                        await context.read<MainProfileCubit>().fetchProfile();
                       },
                       child: SingleChildScrollView(
                         child: Column(

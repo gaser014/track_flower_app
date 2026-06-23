@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:track_flowers_app/config/api/api_execute.dart';
 import 'package:track_flowers_app/config/base_response/result.dart';
 import 'package:track_flowers_app/config/uses_cases/login_params.dart';
@@ -14,6 +15,30 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSourceContract {
   Future<Result<LoginResponseModel>> login(LoginParams params) async {
     return await executeApi(() async {
       final response = await _apiClient.login(params.email, params.password);
+      return response;
+    });
+  }
+
+  @override
+  Future<Result<LoginResponseModel>> getProfile() async {
+    return await executeApi(() async {
+      final response = await _apiClient.getProfile();
+      return response;
+    });
+  }
+
+  @override
+  Future<Result<LoginResponseModel>> editProfile(Map<String, dynamic> body) async {
+    return await executeApi(() async {
+      final response = await _apiClient.editProfile(body);
+      return response;
+    });
+  }
+
+  @override
+  Future<Result<LoginResponseModel>> updateProfilePhoto(File file) async {
+    return await executeApi(() async {
+      final response = await _apiClient.updateProfilePhoto(file);
       return response;
     });
   }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:track_flowers_app/app.dart';
@@ -10,6 +8,7 @@ import 'package:track_flowers_app/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'config/dependency_injection/di.dart';
 
 //flutter pub run build_runner build --delete-conflicting-outputs
@@ -20,6 +19,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   // FCMService().initialize();
   // FlutterError.onError = (errorDetails) {
   //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);

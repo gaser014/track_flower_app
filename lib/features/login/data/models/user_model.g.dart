@@ -21,7 +21,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) =>
       ..gender = json['gender'] as String?
       ..photo = json['photo'] as String?
       ..addresses = json['addresses'] as List<dynamic>?
-      ..wishlist = json['wishlist'] as List<dynamic>?;
+      ..wishlist = json['wishlist'] as List<dynamic>?
+      ..vehicleType = json['vehicleType'] as String?
+      ..vehicleNumber = json['vehicleNumber'] as String?
+      ..vehicleLicense = json['vehicleLicense'] as String?;
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
   '_id': instance.id,
@@ -34,5 +37,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
   'role': instance.role,
   'addresses': instance.addresses,
   'wishlist': instance.wishlist,
+  'vehicleType': instance.vehicleType,
+  'vehicleNumber': instance.vehicleNumber,
+  'vehicleLicense': instance.vehicleLicense,
   'createdAt': instance.createdAt?.toIso8601String(),
 };

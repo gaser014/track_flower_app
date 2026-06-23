@@ -9,6 +9,9 @@ class UserEntity {
   final String? role;
   final List? addresses;
   final List? wishlist;
+  final String? vehicleType;
+  final String? vehicleNumber;
+  final String? vehicleLicense;
   final DateTime? createdAt;
 
   UserEntity({
@@ -23,5 +26,8 @@ class UserEntity {
     this.wishlist,
     this.photo,
     this.gender,
+    this.vehicleType,
+    this.vehicleNumber,
+    this.vehicleLicense,
   });
 }

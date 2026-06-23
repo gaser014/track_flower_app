@@ -18,6 +18,30 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/auth_module/api/api_client/auth_module_api_client.dart'
+    as _i419;
+import '../../features/auth_module/api/datasources/auth_module_local_data_source_impl.dart'
+    as _i1034;
+import '../../features/auth_module/api/datasources/auth_module_remote_data_source_impl.dart'
+    as _i428;
+import '../../features/auth_module/data/datasources/auth_module_local_data_source_contract.dart'
+    as _i435;
+import '../../features/auth_module/data/datasources/auth_module_remote_data_source_contract.dart'
+    as _i72;
+import '../../features/auth_module/data/repositories/auth_module_repository_impl.dart'
+    as _i848;
+import '../../features/auth_module/domain/repositories/auth_module_repository.dart'
+    as _i1015;
+import '../../features/auth_module/domain/use_cases/edit_profile_use_case.dart'
+    as _i141;
+import '../../features/auth_module/domain/use_cases/get_profile_use_case.dart'
+    as _i774;
+import '../../features/auth_module/domain/use_cases/reset_password_use_case.dart'
+    as _i951;
+import '../../features/auth_module/domain/use_cases/update_profile_photo_use_case.dart'
+    as _i326;
+import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
+    as _i575;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
 import '../../features/login/api/datasources/login_local_data_source_impl.dart'
     as _i438;
@@ -31,9 +55,15 @@ import '../../features/login/data/repositories/login_repository_impl.dart'
     as _i1066;
 import '../../features/login/domain/repositories/login_repository.dart'
     as _i902;
+import '../../features/login/domain/use_cases/edit_profile_use_case.dart'
+    as _i36;
+import '../../features/login/domain/use_cases/get_profile_use_case.dart'
+    as _i718;
 import '../../features/login/domain/use_cases/get_user_use_case.dart' as _i12;
 import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
+import '../../features/login/domain/use_cases/update_profile_photo_use_case.dart'
+    as _i759;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
 import '../../features/main/presentation/view_model/cubit/home_cubit.dart'
@@ -72,6 +102,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => dioModule.internetConnection(),
     );
     gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
+    gh.factory<_i435.AuthModuleLocalDataSourceContract>(
+      () => _i1034.AuthModuleLocalDataSourceImpl(),
+    );
+    gh.factory<_i419.AuthModuleApiClient>(
+      () => _i419.AuthModuleApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
     );
@@ -94,6 +130,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
+    gh.factory<_i72.AuthModuleRemoteDataSourceContract>(
+      () =>
+          _i428.AuthModuleRemoteDataSourceImpl(gh<_i419.AuthModuleApiClient>()),
+    );
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
@@ -110,6 +150,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
+    gh.factory<_i1015.AuthModuleRepository>(
+      () => _i848.AuthModuleRepositoryImpl(
+        gh<_i72.AuthModuleRemoteDataSourceContract>(),
+        gh<_i435.AuthModuleLocalDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i36.EditProfileUseCase>(
+      () => _i36.EditProfileUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
+    gh.factory<_i718.GetProfileUseCase>(
+      () => _i718.GetProfileUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
     gh.factory<_i12.GetUserUseCase>(
       () => _i12.GetUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
@@ -119,15 +171,42 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i71.SaveUserUseCase>(
       () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.factory<_i818.GetMainProfileUseCase>(
-      () => _i818.GetMainProfileUseCase(
-        gh<_i488.MainProfileRepositoryContract>(),
-      ),
+    gh.factory<_i759.UpdateProfilePhotoUseCase>(
+      () =>
+          _i759.UpdateProfilePhotoUseCase(gh<_i902.LoginRepositoryContract>()),
     );
     gh.factory<_i753.LoginCubit>(
       () => _i753.LoginCubit(
         gh<_i191.LoginUseCase>(),
         gh<_i71.SaveUserUseCase>(),
+        gh<_i718.GetProfileUseCase>(),
+        gh<_i36.EditProfileUseCase>(),
+        gh<_i759.UpdateProfilePhotoUseCase>(),
+      ),
+    );
+    gh.factory<_i818.GetMainProfileUseCase>(
+      () => _i818.GetMainProfileUseCase(
+        gh<_i488.MainProfileRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i141.EditProfileUseCase>(
+      () => _i141.EditProfileUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i774.GetProfileUseCase>(
+      () => _i774.GetProfileUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i951.ResetPasswordUseCase>(
+      () => _i951.ResetPasswordUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i326.UpdateProfilePhotoUseCase>(
+      () => _i326.UpdateProfilePhotoUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i575.AuthModuleCubit>(
+      () => _i575.AuthModuleCubit(
+        gh<_i774.GetProfileUseCase>(),
+        gh<_i141.EditProfileUseCase>(),
+        gh<_i326.UpdateProfilePhotoUseCase>(),
+        gh<_i951.ResetPasswordUseCase>(),
       ),
     );
     gh.factory<_i60.MainProfileCubit>(

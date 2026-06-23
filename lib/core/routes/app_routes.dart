@@ -6,6 +6,7 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:go_router/go_router.dart';
@@ -200,7 +201,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.profile,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -223,6 +224,13 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.profile,
+        name: Routes.profile,
+        builder: (BuildContext context, GoRouterState state) {
+          return const AuthModulePage();
         },
       ),
     ],

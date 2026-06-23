@@ -32,4 +32,10 @@ abstract class EndPoints {
   static const String addressEndPoint = "/addresses";
   static const String changePassword = "/auth/change-password";
   static const String aboutApp = "/about-app";
+
+  ///drivers
+  static const String uploadPhoto = "/drivers/upload-photo";
+  static const String driverResetPasswrod = "/drivers/resetPassword";
+  
+
 }
