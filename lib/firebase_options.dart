@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -56,7 +47,6 @@ class DefaultFirebaseOptions {
     projectId: 'flower-team5',
     storageBucket: 'flower-team5.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDzbhCMSDAgT75R9BZxcQcA6IB-6GiKU88',
     appId: '1:221402846484:ios:9ca0469fe2ff86980d5e01',
@@ -64,5 +54,33 @@ class DefaultFirebaseOptions {
     projectId: 'flower-team5',
     storageBucket: 'flower-team5.firebasestorage.app',
     iosBundleId: 'com.example.trackFlowersApp',
+  );
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBc0GiIyzN5hUVeKiS1vDmdz3xiY4Lw_JA',
+    appId: '1:221402846484:web:794887380f8559e10d5e01',
+    messagingSenderId: '221402846484',
+    projectId: 'flower-team5',
+    authDomain: 'flower-team5.firebaseapp.com',
+    storageBucket: 'flower-team5.firebasestorage.app',
+    measurementId: 'G-NHYBWNKKDY',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDzbhCMSDAgT75R9BZxcQcA6IB-6GiKU88',
+    appId: '1:221402846484:ios:9ca0469fe2ff86980d5e01',
+    messagingSenderId: '221402846484',
+    projectId: 'flower-team5',
+    storageBucket: 'flower-team5.firebasestorage.app',
+    iosBundleId: 'com.example.trackFlowersApp',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBc0GiIyzN5hUVeKiS1vDmdz3xiY4Lw_JA',
+    appId: '1:221402846484:web:4315c03535a935e00d5e01',
+    messagingSenderId: '221402846484',
+    projectId: 'flower-team5',
+    authDomain: 'flower-team5.firebaseapp.com',
+    storageBucket: 'flower-team5.firebasestorage.app',
+    measurementId: 'G-D0WQV1NXB0',
   );
 }

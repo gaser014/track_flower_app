@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
-import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -219,10 +219,10 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.login,
-        name: Routes.login,
+        path: Routes.testTracking,
+        name: Routes.testTracking,
         builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
+          return TrackingTestPage();
         },
       ),
     ],

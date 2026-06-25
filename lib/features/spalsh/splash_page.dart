@@ -64,9 +64,9 @@ class _SplashPageState extends State<SplashPage>
 
         if (mounted) {
           if (token == null) {
-            context.go(Routes.login);
+            context.go(Routes.testTracking);
           } else {
-            context.go(Routes.main);
+            context.go(Routes.testTracking);
           }
         }
       }
