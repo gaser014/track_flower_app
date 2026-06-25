@@ -201,7 +201,6 @@ class FCMService {
       final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
       final client = await clientViaServiceAccount(accountCredentials, scopes);
 
-      final projectId = accountCredentials.projectId;
       final url =
           'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
 
