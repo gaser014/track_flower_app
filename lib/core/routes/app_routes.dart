@@ -5,6 +5,9 @@ import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:track_flowers_app/features/orders/presentation/view/pages/orders_page.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:go_router/go_router.dart';
@@ -209,6 +212,22 @@ abstract class AppRoutes {
           child: const MainView(),
           animationType: AnimationType.fade,
         ),
+        routes: [
+          GoRoute(
+            path: Routes.orderDetails,
+            name: Routes.orderDetails,
+            pageBuilder: (context, state) {
+              final order = state.extra as OrderEntity?;
+              return buildAnimatedPage(
+                key: state.pageKey,
+                child: order == null
+                    ? const MainView()
+                    : OrderDetailsPage(order: order),
+                animationType: AnimationType.slideFromRight,
+              );
+            },
+          ),
+        ],
       ),
 
       GoRoute(
@@ -224,6 +243,15 @@ abstract class AppRoutes {
         builder: (BuildContext context, GoRouterState state) {
           return TrackingTestPage();
         },
+      ),
+      GoRoute(
+        path: Routes.orders,
+        name: Routes.orders,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const OrdersPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
       ),
     ],
     redirect: (context, state) async {
