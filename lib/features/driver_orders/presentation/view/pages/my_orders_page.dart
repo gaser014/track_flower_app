@@ -32,97 +32,90 @@ class MyOrdersBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeCubit, HomeState>(
-      listenWhen: (previous, current) =>
-          previous.bottomNavIndex != current.bottomNavIndex &&
-          current.bottomNavIndex == 1,
-      listener: (context, _) =>
-          context.read<DriverOrdersCubit>().doIntent(const GetMyOrdersEvent()),
-      child: SafeArea(
-        child: BlocBuilder<DriverOrdersCubit, DriverOrdersStates>(
-          buildWhen: (previous, current) =>
-              previous.myOrdersState != current.myOrdersState,
-          builder: (context, state) {
-            final cubit = context.read<DriverOrdersCubit>();
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.myOrders,
-                        style: AppFontStyle.semiBold20(context: context),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OrderCounterCard(
-                              count: state.cancelledCount,
-                              label: AppStrings.statusCancelled,
-                              icon: Icons.cancel,
-                              color: AppColors.redCC,
-                            ),
+    return SafeArea(
+      child: BlocBuilder<DriverOrdersCubit, DriverOrdersStates>(
+        buildWhen: (previous, current) =>
+            previous.myOrdersState != current.myOrdersState,
+        builder: (context, state) {
+          final cubit = context.read<DriverOrdersCubit>();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppStrings.myOrders,
+                      style: AppFontStyle.semiBold20(context: context),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OrderCounterCard(
+                            count: state.cancelledCount,
+                            label: AppStrings.statusCancelled,
+                            icon: Icons.cancel,
+                            color: AppColors.redCC,
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: OrderCounterCard(
-                              count: state.completedCount,
-                              label: AppStrings.statusCompleted,
-                              icon: Icons.check_circle,
-                              color: AppColors.green0C,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      Text(
-                        AppStrings.recentOrders,
-                        style: AppFontStyle.medium18(context: context),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: PaginationListView<OrderEntity>(
-                    state: state.myOrdersState,
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                    onRefresh: () async =>
-                        cubit.doIntent(const GetMyOrdersEvent()),
-                    onLoadMore: () =>
-                        cubit.doIntent(const LoadMoreMyOrdersEvent()),
-                    loadingWidget: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: RecentOrdersListShimmer(),
-                    ),
-                    emptyWidget: Text(
-                      AppStrings.noPendingOrders,
-                      style: AppFontStyle.medium16(context: context),
-                    ),
-                    errorWidget: Text(
-                      AppStrings.somethingWentWrong,
-                      style: AppFontStyle.medium16(context: context),
-                    ),
-                    itemBuilder: (context, order, index) => Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: RecentOrderCard(
-                        order: order,
-                        onTap: () => context.push(
-                          '${Routes.main}/${Routes.orderDetails}',
-                          extra: order,
                         ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: OrderCounterCard(
+                            count: state.completedCount,
+                            label: AppStrings.statusCompleted,
+                            icon: Icons.check_circle,
+                            color: AppColors.green0C,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      AppStrings.recentOrders,
+                      style: AppFontStyle.medium18(context: context),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: PaginationListView<OrderEntity>(
+                  state: state.myOrdersState,
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  onRefresh: () async =>
+                      cubit.doIntent(const GetMyOrdersEvent()),
+                  onLoadMore: () =>
+                      cubit.doIntent(const LoadMoreMyOrdersEvent()),
+                  loadingWidget: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: RecentOrdersListShimmer(),
+                  ),
+                  emptyWidget: Text(
+                    AppStrings.noPendingOrders,
+                    style: AppFontStyle.medium16(context: context),
+                  ),
+                  errorWidget: Text(
+                    AppStrings.somethingWentWrong,
+                    style: AppFontStyle.medium16(context: context),
+                  ),
+                  itemBuilder: (context, order, index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: RecentOrderCard(
+                      order: order,
+                      onTap: () => context.push(
+                        '${Routes.main}/${Routes.orderDetails}',
+                        extra: order,
                       ),
                     ),
                   ),
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

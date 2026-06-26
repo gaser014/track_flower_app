@@ -31,7 +31,9 @@ class OrderStatusBanner extends StatelessWidget {
             children: [
               Text(
                 "${AppStrings.status} : ",
-                style: AppFontStyle.medium14(context: context),
+                style: AppFontStyle.medium14(
+                  context: context,
+                ).copyWith(color: AppColors.green0C),
               ),
               Text(
                 order.status.ui.label,

@@ -8,6 +8,7 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_font_style.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/core/widgets/custom_toast.dart';
 import 'package:track_flowers_app/core/widgets/pagination_list_view.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/cubit/driver_orders_cubit.dart';
@@ -50,11 +51,10 @@ class _DriverHomeBodyState extends State<DriverHomeBody> {
     if (event is OpenOrderDetailsUiEvent) {
       context.push('${Routes.main}/${Routes.orderDetails}', extra: event.order);
     } else if (event is ActiveOrderWarningUiEvent) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          const SnackBar(content: Text(AppStrings.activeOrderInProgress)),
-        );
+      CustomToast.showInfo(
+        context: context,
+        message: AppStrings.activeOrderInProgress,
+      );
     }
   }
 

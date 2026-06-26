@@ -9,6 +9,7 @@ class OrderStatusUi {
   final IconData? icon;
   final String actionLabel;
   final bool canAdvance;
+  final int sortIndex;
 
   const OrderStatusUi({
     required this.label,
@@ -16,6 +17,7 @@ class OrderStatusUi {
     this.icon,
     this.actionLabel = '',
     this.canAdvance = false,
+    this.sortIndex = 0,
   });
 }
 
@@ -24,6 +26,7 @@ enum OrderStatus {
     OrderStatusUi(
       label: AppStrings.statusPending,
       color: AppColors.primerColor,
+      sortIndex: 1,
     ),
   ),
   accepted(
@@ -32,6 +35,7 @@ enum OrderStatus {
       color: AppColors.green0C,
       actionLabel: AppStrings.arrivedAtPickup,
       canAdvance: true,
+      sortIndex: 2,
     ),
   ),
   picked(
@@ -40,6 +44,7 @@ enum OrderStatus {
       color: AppColors.green0C,
       actionLabel: AppStrings.startDeliver,
       canAdvance: true,
+      sortIndex: 3,
     ),
   ),
   arrived(
@@ -48,6 +53,7 @@ enum OrderStatus {
       color: AppColors.green0C,
       actionLabel: AppStrings.deliveredToUser,
       canAdvance: true,
+      sortIndex: 4,
     ),
   ),
   delivered(
@@ -55,6 +61,7 @@ enum OrderStatus {
       label: AppStrings.statusDelivered,
       color: AppColors.green0C,
       actionLabel: AppStrings.deliveredToUser,
+      sortIndex: 5,
     ),
   ),
   completed(
@@ -62,6 +69,7 @@ enum OrderStatus {
       label: AppStrings.statusCompleted,
       color: AppColors.green0C,
       icon: Icons.check_circle,
+      sortIndex: 6,
     ),
   ),
   cancelled(
@@ -69,6 +77,7 @@ enum OrderStatus {
       label: AppStrings.statusCancelled,
       color: AppColors.redCC,
       icon: Icons.cancel,
+      sortIndex: 7,
     ),
   );
 

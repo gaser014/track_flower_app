@@ -5,13 +5,13 @@ import 'package:track_flowers_app/config/base_response/result.dart';
 import 'package:track_flowers_app/config/uses_cases/pagination_params.dart';
 import 'package:track_flowers_app/features/driver_orders/data/data_sources/driver_orders_remote_data_source_contract.dart';
 import 'package:track_flowers_app/features/driver_orders/data/fixtures/driver_orders_fixtures.dart';
-import 'package:track_flowers_app/features/driver_orders/data/models/order_model.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/repositories/driver_orders_repository.dart';
 
 @LazySingleton(as: DriverOrdersRepository)
 class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
   final DriverOrdersRemoteDataSourceContract _remoteDataSource;
+
   DriverOrdersRepositoryImpl({
     required DriverOrdersRemoteDataSourceContract remoteDataSource,
   }) : _remoteDataSource = remoteDataSource;
@@ -46,12 +46,19 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
         params: params,
         allData: DriverOrdersFixtures.myOrders,
       ),
-      success: (data) => Success(
-        data: BasePaginationEntity(
-          meta: const MetaEntity.empty(),
-          data: _dedupeById(data ?? const []),
-        ),
-      ),
+      success: (data) {
+        final orders =
+            data?.map((e) => e.toEntity()).toList() ?? <OrderEntity>[];
+        orders.sort(
+          (a, b) => a.status.ui.sortIndex.compareTo(b.status.ui.sortIndex),
+        );
+        return Success(
+          data: BasePaginationEntity(
+            meta: const MetaEntity.empty(),
+            data: orders,
+          ),
+        );
+      },
       error: (exception) => Error(exception: exception),
     );
   }
@@ -63,11 +70,12 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
     );
     return result.makeDummyData<OrderEntity>(
       success: (data) {
-        final orders = _dedupeById(data ?? const []);
+        final orders = data ?? const [];
         OrderEntity? active;
-        for (final order in orders) {
-          if (order.status.isActive) {
-            active = order;
+        for (final model in orders) {
+          final entity = model.toEntity();
+          if (entity.status.isActive) {
+            active = entity;
             break;
           }
         }
@@ -75,15 +83,6 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
       },
       error: (_) => const Success<OrderEntity>(data: null),
     );
-  }
-
-  List<OrderEntity> _dedupeById(List<OrderModel> models) {
-    final seen = <String>{};
-    final result = <OrderEntity>[];
-    for (final model in models) {
-      if (seen.add(model.id)) result.add(model.toEntity());
-    }
-    return result;
   }
 
   @override

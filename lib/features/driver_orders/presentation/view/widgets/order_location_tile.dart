@@ -23,9 +23,9 @@ class LabeledSection extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppFontStyle.regular12(
+          style: AppFontStyle.medium18(
             context: context,
-          ).copyWith(color: AppColors.gray53),
+          ).copyWith(color: AppColors.black0C),
         ),
         const Gap(8),
         child,
@@ -51,7 +51,6 @@ class OrderLocationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OrderSurface(
-      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           leading,
