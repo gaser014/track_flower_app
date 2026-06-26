@@ -13,7 +13,7 @@ class DriverOrdersApiClient {
       EndPoints.driverPendingOrders,
       queryParameters: {'page': page, 'limit': limit},
     );
-    return _parseList(response.data);
+    return _toListOfOrders(response.data);
   }
 
   Future<List<OrderModel>> getMyOrders(int page, int limit) async {
@@ -21,7 +21,7 @@ class DriverOrdersApiClient {
       EndPoints.driverMyOrders,
       queryParameters: {'page': page, 'limit': limit},
     );
-    return _parseList(response.data);
+    return _toListOfOrders(response.data);
   }
 
   Future<OrderModel> startOrder(String orderId) async {
@@ -41,7 +41,7 @@ class DriverOrdersApiClient {
     return OrderModel.fromJson(data);
   }
 
-  List<OrderModel> _parseList(dynamic data) {
+  List<OrderModel> _toListOfOrders(dynamic data) {
     final list = data['orders'] ?? data['data'] ?? data;
     return (list as List? ?? const [])
         .map((e) => OrderModel.fromJson(e))

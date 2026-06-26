@@ -14,7 +14,6 @@ class OrderAddressTileShimmer extends StatelessWidget {
         const CustomShimmerContainer(height: 12, width: 90, borderRadius: 4),
         const Gap(8),
         OrderSurface(
-          padding: const EdgeInsets.all(8),
           child: Row(
             children: [
               const CustomShimmerContainer(

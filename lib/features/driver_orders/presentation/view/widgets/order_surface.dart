@@ -5,7 +5,7 @@ class OrderSurface extends StatelessWidget {
   const OrderSurface({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
     this.radius = 10,
   });
 

@@ -6,6 +6,7 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_font_style.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/core/widgets/custom_app_bar.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/cubit/driver_orders_cubit.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/widgets/labeled_value_row.dart';
@@ -59,19 +60,8 @@ class OrderDetailsView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.whiteF9,
-      appBar: AppBar(
-        backgroundColor: AppColors.whiteF9,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 20),
-          onPressed: () =>
-              context.canPop() ? context.pop() : context.go(Routes.main),
-        ),
-        title: Text(
-          AppStrings.orderDetails,
-          style: AppFontStyle.medium20(context: context),
-        ),
-        centerTitle: false,
-      ),
+      appBar: CustomAppBar(title: AppStrings.orderDetails),
+
       body: Column(
         children: [
           Expanded(
@@ -95,29 +85,31 @@ class OrderDetailsView extends StatelessWidget {
                   ),
                 const SizedBox(height: 16),
                 PickupAddressTile(store: order.store, showActions: isActive),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 UserAddressTile(
                   customer: order.customer,
                   showActions: isActive,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 Text(
                   AppStrings.orderDetails,
                   style: AppFontStyle.medium16(context: context),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
                 ...order.items.map(
                   (item) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: OrderItemTile(item: item),
                   ),
                 ),
-                const Divider(color: AppColors.grayEA, height: 32),
+                const SizedBox(height: 24),
+
                 LabeledValueRow(
                   label: AppStrings.totalPrice,
                   value: "${AppStrings.egp} ${order.totalPrice}",
                 ),
-                const Divider(color: AppColors.grayEA, height: 32),
+                const SizedBox(height: 24),
+
                 LabeledValueRow(
                   label: AppStrings.paymentMethod,
                   value: AppStrings.cashOnDelivery,
