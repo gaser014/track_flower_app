@@ -227,4 +227,31 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+
+  // Driver order flow
+  static const String floweryRider = "Flowery rider";
+  static const String flowerOrder = "Flower order";
+  static const String floweryStore = "Flowery store";
+  static const String pickupAddress = "Pickup address";
+  static const String userAddress = "User address";
+  static const String reject = "Reject";
+  static const String accept = "Accept";
+  static const String recentOrders = "Recent orders";
+  static const String orderDetails = "Order details";
+  static const String status = "Status";
+  static const String orderId = "Order ID";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String statusPending = "Pending";
+  static const String statusAccepted = "Accepted";
+  static const String statusPicked = "Picked";
+  static const String statusArrived = "Arrived";
+  static const String statusDelivered = "Delivered";
+  static const String statusCompleted = "Completed";
+  static const String statusCancelled = "Cancelled";
+  static const String arrivedAtPickup = "Arrived at Pickup point";
+  static const String startDeliver = "Start deliver";
+  static const String deliveredToUser = "Delivered to the user";
+  static const String noPendingOrders = "No new orders";
+  static const String activeOrderInProgress =
+      "You already have an active order. Finish it before accepting a new one.";
 }

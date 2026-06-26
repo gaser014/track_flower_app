@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -35,17 +36,18 @@ class FCMService {
     // Initialize local notifications for foreground handling
     await _initializeLocalNotifications();
 
-    // Get and store FCM token (unique device identifier)
-    _fcmToken = await _firebaseMessaging.getToken();
-    log('FCM Token: $_fcmToken');
-    // Send this token to your backend server to send notifications
-
-    // Listen for token refresh (happens when app reinstalled, data cleared, etc.)
+    // Listen for token refresh BEFORE fetching, so we never miss the first
+    // token that gets generated once APNS becomes available on iOS.
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
       _fcmToken = newToken;
       log('FCM Token refreshed: $newToken');
       // Update token on your server
     });
+
+    // Get and store FCM token (unique device identifier).
+    // On Apple platforms FCM needs the APNS token first; calling getToken()
+    // before it's set throws `apns-token-not-set`. Guard + never crash startup.
+    await _loadFcmToken();
 
     // Set up background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -64,6 +66,36 @@ class FCMService {
     }
 
     isFCMInitialized = true;
+  }
+
+  /// Fetches the FCM token safely.
+  ///
+  /// On iOS/macOS the APNS token must exist before `getToken()` is called,
+  /// otherwise Firebase throws `apns-token-not-set`. If APNS isn't ready yet,
+  /// we skip the eager fetch and let `onTokenRefresh` deliver it later.
+  Future<void> _loadFcmToken() async {
+    try {
+      final isApplePlatform =
+          defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.macOS;
+
+      if (isApplePlatform) {
+        final apnsToken = await _firebaseMessaging.getAPNSToken();
+        if (apnsToken == null) {
+          log(
+            'APNS token not available yet; will receive FCM token via '
+            'onTokenRefresh once it is set.',
+          );
+          return;
+        }
+      }
+
+      _fcmToken = await _firebaseMessaging.getToken();
+      log('FCM Token: $_fcmToken');
+      // Send this token to your backend server to send notifications.
+    } catch (e) {
+      log('Failed to fetch FCM token: $e', name: 'FCMService');
+    }
   }
 
   /// Initialize local notifications plugin
@@ -168,10 +200,12 @@ class FCMService {
       // 3. Paste the entire content of that downloaded JSON file below:
       final String projectId = dotenv.env['FCM_PROJECT_ID'] ?? '';
       final String privateKeyId = dotenv.env['FCM_PRIVATE_KEY_ID'] ?? '';
-      final String privateKey = (dotenv.env['FCM_PRIVATE_KEY'] ?? '').replaceAll('\\n', '\n');
+      final String privateKey = (dotenv.env['FCM_PRIVATE_KEY'] ?? '')
+          .replaceAll('\\n', '\n');
       final String clientEmail = dotenv.env['FCM_CLIENT_EMAIL'] ?? '';
       final String clientId = dotenv.env['FCM_CLIENT_ID'] ?? '';
-      final String clientX509CertUrl = dotenv.env['FCM_CLIENT_X509_CERT_URL'] ?? '';
+      final String clientX509CertUrl =
+          dotenv.env['FCM_CLIENT_X509_CERT_URL'] ?? '';
 
       final String serviceAccountJsonString = jsonEncode({
         "type": "service_account",
@@ -182,9 +216,10 @@ class FCMService {
         "client_id": clientId,
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "auth_provider_x509_cert_url":
+            "https://www.googleapis.com/oauth2/v1/certs",
         "client_x509_cert_url": clientX509CertUrl,
-        "universe_domain": "googleapis.com"
+        "universe_domain": "googleapis.com",
       });
 
       if (serviceAccountJsonString.contains('REPLACE_ME')) {
