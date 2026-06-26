@@ -8,6 +8,7 @@ class AppAssets {
   static const String iconsCart = "assets/icons/cart.svg";
 
   static const String iconsCategory = "assets/icons/category.svg";
+  static const String iconsOrders = "assets/icons/orders.svg";
 
   static const String iconsCheckCircle = "assets/icons/check_circle.svg";
 

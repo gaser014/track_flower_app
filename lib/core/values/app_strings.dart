@@ -154,6 +154,7 @@ class AppStrings {
 
   // Profile & Address
   static const String myOrders = "My orders";
+  static const String orders = "Orders";
   static const String savedAddresses = "Saved addresses";
   static const String logout = "Logout";
   static const String editProfile = "Edit profile";
