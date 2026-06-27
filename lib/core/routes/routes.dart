@@ -20,5 +20,6 @@ abstract class Routes {
   static const String applicationSubmitted = "/application-submitted";
   static const String applySuccess = "/apply-success";
   static const String testTracking = "/test-tracking";
-
+  static const String orders = "/orders";
+  static const String orderDetails = "order-details";
 }

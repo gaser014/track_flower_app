@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 import '../models/user_firebase_model.dart';
 import '../models/order_firebase_model.dart';
 
+@lazySingleton
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -93,6 +95,25 @@ class FirestoreService {
       return docRef.id;
     } catch (e) {
       throw Exception('Failed to add order: $e');
+    }
+  }
+
+  /// Create or merge an order document by id (used to mirror backend orders
+  /// into Firestore for real-time tracking).
+  Future<void> upsertOrder(String orderId, Map<String, dynamic> data) async {
+    if (orderId.isEmpty) return;
+    try {
+      final docRef = _firestore.collection(_ordersCollection).doc(orderId);
+      await docRef.set({
+        ...data,
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+      log('Upserted order with ID: $orderId and data: $data');
+      log('Document reference: ${docRef.path}');
+      log('Document reference: $docRef');
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to upsert order: $e');
     }
   }
 

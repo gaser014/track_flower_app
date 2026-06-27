@@ -6,6 +6,8 @@ class AppAssets {
   static const String iconsCalendar = "assets/icons/calendar.svg";
 
   static const String iconsCart = "assets/icons/cart.svg";
+  static const String whatsapp = "assets/icons/whatsapp.svg";
+  static const String call = "assets/icons/call.svg";
 
   static const String iconsCategory = "assets/icons/category.svg";
   static const String iconsOrders = "assets/icons/orders.svg";

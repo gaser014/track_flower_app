@@ -1,9 +1,12 @@
 import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
+import 'package:track_flowers_app/config/dependency_injection/di.dart';
+import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_assets.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
-import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_active_order_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -67,7 +70,23 @@ class _SplashPageState extends State<SplashPage>
           if (token == null) {
             context.go(Routes.login);
           } else {
-            context.go(Routes.main);
+            OrderEntity? activeOrder;
+            final result = await getIt<GetActiveOrderUseCase>()(
+              const NoParams(),
+            );
+            result.when(
+              success: (data) => activeOrder = data,
+              error: (_) => activeOrder = null,
+            );
+            if (!mounted) return;
+            if (activeOrder != null) {
+              context.go(
+                '${Routes.main}/${Routes.orderDetails}',
+                extra: activeOrder,
+              );
+            } else {
+              context.go(Routes.main);
+            }
           }
         }
       }

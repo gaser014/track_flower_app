@@ -18,7 +18,12 @@ abstract class EndPoints {
   static const String logoutDriver = "/drivers/logout";
 
   static const String profileData = "/auth/profile-data";
-  static const String ordersPage = "/orders";
+  static const String ordersPage = "/orders/pending-orders";
+  static const String driverPendingOrders = "/orders/pending-orders";
+  static const String driverMyOrders = "/orders/driver-orders";
+  static const String driverActiveOrder = "/orders/active";
+  static const String startOrder = "/orders/start";
+  static const String updateOrderState = "/orders/state";
 
   //! CART
   static const String cartEndPoint = "/cart";

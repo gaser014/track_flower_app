@@ -89,6 +89,17 @@ class PaginationState<T> extends Equatable
     );
   }
 
+  /// Replaces the current data list while preserving pagination metadata,
+  /// query and success state. Use this for in-place mutations (e.g. removing
+  /// an item after accept/reject) instead of [toSuccess], which appends when
+  /// the current page is greater than 1.
+  PaginationState<T> withData(List<T> newData) => PaginationState(
+    state: PaginationStateType.success,
+    data: newData,
+    meta: meta,
+    query: query,
+  );
+
   PaginationState<T> toSuccessFromEntity(BasePaginationEntity<T> entity) {
     final currentPage = query.page ?? 1;
     return PaginationState(
