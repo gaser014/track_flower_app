@@ -1,3 +1,4 @@
+import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_assets.dart';
@@ -59,7 +60,7 @@ class _SplashPageState extends State<SplashPage>
     _controller.forward().then((_) async {
       if (mounted) {
         String? token = await AppSharedPreferences.getString(
-          key: AppStrings.token,
+          key: APIkeys.accessToken,
         );
 
         if (mounted) {

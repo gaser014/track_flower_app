@@ -15,6 +15,7 @@ import 'package:track_flowers_app/features/auth_module/presentation/view/pages/a
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -224,10 +225,10 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.login,
-        name: Routes.login,
+        path: Routes.testTracking,
+        name: Routes.testTracking,
         builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
+          return TrackingTestPage();
         },
       ),
       GoRoute(

@@ -8,6 +8,7 @@
       "version": "1.0.0+1",
       "dependencies": [
         "cached_network_image",
+        "cloud_firestore",
         "dio",
         "easy_localization",
         "equatable",
@@ -18,6 +19,7 @@
         "flutter",
         "flutter_bloc",
         "flutter_cache_manager",
+        "flutter_dotenv",
         "flutter_local_notifications",
         "flutter_screenutil",
         "flutter_secure_storage",
@@ -27,6 +29,7 @@
         "get_it",
         "go_router",
         "google_maps_flutter",
+        "googleapis_auth",
         "image",
         "image_picker",
         "injectable",
@@ -385,6 +388,18 @@
       ]
     },
     {
+      "name": "googleapis_auth",
+      "version": "2.3.2",
+      "dependencies": [
+        "crypto",
+        "google_cloud",
+        "google_identity_services_web",
+        "http",
+        "http_parser",
+        "meta"
+      ]
+    },
+    {
       "name": "google_maps_flutter",
       "version": "2.17.1",
       "dependencies": [
@@ -473,6 +488,13 @@
         "flutter_local_notifications_platform_interface",
         "flutter_local_notifications_windows",
         "timezone"
+      ]
+    },
+    {
+      "name": "flutter_dotenv",
+      "version": "6.0.1",
+      "dependencies": [
+        "flutter"
       ]
     },
     {
@@ -588,6 +610,19 @@
         "meta",
         "mime",
         "path"
+      ]
+    },
+    {
+      "name": "cloud_firestore",
+      "version": "6.6.0",
+      "dependencies": [
+        "cloud_firestore_platform_interface",
+        "cloud_firestore_web",
+        "collection",
+        "firebase_core",
+        "firebase_core_platform_interface",
+        "flutter",
+        "meta"
       ]
     },
     {
@@ -1397,6 +1432,34 @@
       ]
     },
     {
+      "name": "http_parser",
+      "version": "4.1.2",
+      "dependencies": [
+        "collection",
+        "source_span",
+        "string_scanner",
+        "typed_data"
+      ]
+    },
+    {
+      "name": "google_identity_services_web",
+      "version": "0.3.3+1",
+      "dependencies": [
+        "meta",
+        "web"
+      ]
+    },
+    {
+      "name": "google_cloud",
+      "version": "0.5.0",
+      "dependencies": [
+        "collection",
+        "http",
+        "meta",
+        "stack_trace"
+      ]
+    },
+    {
       "name": "google_maps_flutter_web",
       "version": "0.6.2+3",
       "dependencies": [
@@ -1745,13 +1808,28 @@
       ]
     },
     {
-      "name": "http_parser",
-      "version": "4.1.2",
+      "name": "cloud_firestore_web",
+      "version": "5.6.0",
       "dependencies": [
+        "_flutterfire_internals",
+        "cloud_firestore_platform_interface",
         "collection",
-        "source_span",
-        "string_scanner",
-        "typed_data"
+        "firebase_core",
+        "firebase_core_web",
+        "flutter",
+        "flutter_web_plugins"
+      ]
+    },
+    {
+      "name": "cloud_firestore_platform_interface",
+      "version": "8.0.3",
+      "dependencies": [
+        "_flutterfire_internals",
+        "collection",
+        "firebase_core",
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
       ]
     },
     {

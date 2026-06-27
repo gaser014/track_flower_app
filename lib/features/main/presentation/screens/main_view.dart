@@ -55,7 +55,7 @@ class MainView extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  AppAssets.iconsCategory,
+                  AppAssets.iconsOrders,
                   colorFilter: ColorFilter.mode(
                     selectedIndex == 1
                         ? AppColors.primerColor
@@ -63,25 +63,14 @@ class MainView extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: AppStrings.categories,
+                label: AppStrings.orders,
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  AppAssets.iconsCart,
-                  colorFilter: ColorFilter.mode(
-                    selectedIndex == 2
-                        ? AppColors.primerColor
-                        : AppColors.grayA6,
-                    BlendMode.srcIn,
-                  ),
-                ),
-                label: AppStrings.cart,
-              ),
+
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   AppAssets.iconsProfile,
                   colorFilter: ColorFilter.mode(
-                    selectedIndex == 3
+                    selectedIndex == 2
                         ? AppColors.primerColor
                         : AppColors.grayA6,
                     BlendMode.srcIn,
