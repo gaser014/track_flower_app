@@ -6,7 +6,7 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
-import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view/pages/auth_module_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:go_router/go_router.dart';
