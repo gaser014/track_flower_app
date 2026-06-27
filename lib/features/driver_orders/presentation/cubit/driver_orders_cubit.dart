@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/base_response/entity/base_pagination_entity.dart';
@@ -12,6 +14,7 @@ import 'package:track_flowers_app/features/driver_orders/domain/use_cases/comple
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_active_order_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_my_orders_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_pending_orders_use_case.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/use_cases/mirror_order_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/reject_order_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/start_order_use_case.dart';
 
@@ -28,6 +31,7 @@ class DriverOrdersCubit
   final RejectOrderUseCase _rejectOrderUseCase;
   final StartOrderUseCase _startOrderUseCase;
   final CompleteOrderUseCase _completeOrderUseCase;
+  final MirrorOrderUseCase _mirrorOrderUseCase;
 
   DriverOrdersCubit({
     required GetPendingOrdersUseCase getPendingOrdersUseCase,
@@ -37,6 +41,7 @@ class DriverOrdersCubit
     required RejectOrderUseCase rejectOrderUseCase,
     required StartOrderUseCase startOrderUseCase,
     required CompleteOrderUseCase completeOrderUseCase,
+    required MirrorOrderUseCase mirrorOrderUseCase,
   }) : _getPendingOrdersUseCase = getPendingOrdersUseCase,
        _getMyOrdersUseCase = getMyOrdersUseCase,
        _getActiveOrderUseCase = getActiveOrderUseCase,
@@ -44,6 +49,7 @@ class DriverOrdersCubit
        _rejectOrderUseCase = rejectOrderUseCase,
        _startOrderUseCase = startOrderUseCase,
        _completeOrderUseCase = completeOrderUseCase,
+       _mirrorOrderUseCase = mirrorOrderUseCase,
        super(const DriverOrdersStates());
 
   @override
@@ -186,10 +192,11 @@ class DriverOrdersCubit
             .toList();
         emit(
           state.copyWith(
-            pendingState: state.pendingState.toSuccess(remaining),
+            pendingState: state.pendingState.withData(remaining),
             activeState: BaseState.success(accepted),
           ),
         );
+        unawaited(_mirrorOrderUseCase(accepted));
         emitEvent(OpenOrderDetailsUiEvent(accepted));
       },
       error: (_) {},
@@ -204,7 +211,7 @@ class DriverOrdersCubit
             .where((o) => o.id != order.id)
             .toList();
         emit(
-          state.copyWith(pendingState: state.pendingState.toSuccess(remaining)),
+          state.copyWith(pendingState: state.pendingState.withData(remaining)),
         );
       },
       error: (_) {},
@@ -218,13 +225,11 @@ class DriverOrdersCubit
       case OrderStatus.accepted:
         final result = await _startOrderUseCase(current);
         result.when(
-          success: (_) => emit(
-            state.copyWith(
-              activeState: BaseState.success(
-                current.copyWith(status: OrderStatus.picked),
-              ),
-            ),
-          ),
+          success: (_) {
+            final next = current.copyWith(status: OrderStatus.picked);
+            emit(state.copyWith(activeState: BaseState.success(next)));
+            unawaited(_mirrorOrderUseCase(next));
+          },
           error: (e) => emit(
             state.copyWith(
               activeState: BaseState.error(e ?? Exception('Unknown')),
@@ -234,13 +239,11 @@ class DriverOrdersCubit
       case OrderStatus.arrived || OrderStatus.delivered:
         final result = await _completeOrderUseCase(current);
         result.when(
-          success: (_) => emit(
-            state.copyWith(
-              activeState: BaseState.success(
-                current.copyWith(status: OrderStatus.completed),
-              ),
-            ),
-          ),
+          success: (_) {
+            final next = current.copyWith(status: OrderStatus.completed);
+            emit(state.copyWith(activeState: BaseState.success(next)));
+            unawaited(_mirrorOrderUseCase(next));
+          },
           error: (e) => emit(
             state.copyWith(
               activeState: BaseState.error(e ?? Exception('Unknown')),
@@ -248,13 +251,9 @@ class DriverOrdersCubit
           ),
         );
       default:
-        emit(
-          state.copyWith(
-            activeState: BaseState.success(
-              current.copyWith(status: current.status.next),
-            ),
-          ),
-        );
+        final next = current.copyWith(status: current.status.next);
+        emit(state.copyWith(activeState: BaseState.success(next)));
+        unawaited(_mirrorOrderUseCase(next));
     }
   }
 }

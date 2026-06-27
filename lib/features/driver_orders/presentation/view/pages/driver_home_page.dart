@@ -38,6 +38,7 @@ class DriverHomeBody extends StatefulWidget {
 
 class _DriverHomeBodyState extends State<DriverHomeBody> {
   late final StreamSubscription<DriverOrdersUiEvent> _uiEventSubscription;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _DriverHomeBodyState extends State<DriverHomeBody> {
     _uiEventSubscription = context.read<DriverOrdersCubit>().eventStream.listen(
       _onUiEvent,
     );
+    _scrollController = ScrollController();
   }
 
   void _onUiEvent(DriverOrdersUiEvent event) {
@@ -92,6 +94,8 @@ class _DriverHomeBodyState extends State<DriverHomeBody> {
                     cubit.doIntent(const GetActiveOrderEvent());
                     cubit.doIntent(const GetPendingOrdersEvent());
                   },
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
                   onLoadMore: () =>
                       cubit.doIntent(const LoadMorePendingOrdersEvent()),
                   loadingWidget: const PendingOrdersListShimmer(),

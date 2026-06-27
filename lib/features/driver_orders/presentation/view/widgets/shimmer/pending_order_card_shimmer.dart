@@ -57,6 +57,7 @@ class PendingOrdersListShimmer extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemCount: itemCount,
       separatorBuilder: (context, index) => const SizedBox(height: 24),
       itemBuilder: (context, index) => const PendingOrderCardShimmer(),

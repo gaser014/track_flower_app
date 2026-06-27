@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../../../config/fcm/fcm_service.dart';
+import '../../domain/entities/driver_entity.dart';
 import '../../domain/entities/location_entity.dart';
 import '../../domain/entities/order_entity.dart';
 import '../../domain/entities/user_entity.dart';
@@ -55,9 +56,16 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
       await _addUser(userEntity);
 
       // 2. Create Dummy Order via Use Case
-      final orderEntity = const OrderEntity(
+      final orderEntity = OrderEntity(
         status: "Pending",
-        location: LocationEntity(lat: 30.0444, lng: 31.2357),
+        location: const LocationEntity(lat: 30.0444, lng: 31.2357),
+        driver: DriverEntity(
+          id: _dummyUserId,
+          name: "Ahmed Driver",
+          phone: "+201000000000",
+          photo: "",
+          location: const LocationEntity(lat: 30.0444, lng: 31.2357),
+        ),
       );
       final orderId = await _addOrder(orderEntity);
 
@@ -87,6 +95,13 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
           lat: 30.0500,
           lng: 31.2400,
         ), // Moved location
+        driver: DriverEntity(
+          id: _dummyUserId,
+          name: "Ahmed Driver",
+          phone: "+201000000000",
+          photo: "",
+          location: const LocationEntity(lat: 30.0500, lng: 31.2400),
+        ),
       );
 
       await _updateOrder(updatedOrder);
@@ -105,9 +120,10 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
     log(FCMService().fcmToken.toString(), name: 'FCM_TOKEN');
     try {
       await FCMService().sendNotification(
-        targetFcmToken: FCMService().fcmToken.toString(),
+        // targetFcmToken: FCMService().fcmToken.toString(),
         title: "Test Notification",
         body: "This is a test notification sent directly from the app!",
+        targetFcmTokens: [],
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -224,6 +240,28 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
                                 const SizedBox(height: 8),
                                 Text('  Latitude: ${order.location.lat}'),
                                 Text('  Longitude: ${order.location.lng}'),
+                                if (order.driver != null) ...[
+                                  const Divider(height: 32),
+                                  const Text(
+                                    'Driver:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text('  Name: ${order.driver!.name}'),
+                                  Text('  Phone: ${order.driver!.phone}'),
+                                  if (order.driver!.location != null) ...[
+                                    Text(
+                                      '  Driver Lat: '
+                                      '${order.driver!.location!.lat}',
+                                    ),
+                                    Text(
+                                      '  Driver Lng: '
+                                      '${order.driver!.location!.lng}',
+                                    ),
+                                  ],
+                                ],
                               ],
                             ),
                           ),
