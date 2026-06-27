@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_cubit.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_events.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_states.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_cubit.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_events.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_states.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gap/gap.dart';
 
@@ -49,7 +49,7 @@ class _EditVehicleInfoPageState extends State<EditVehicleInfoPage> {
     _vehicleNumberController.addListener(_onFieldChanged);
     _vehicleLicenseController.addListener(_onFieldChanged);
 
-    final cubit = getIt.get<AuthModuleCubit>();
+    final cubit = getIt.get<ProfileCubit>();
     if (cubit.state.getProfileState.isSuccess) {
       final profile = cubit.state.getProfileState.data;
       if (profile?.vehicleType != null && ['Bike', 'Car', 'Truck', 'Van'].contains(profile!.vehicleType)) {
@@ -78,7 +78,7 @@ class _EditVehicleInfoPageState extends State<EditVehicleInfoPage> {
         body['vehicleImage'] = _vehicleImage!.path;
       }
       
-      context.read<AuthModuleCubit>().doIndented(
+      context.read<ProfileCubit>().doIndented(
         EditProfileEvent(body: body),
       );
     }
@@ -107,7 +107,7 @@ class _EditVehicleInfoPageState extends State<EditVehicleInfoPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: getIt.get<AuthModuleCubit>(),
+      value: getIt.get<ProfileCubit>(),
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
@@ -144,7 +144,7 @@ class _EditVehicleInfoPageState extends State<EditVehicleInfoPage> {
             const Gap(8),
           ],
         ),
-        body: BlocConsumer<AuthModuleCubit, AuthModuleStates>(
+        body: BlocConsumer<ProfileCubit, ProfileStates>(
           listener: (context, state) {
             if (state.editProfileState.isSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(

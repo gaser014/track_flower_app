@@ -240,7 +240,6 @@ class AppStrings {
   static const String somethingWentWrong =
       "Something went wrong, please try again";
 
-  static const String token = "token";
   static const String driverToken = "driver_token";
   static const String user = "user";
   static const String driverLoginError = "Invalid email or password";
@@ -337,4 +336,15 @@ class AppStrings {
   static const String orderCompletedBody = "Your order is now complete.";
   static const String orderCancelledBody = "Your order has been cancelled.";
 
+  // Order tracking notifications - Arabic (sent to the customer)
+  static const String orderNotificationTitleAr = "تحديث الطلب";
+  static const String orderUpdateBodyAr = "تم تحديث حالة طلبك.";
+  static const String orderAcceptedBodyAr = "تم قبول طلبك من قبل السائق.";
+  static const String orderPickedBodyAr =
+      "استلم السائق طلبك وهو في الطريق إليك.";
+  static const String orderArrivedBodyAr = "وصل السائق إلى موقعك.";
+  static const String orderDeliveredBodyAr =
+      "تم توصيل طلبك. نتمنى لك وقتاً ممتعاً!";
+  static const String orderCompletedBodyAr = "تم اكتمال طلبك الآن.";
+  static const String orderCancelledBodyAr = "تم إلغاء طلبك.";
 }

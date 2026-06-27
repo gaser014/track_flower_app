@@ -18,16 +18,18 @@ class LoginPageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        spacing: 16,
-        children: [
-          LoginFormSection(
-            formKey: formKey,
-            emailController: emailController,
-            passwordController: passwordController,
-          ),
-          const DontHaveAccountSection(),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          spacing: 16,
+          children: [
+            LoginFormSection(
+              formKey: formKey,
+              emailController: emailController,
+              passwordController: passwordController,
+            ),
+            const DontHaveAccountSection(),
+          ],
+        ),
       ),
     );
   }

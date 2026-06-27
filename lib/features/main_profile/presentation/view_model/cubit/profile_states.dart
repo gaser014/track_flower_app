@@ -1,26 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 
-class AuthModuleStates extends Equatable {
+class ProfileStates extends Equatable {
   final BaseState getProfileState;
   final BaseState editProfileState;
   final BaseState updateProfilePhotoState;
   final BaseState resetPasswordState;
 
-  const AuthModuleStates({
+  const ProfileStates({
     this.getProfileState = const BaseState.initial(),
     this.editProfileState = const BaseState.initial(),
     this.updateProfilePhotoState = const BaseState.initial(),
     this.resetPasswordState = const BaseState.initial(),
   });
 
-  AuthModuleStates copyWith({
+  ProfileStates copyWith({
     BaseState? getProfileState,
     BaseState? editProfileState,
     BaseState? updateProfilePhotoState,
     BaseState? resetPasswordState,
   }) {
-    return AuthModuleStates(
+    return ProfileStates(
       getProfileState: getProfileState ?? this.getProfileState,
       editProfileState: editProfileState ?? this.editProfileState,
       updateProfilePhotoState: updateProfilePhotoState ?? this.updateProfilePhotoState,

@@ -7,7 +7,7 @@ part 'profile_data_response_model.g.dart';
 class ProfileDataResponseModel {
   @JsonKey(name: "message")
   String? message;
-  @JsonKey(name: "user")
+  @JsonKey(name: "driver")
   UserModel? user;
 
   ProfileDataResponseModel({this.message, this.user});

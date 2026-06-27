@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_cubit.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_events.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_states.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_cubit.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_events.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_states.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view/pages/change_password_page.dart';
 import 'package:gap/gap.dart';
 
@@ -45,7 +45,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _phoneController.addListener(_onFieldChanged);
     _passwordController.addListener(_onFieldChanged);
 
-    final cubit = getIt.get<AuthModuleCubit>();
+    final cubit = getIt.get<ProfileCubit>();
     if (cubit.state.getProfileState.isSuccess) {
       final profile = cubit.state.getProfileState.data;
       _firstNameController.text = profile?.firstName ?? '';
@@ -127,7 +127,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _saveProfile(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      context.read<AuthModuleCubit>().doIndented(
+      context.read<ProfileCubit>().doIndented(
         EditProfileEvent(body: {
           'firstName': _firstNameController.text.trim(),
           'lastName': _lastNameController.text.trim(),
@@ -196,7 +196,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: getIt.get<AuthModuleCubit>(),
+      value: getIt.get<ProfileCubit>(),
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
@@ -239,7 +239,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const Gap(8),
           ],
         ),
-        body: BlocConsumer<AuthModuleCubit, AuthModuleStates>(
+        body: BlocConsumer<ProfileCubit, ProfileStates>(
           listener: (context, state) {
             if (state.editProfileState.isSuccess) {
               _showSuccessSnackBar(context, 'Profile updated successfully');

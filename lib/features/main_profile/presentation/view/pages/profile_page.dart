@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view/pages/edit_profile_page.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_cubit.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_events.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_states.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_cubit.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_events.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_states.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view/pages/edit_vehicle_info_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:track_flowers_app/config/api/end_points.dart';
@@ -15,13 +15,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
 
-class AuthModulePage extends StatelessWidget {
-  const AuthModulePage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<AuthModuleCubit>()..doIndented(GetProfileEvent()),
+      create: (context) => getIt.get<ProfileCubit>()..doIndented(GetProfileEvent()),
       child: Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
@@ -58,7 +58,7 @@ class AuthModulePage extends StatelessWidget {
             const Gap(8),
           ],
         ),
-        body: BlocBuilder<AuthModuleCubit, AuthModuleStates>(
+        body: BlocBuilder<ProfileCubit, ProfileStates>(
           builder: (context, state) {
             if (state.getProfileState.isLoading) {
               return const Center(child: CircularProgressIndicator());
@@ -182,7 +182,7 @@ class AuthModulePage extends StatelessWidget {
                   children: [
                     Text('Error: ${state.getProfileState.exception.toString()}'),
                     ElevatedButton(
-                      onPressed: () => context.read<AuthModuleCubit>().doIndented(GetProfileEvent()),
+                      onPressed: () => context.read<ProfileCubit>().doIndented(GetProfileEvent()),
                       child: const Text('Retry'),
                     )
                   ],

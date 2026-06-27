@@ -159,8 +159,8 @@ class FCMService {
   /// ⚠️ IMPORTANT: For production, this logic belongs on your backend!
   Future<void> sendNotification({
     required List<FCMTokenEntity> targetFcmTokens,
-    required String title,
-    required String body,
+    required Map<String, String> title,
+    required Map<String, String> body,
   }) async {
     try {
       // 1. Go to Firebase Console -> Project Settings -> Service Accounts
@@ -210,15 +210,20 @@ class FCMService {
       for (var tokenData in targetFcmTokens) {
         final token = tokenData.token;
         final lang =
-            tokenData.lang; // If you want to use language for translations
+            tokenData.lang; // Pick the copy matching the user's localization.
 
         if (token == null) continue;
+
+        // Resolve the localized title/body for this token's language,
+        // falling back to English when a translation is missing.
+        final localizedTitle = title[lang] ?? title['en'] ?? '';
+        final localizedBody = body[lang] ?? body['en'] ?? '';
 
         // 5. Build the modern HTTP v1 message payload
         final Map<String, dynamic> data = {
           'message': {
             'token': token,
-            'notification': {'title': title, 'body': body},
+            'notification': {'title': localizedTitle, 'body': localizedBody},
             'data': {
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
               'message': 'custom data',

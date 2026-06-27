@@ -6,7 +6,6 @@ import 'package:track_flowers_app/config/base_response/entity/meta_entity.dart';
 import 'package:track_flowers_app/config/base_response/result.dart';
 import 'package:track_flowers_app/config/firebase/order_tracking_service.dart';
 import 'package:track_flowers_app/config/uses_cases/pagination_params.dart';
-import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/features/driver_orders/data/data_sources/driver_orders_remote_data_source_contract.dart';
 import 'package:track_flowers_app/features/driver_orders/data/fixtures/driver_orders_fixtures.dart';
 import 'package:track_flowers_app/features/driver_orders/data/mapper/order_firestore_mapper.dart';
@@ -43,7 +42,13 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
       success: (data) => Success(
         data: BasePaginationEntity(
           meta: data?.meta ?? const MetaEntity.empty(),
-          data: data?.orders.map((e) => e.toEntity()).toList() ?? const [],
+          data:
+              data?.orders
+                  .map((e) => e.toEntity())
+                  .toList()
+                  .reversed
+                  .toList() ??
+              const [],
         ),
       ),
       error: (exception) => Error(exception: exception),
@@ -154,14 +159,9 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
       // Mirror the order onto the customer's user document and notify them
       // of the latest status change.
       if (order.userId.isNotEmpty) {
-        await _orderTrackingService.setUserOrder(
-          userId: order.userId,
-          orderId: order.id,
-          data: firestoreMap,
-        );
         await _orderTrackingService.notifyUser(
           userId: order.userId,
-          title: AppStrings.orderNotificationTitle,
+          title: order.status.notificationTitle,
           body: order.status.notificationBody,
         );
       }

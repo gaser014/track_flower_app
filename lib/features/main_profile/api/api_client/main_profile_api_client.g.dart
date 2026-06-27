@@ -29,7 +29,7 @@ class _MainProfileApiClient implements MainProfileApiClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/profile-data',
+            '/drivers/profile-data',
             queryParameters: queryParameters,
             data: _data,
           )

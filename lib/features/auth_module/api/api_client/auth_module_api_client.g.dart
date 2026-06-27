@@ -176,7 +176,7 @@ class _AuthModuleApiClient implements AuthModuleApiClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/forgotPassword',
+            '/drivers/forgotPassword',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -206,7 +206,7 @@ class _AuthModuleApiClient implements AuthModuleApiClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/verifyResetCode',
+            '/drivers/verifyResetCode',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -236,7 +236,7 @@ class _AuthModuleApiClient implements AuthModuleApiClient {
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/resetPassword',
+            '/drivers/resetPassword',
             queryParameters: queryParameters,
             data: _data,
           )

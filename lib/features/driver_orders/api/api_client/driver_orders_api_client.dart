@@ -12,7 +12,7 @@ class DriverOrdersApiClient {
   Future<OrdersPageModel> getPendingOrders(int page, int limit) async {
     final response = await _dio.get(
       EndPoints.driverPendingOrders,
-      queryParameters: {'page': page, 'limit': limit, 'sort': 'createdAt'},
+      queryParameters: {'page': page, 'limit': 200, 'sort': 'createdAt'},
     );
     return OrdersPageModel.fromJson(response.data);
   }

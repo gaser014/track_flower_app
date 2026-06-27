@@ -6,26 +6,26 @@ import 'package:track_flowers_app/features/main_profile/domain/use_cases/get_pro
 import 'package:track_flowers_app/features/main_profile/domain/use_cases/edit_profile_use_case.dart';
 import 'package:track_flowers_app/features/main_profile/domain/use_cases/update_profile_photo_use_case.dart';
 import 'package:track_flowers_app/features/main_profile/domain/use_cases/reset_password_use_case.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_events.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/auth_module_states.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_events.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view_model/cubit/profile_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class AuthModuleCubit extends Cubit<AuthModuleStates> {
+class ProfileCubit extends Cubit<ProfileStates> {
   final GetProfileUseCase _getProfileUseCase;
   final EditProfileUseCase _editProfileUseCase;
   final UpdateProfilePhotoUseCase _updateProfilePhotoUseCase;
   final ResetPasswordUseCase _resetPasswordUseCase;
 
-  AuthModuleCubit(
+  ProfileCubit(
     this._getProfileUseCase,
     this._editProfileUseCase,
     this._updateProfilePhotoUseCase,
     this._resetPasswordUseCase,
-  ) : super(const AuthModuleStates());
+  ) : super(const ProfileStates());
 
-  void doIndented(AuthModuleEvents event) {
+  void doIndented(ProfileEvents event) {
     switch (event) {
       case GetProfileEvent():
         _getProfile();

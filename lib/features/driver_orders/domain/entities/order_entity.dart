@@ -112,15 +112,45 @@ extension OrderStatusX on OrderStatus {
     _ => this,
   };
 
-  /// Customer-facing notification body for the current status.
-  String get notificationBody => switch (this) {
-    OrderStatus.accepted => AppStrings.orderAcceptedBody,
-    OrderStatus.picked => AppStrings.orderPickedBody,
-    OrderStatus.arrived => AppStrings.orderArrivedBody,
-    OrderStatus.delivered => AppStrings.orderDeliveredBody,
-    OrderStatus.completed => AppStrings.orderCompletedBody,
-    OrderStatus.cancelled => AppStrings.orderCancelledBody,
-    OrderStatus.pending => AppStrings.orderUpdateBody,
+  /// Customer-facing notification title localized per language code
+  /// ('en' and 'ar'). The right entry is chosen based on the user's
+  /// stored localization on their FCM token.
+  Map<String, String> get notificationTitle => {
+    'en': AppStrings.orderNotificationTitle,
+    'ar': AppStrings.orderNotificationTitleAr,
+  };
+
+  /// Customer-facing notification body for the current status, localized
+  /// per language code ('en' and 'ar').
+  Map<String, String> get notificationBody => switch (this) {
+    OrderStatus.accepted => {
+      'en': AppStrings.orderAcceptedBody,
+      'ar': AppStrings.orderAcceptedBodyAr,
+    },
+    OrderStatus.picked => {
+      'en': AppStrings.orderPickedBody,
+      'ar': AppStrings.orderPickedBodyAr,
+    },
+    OrderStatus.arrived => {
+      'en': AppStrings.orderArrivedBody,
+      'ar': AppStrings.orderArrivedBodyAr,
+    },
+    OrderStatus.delivered => {
+      'en': AppStrings.orderDeliveredBody,
+      'ar': AppStrings.orderDeliveredBodyAr,
+    },
+    OrderStatus.completed => {
+      'en': AppStrings.orderCompletedBody,
+      'ar': AppStrings.orderCompletedBodyAr,
+    },
+    OrderStatus.cancelled => {
+      'en': AppStrings.orderCancelledBody,
+      'ar': AppStrings.orderCancelledBodyAr,
+    },
+    OrderStatus.pending => {
+      'en': AppStrings.orderUpdateBody,
+      'ar': AppStrings.orderUpdateBodyAr,
+    },
   };
 }
 

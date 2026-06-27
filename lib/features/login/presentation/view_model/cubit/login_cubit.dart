@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:equatable/equatable.dart';
+import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/uses_cases/login_params.dart';
@@ -20,7 +21,7 @@ part 'login_states.dart';
 @injectable
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit(
-    this.loginUseCase, 
+    this.loginUseCase,
     this.saveUserUseCase,
     this._getProfileUseCase,
     this._editProfileUseCase,
@@ -61,7 +62,7 @@ class LoginCubit extends Cubit<LoginStates> {
           }
           if (response.token != null) {
             await AppSharedPreferences.setString(
-              key: AppStrings.token,
+              key: APIkeys.accessToken,
               value: response.token!,
             );
           }
@@ -88,9 +89,17 @@ class LoginCubit extends Cubit<LoginStates> {
     result.when(
       success: (response) {
         if (response?.user != null) {
-          emit(state.copyWith(getProfileState: BaseState.success(response!.user!)));
+          emit(
+            state.copyWith(getProfileState: BaseState.success(response!.user!)),
+          );
         } else {
-          emit(state.copyWith(getProfileState: BaseState.error(Exception("User profile data is null"))));
+          emit(
+            state.copyWith(
+              getProfileState: BaseState.error(
+                Exception("User profile data is null"),
+              ),
+            ),
+          );
         }
       },
       error: (error) {
@@ -105,9 +114,19 @@ class LoginCubit extends Cubit<LoginStates> {
     result.when(
       success: (response) {
         if (response?.user != null) {
-          emit(state.copyWith(editProfileState: BaseState.success(response!.user!)));
+          emit(
+            state.copyWith(
+              editProfileState: BaseState.success(response!.user!),
+            ),
+          );
         } else {
-          emit(state.copyWith(editProfileState: BaseState.error(Exception("Failed to update profile"))));
+          emit(
+            state.copyWith(
+              editProfileState: BaseState.error(
+                Exception("Failed to update profile"),
+              ),
+            ),
+          );
         }
       },
       error: (error) {
@@ -122,9 +141,19 @@ class LoginCubit extends Cubit<LoginStates> {
     result.when(
       success: (response) {
         if (response?.user != null) {
-          emit(state.copyWith(updateProfilePhotoState: BaseState.success(response!.user!)));
+          emit(
+            state.copyWith(
+              updateProfilePhotoState: BaseState.success(response!.user!),
+            ),
+          );
         } else {
-          emit(state.copyWith(updateProfilePhotoState: BaseState.error(Exception("Failed to update profile photo"))));
+          emit(
+            state.copyWith(
+              updateProfilePhotoState: BaseState.error(
+                Exception("Failed to update profile photo"),
+              ),
+            ),
+          );
         }
       },
       error: (error) {

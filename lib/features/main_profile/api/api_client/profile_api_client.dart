@@ -6,13 +6,13 @@ import 'package:track_flowers_app/features/main_profile/data/models/reset_passwo
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'auth_module_api_client.g.dart';
+part 'profile_api_client.g.dart';
 
 @Injectable()
 @RestApi()
-abstract class AuthModuleApiClient {
+abstract class ProfileApiClient {
   @factoryMethod
-  factory AuthModuleApiClient(Dio dio) = _AuthModuleApiClient;
+  factory ProfileApiClient(Dio dio) = _ProfileApiClient;
 
   @GET(EndPoints.getUserProfile)
   Future<LoginResponseModel> getProfile();

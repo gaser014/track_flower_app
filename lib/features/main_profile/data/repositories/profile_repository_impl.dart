@@ -1,19 +1,19 @@
 import 'dart:io';
 import 'package:track_flowers_app/config/base_response/result.dart';
-import 'package:track_flowers_app/features/main_profile/data/datasources/auth_module_remote_data_source_contract.dart';
-import 'package:track_flowers_app/features/main_profile/data/datasources/auth_module_local_data_source_contract.dart';
+import 'package:track_flowers_app/features/main_profile/data/datasources/profile_remote_data_source_contract.dart';
+import 'package:track_flowers_app/features/main_profile/data/datasources/profile_local_data_source_contract.dart';
 import 'package:track_flowers_app/features/main_profile/domain/entities/profile_response_entity.dart';
 import 'package:track_flowers_app/features/main_profile/domain/entities/reset_password_response_entity.dart';
-import 'package:track_flowers_app/features/main_profile/domain/repositories/auth_module_repository.dart';
+import 'package:track_flowers_app/features/main_profile/domain/repositories/profile_repository.dart';
 import 'package:track_flowers_app/features/main_profile/domain/entities/profile_entity.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: AuthModuleRepository)
-class AuthModuleRepositoryImpl implements AuthModuleRepository {
-  final AuthModuleRemoteDataSourceContract _remoteDataSource;
-  final AuthModuleLocalDataSourceContract _localDataSource;
+@Injectable(as: ProfileRepository)
+class ProfileRepositoryImpl implements ProfileRepository {
+  final ProfileRemoteDataSourceContract _remoteDataSource;
+  final ProfileLocalDataSourceContract _localDataSource;
 
-  AuthModuleRepositoryImpl(this._remoteDataSource, this._localDataSource);
+  ProfileRepositoryImpl(this._remoteDataSource, this._localDataSource);
 
   @override
   Future<Result<ProfileResponseEntity>> getProfile() async {

@@ -29,7 +29,7 @@ class _LoginApiClient implements LoginApiClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/signin',
+            '/drivers/signin',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -56,7 +56,7 @@ class _LoginApiClient implements LoginApiClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/profile-data',
+            '/drivers/profile-data',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -84,7 +84,7 @@ class _LoginApiClient implements LoginApiClient {
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/editProfile',
+            '/drivers/editProfilee',
             queryParameters: queryParameters,
             data: _data,
           )

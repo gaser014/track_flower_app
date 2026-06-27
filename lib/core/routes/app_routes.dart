@@ -5,18 +5,16 @@ import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_success_page.dart';
-import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
+import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
-import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view/pages/auth_module_page.dart'
-    as profile;
+import 'package:track_flowers_app/features/main_profile/presentation/view/pages/profile_page.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
@@ -253,6 +251,20 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
+        path: Routes.forgetPassword,
+        name: Routes.forgetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return ForgetPasswordPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (BuildContext context, GoRouterState state) {
+          return const LoginPage();
+        },
+      ),
+      GoRoute(
         path: Routes.testTracking,
         name: Routes.testTracking,
         builder: (BuildContext context, GoRouterState state) {
@@ -288,29 +300,23 @@ abstract class AppRoutes {
           return const OnboardingDriverPage();
         },
       ),
-      GoRoute(
-        path: Routes.loginDriver,
-        name: Routes.loginDriver,
-        builder: (BuildContext context, GoRouterState state) {
-          return const AuthModulePage();
-        },
-      ),
-      GoRoute(
-        path: Routes.profile,
-        name: Routes.profile,
-        builder: (BuildContext context, GoRouterState state) {
-          return const profile.AuthModulePage();
-        },
-      ),
+
+      // GoRoute(
+      //   path: Routes.profile,
+      //   name: Routes.profile,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const MainProfilePage();
+      //   },
+      // ),
     ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 
       final authRoutes = [
         Routes.login,
-        Routes.main,
-        // Routes.register,
-        Routes.forgetPassword,
+        // Routes.main,
+        // // Routes.register,
+        // Routes.forgetPassword,
         // Routes.resetPassword,
         // AuthRoutes.otpVerification,
         // AuthRoutes.completeProfile,

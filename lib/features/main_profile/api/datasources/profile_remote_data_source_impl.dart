@@ -1,17 +1,17 @@
 import 'dart:io';
 import 'package:track_flowers_app/config/api/api_execute.dart';
 import 'package:track_flowers_app/config/base_response/result.dart';
-import 'package:track_flowers_app/features/main_profile/api/api_client/auth_module_api_client.dart';
-import 'package:track_flowers_app/features/main_profile/data/datasources/auth_module_remote_data_source_contract.dart';
+import 'package:track_flowers_app/features/main_profile/api/api_client/profile_api_client.dart';
+import 'package:track_flowers_app/features/main_profile/data/datasources/profile_remote_data_source_contract.dart';
 import 'package:track_flowers_app/features/login/data/models/login_response_model.dart';
 import 'package:track_flowers_app/features/main_profile/data/models/reset_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: AuthModuleRemoteDataSourceContract)
-class AuthModuleRemoteDataSourceImpl implements AuthModuleRemoteDataSourceContract {
-  final AuthModuleApiClient _apiClient;
+@Injectable(as: ProfileRemoteDataSourceContract)
+class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSourceContract {
+  final ProfileApiClient _apiClient;
 
-  AuthModuleRemoteDataSourceImpl(this._apiClient);
+  ProfileRemoteDataSourceImpl(this._apiClient);
 
   @override
   Future<Result<LoginResponseModel>> getProfile() async {

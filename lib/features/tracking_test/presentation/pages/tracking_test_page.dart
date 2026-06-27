@@ -121,8 +121,14 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
     try {
       await FCMService().sendNotification(
         // targetFcmToken: FCMService().fcmToken.toString(),
-        title: "Test Notification",
-        body: "This is a test notification sent directly from the app!",
+        title: const {
+          'en': "Test Notification",
+          'ar': "إشعار تجريبي",
+        },
+        body: const {
+          'en': "This is a test notification sent directly from the app!",
+          'ar': "هذا إشعار تجريبي تم إرساله مباشرة من التطبيق!",
+        },
         targetFcmTokens: [],
       );
 

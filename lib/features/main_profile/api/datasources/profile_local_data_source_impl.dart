@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
-import 'package:track_flowers_app/features/main_profile/data/datasources/auth_module_local_data_source_contract.dart';
+import 'package:track_flowers_app/features/main_profile/data/datasources/profile_local_data_source_contract.dart';
 import 'package:track_flowers_app/features/main_profile/data/models/profile_model.dart';
 import 'package:injectable/injectable.dart';
 
-@Injectable(as: AuthModuleLocalDataSourceContract)
-class AuthModuleLocalDataSourceImpl implements AuthModuleLocalDataSourceContract {
+@Injectable(as: ProfileLocalDataSourceContract)
+class ProfileLocalDataSourceImpl implements ProfileLocalDataSourceContract {
   @override
   Future<ProfileModel> saveProfile(ProfileModel profileModel) async {
     await AppSharedPreferences.setString(
