@@ -15,7 +15,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view/pages/auth_module_page.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view/pages/auth_module_page.dart'
+    as profile;
 
 import 'package:go_router/go_router.dart';
 import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
@@ -298,7 +299,7 @@ abstract class AppRoutes {
         path: Routes.profile,
         name: Routes.profile,
         builder: (BuildContext context, GoRouterState state) {
-          return const AuthModulePage();
+          return const profile.AuthModulePage();
         },
       ),
     ],

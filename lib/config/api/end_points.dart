@@ -46,6 +46,4 @@ abstract class EndPoints {
   ///drivers
   static const String uploadPhoto = "/drivers/upload-photo";
   static const String driverResetPasswrod = "/drivers/resetPassword";
-
-
 }

@@ -63,3 +63,13 @@ class PickVehicleLicenseEvent extends AuthModuleEvent {
   final File file;
   PickVehicleLicenseEvent(this.file);
 }
+
+class PickNidImageEvent extends AuthModuleEvent {
+  final File file;
+  PickNidImageEvent(this.file);
+}
+
+class ChangeGenderEvent extends AuthModuleEvent {
+  final String gender;
+  ChangeGenderEvent(this.gender);
+}
