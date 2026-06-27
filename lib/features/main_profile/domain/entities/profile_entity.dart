@@ -1,4 +1,4 @@
-class UserEntity {
+class ProfileEntity {
   final String? id;
   final String? firstName;
   final String? lastName;
@@ -6,24 +6,16 @@ class UserEntity {
   final String? email;
   final String? phone;
   final String? photo;
-  final String? role;
-  final List? addresses;
-  final List? wishlist;
   final String? vehicleType;
   final String? vehicleNumber;
   final String? vehicleLicense;
-  final DateTime? createdAt;
 
-  UserEntity({
+  ProfileEntity({
     this.firstName,
     this.lastName,
     this.email,
     this.phone,
-    this.role,
     this.id,
-    this.createdAt,
-    this.addresses,
-    this.wishlist,
     this.photo,
     this.gender,
     this.vehicleType,

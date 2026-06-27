@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
+import 'package:track_flowers_app/features/main_profile/presentation/view/pages/auth_module_page.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
@@ -209,7 +210,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.onboardingDriver,
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
         path: Routes.applicationSubmitted,
@@ -289,6 +290,13 @@ abstract class AppRoutes {
       GoRoute(
         path: Routes.loginDriver,
         name: Routes.loginDriver,
+        builder: (BuildContext context, GoRouterState state) {
+          return const AuthModulePage();
+        },
+      ),
+      GoRoute(
+        path: Routes.profile,
+        name: Routes.profile,
         builder: (BuildContext context, GoRouterState state) {
           return const AuthModulePage();
         },

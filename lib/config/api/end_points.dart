@@ -42,4 +42,10 @@ abstract class EndPoints {
   static const String aboutApp = "/about-app";
   static const String vehiclesEndpoint = "/vehicles";
   static const String applyDriverEndpoint = "/drivers/apply";
+
+  ///drivers
+  static const String uploadPhoto = "/drivers/upload-photo";
+  static const String driverResetPasswrod = "/drivers/resetPassword";
+
+
 }

@@ -25,6 +25,12 @@ class UserModel {
   List? addresses;
   @JsonKey(name: "wishlist")
   List? wishlist;
+  @JsonKey(name: "vehicleType")
+  String? vehicleType;
+  @JsonKey(name: "vehicleNumber")
+  String? vehicleNumber;
+  @JsonKey(name: "vehicleLicense")
+  String? vehicleLicense;
   @JsonKey(name: "createdAt")
   DateTime? createdAt;
 
@@ -56,6 +62,9 @@ class UserModel {
       wishlist: wishlist,
       photo: photo,
       gender: gender,
+      vehicleType: vehicleType,
+      vehicleNumber: vehicleNumber,
+      vehicleLicense: vehicleLicense,
     );
   }
 
@@ -72,6 +81,9 @@ class UserModel {
       ..addresses = entity.addresses
       ..wishlist = entity.wishlist
       ..photo = entity.photo
-      ..gender = entity.gender;
+      ..gender = entity.gender
+      ..vehicleType = entity.vehicleType
+      ..vehicleNumber = entity.vehicleNumber
+      ..vehicleLicense = entity.vehicleLicense;
   }
 }

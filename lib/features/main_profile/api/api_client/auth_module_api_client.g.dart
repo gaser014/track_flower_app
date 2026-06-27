@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_api_client.dart';
+part of 'auth_module_api_client.dart';
 
 // dart format off
 
@@ -10,41 +10,14 @@ part of 'login_api_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main,avoid_redundant_argument_values
 
-class _LoginApiClient implements LoginApiClient {
-  _LoginApiClient(this._dio, {this.baseUrl, this.errorLogger});
+class _AuthModuleApiClient implements AuthModuleApiClient {
+  _AuthModuleApiClient(this._dio, {this.baseUrl, this.errorLogger});
 
   final Dio _dio;
 
   String? baseUrl;
 
   final ParseErrorLogger? errorLogger;
-
-  @override
-  Future<LoginResponseModel> login(String email, String password) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = {'email': email, 'password': password};
-    final _options = _setStreamType<LoginResponseModel>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/auth/signin',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late LoginResponseModel _value;
-    try {
-      _value = LoginResponseModel.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, response: _result);
-      rethrow;
-    }
-    return _value;
-  }
 
   @override
   Future<LoginResponseModel> getProfile() async {
@@ -135,6 +108,36 @@ class _LoginApiClient implements LoginApiClient {
     late LoginResponseModel _value;
     try {
       _value = LoginResponseModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ResetPasswordResponseModel> resetPassword(
+    Map<String, dynamic> body,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<ResetPasswordResponseModel>(
+      Options(method: 'PATCH', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/drivers/resetPassword',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ResetPasswordResponseModel _value;
+    try {
+      _value = ResetPasswordResponseModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

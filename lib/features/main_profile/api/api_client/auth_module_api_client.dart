@@ -2,21 +2,17 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:track_flowers_app/config/api/end_points.dart';
 import 'package:track_flowers_app/features/login/data/models/login_response_model.dart';
+import 'package:track_flowers_app/features/main_profile/data/models/reset_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'login_api_client.g.dart';
+part 'auth_module_api_client.g.dart';
 
 @Injectable()
 @RestApi()
-abstract class LoginApiClient {
+abstract class AuthModuleApiClient {
   @factoryMethod
-  factory LoginApiClient(Dio dio) = _LoginApiClient;
-  @POST(EndPoints.login)
-  Future<LoginResponseModel> login(
-    @Field() String email,
-    @Field() String password,
-  );
+  factory AuthModuleApiClient(Dio dio) = _AuthModuleApiClient;
 
   @GET(EndPoints.getUserProfile)
   Future<LoginResponseModel> getProfile();
@@ -30,5 +26,10 @@ abstract class LoginApiClient {
   @MultiPart()
   Future<LoginResponseModel> updateProfilePhoto(
     @Part(name: "photo") File file,
+  );
+
+  @PATCH(EndPoints.driverResetPasswrod)
+  Future<ResetPasswordResponseModel> resetPassword(
+    @Body() Map<String, dynamic> body,
   );
 }
