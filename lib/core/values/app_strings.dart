@@ -254,4 +254,18 @@ class AppStrings {
   static const String noPendingOrders = "No new orders";
   static const String activeOrderInProgress =
       "You already have an active order. Finish it before accepting a new one.";
+
+  // Order tracking notifications (sent to the customer)
+  static const String orderNotificationTitle = "Order update";
+  static const String orderUpdateBody = "Your order status has been updated.";
+  static const String orderAcceptedBody =
+      "Your order has been accepted by the driver.";
+  static const String orderPickedBody =
+      "The driver picked up your order and is on the way.";
+  static const String orderArrivedBody =
+      "The driver has arrived at your location.";
+  static const String orderDeliveredBody =
+      "Your order has been delivered. Enjoy!";
+  static const String orderCompletedBody = "Your order is now complete.";
+  static const String orderCancelledBody = "Your order has been cancelled.";
 }

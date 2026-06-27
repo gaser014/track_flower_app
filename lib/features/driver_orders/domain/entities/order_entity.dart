@@ -111,6 +111,17 @@ extension OrderStatusX on OrderStatus {
     OrderStatus.delivered => OrderStatus.completed,
     _ => this,
   };
+
+  /// Customer-facing notification body for the current status.
+  String get notificationBody => switch (this) {
+    OrderStatus.accepted => AppStrings.orderAcceptedBody,
+    OrderStatus.picked => AppStrings.orderPickedBody,
+    OrderStatus.arrived => AppStrings.orderArrivedBody,
+    OrderStatus.delivered => AppStrings.orderDeliveredBody,
+    OrderStatus.completed => AppStrings.orderCompletedBody,
+    OrderStatus.cancelled => AppStrings.orderCancelledBody,
+    OrderStatus.pending => AppStrings.orderUpdateBody,
+  };
 }
 
 class StoreEntity extends Equatable {
@@ -164,6 +175,7 @@ class OrderItemEntity extends Equatable {
 
 class OrderEntity extends Equatable {
   final String id;
+  final String userId;
   final String orderNumber;
   final String type;
   final DateTime date;
@@ -176,6 +188,7 @@ class OrderEntity extends Equatable {
 
   const OrderEntity({
     required this.id,
+    this.userId = "",
     required this.orderNumber,
     required this.type,
     required this.date,
@@ -190,6 +203,7 @@ class OrderEntity extends Equatable {
   OrderEntity copyWith({OrderStatus? status}) {
     return OrderEntity(
       id: id,
+      userId: userId,
       orderNumber: orderNumber,
       type: type,
       date: date,
@@ -205,6 +219,7 @@ class OrderEntity extends Equatable {
   @override
   List<Object?> get props => [
     id,
+    userId,
     orderNumber,
     type,
     date,

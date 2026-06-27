@@ -15,4 +15,10 @@ abstract class DriverOrdersRepository {
   Future<Result<OrderEntity>> rejectOrder(OrderEntity order);
   Future<Result<OrderEntity>> startOrder(OrderEntity order);
   Future<Result<OrderEntity>> completeOrder(OrderEntity order);
+
+  Future<void> mirrorOrderToFirebase(
+    OrderEntity order, {
+    double? driverLat,
+    double? driverLng,
+  });
 }

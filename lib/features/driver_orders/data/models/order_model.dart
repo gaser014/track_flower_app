@@ -13,6 +13,7 @@ OrderStatus orderStatusFromString(String value) =>
 
 class OrderModel {
   final String id;
+  final String userId;
   final String orderNumber;
   final String type;
   final String state;
@@ -25,6 +26,7 @@ class OrderModel {
 
   const OrderModel({
     required this.id,
+    this.userId = '',
     required this.orderNumber,
     required this.type,
     required this.state,
@@ -41,8 +43,12 @@ class OrderModel {
         ? Map<String, dynamic>.from(json['order'] as Map)
         : json;
     final store = json['store'] is Map ? json['store'] : order['store'];
+    final user = order['user'] is Map ? order['user'] as Map : const {};
     return OrderModel(
       id: order['_id'] ?? order['id'] ?? '',
+      userId:
+          (user['_id'] ?? user['id'] ?? order['userId'] ?? order['user'] ?? '')
+              .toString(),
       orderNumber: (order['orderNumber'] ?? '')
           .toString()
           .replaceAll('#', '')
@@ -66,6 +72,7 @@ class OrderModel {
 
   OrderEntity toEntity() => OrderEntity(
     id: id,
+    userId: userId,
     orderNumber: orderNumber,
     type: type,
     date: DateTime.tryParse(createdAt)?.toLocal() ?? DateTime.now(),

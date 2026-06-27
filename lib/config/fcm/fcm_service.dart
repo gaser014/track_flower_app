@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:track_flowers_app/core/values/app_colors.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:googleapis_auth/auth_io.dart';
+import 'package:track_flowers_app/config/fcm/user_entity.dart';
+import 'package:track_flowers_app/core/values/app_colors.dart';
 
 bool isFCMInitialized = false;
 
@@ -36,18 +35,17 @@ class FCMService {
     // Initialize local notifications for foreground handling
     await _initializeLocalNotifications();
 
-    // Listen for token refresh BEFORE fetching, so we never miss the first
-    // token that gets generated once APNS becomes available on iOS.
+    // Get and store FCM token (unique device identifier)
+    _fcmToken = await _firebaseMessaging.getToken();
+    log('FCM Token: $_fcmToken');
+    // Send this token to your backend server to send notifications
+
+    // Listen for token refresh (happens when app reinstalled, data cleared, etc.)
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
       _fcmToken = newToken;
       log('FCM Token refreshed: $newToken');
       // Update token on your server
     });
-
-    // Get and store FCM token (unique device identifier).
-    // On Apple platforms FCM needs the APNS token first; calling getToken()
-    // before it's set throws `apns-token-not-set`. Guard + never crash startup.
-    await _loadFcmToken();
 
     // Set up background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -66,36 +64,6 @@ class FCMService {
     }
 
     isFCMInitialized = true;
-  }
-
-  /// Fetches the FCM token safely.
-  ///
-  /// On iOS/macOS the APNS token must exist before `getToken()` is called,
-  /// otherwise Firebase throws `apns-token-not-set`. If APNS isn't ready yet,
-  /// we skip the eager fetch and let `onTokenRefresh` deliver it later.
-  Future<void> _loadFcmToken() async {
-    try {
-      final isApplePlatform =
-          defaultTargetPlatform == TargetPlatform.iOS ||
-          defaultTargetPlatform == TargetPlatform.macOS;
-
-      if (isApplePlatform) {
-        final apnsToken = await _firebaseMessaging.getAPNSToken();
-        if (apnsToken == null) {
-          log(
-            'APNS token not available yet; will receive FCM token via '
-            'onTokenRefresh once it is set.',
-          );
-          return;
-        }
-      }
-
-      _fcmToken = await _firebaseMessaging.getToken();
-      log('FCM Token: $_fcmToken');
-      // Send this token to your backend server to send notifications.
-    } catch (e) {
-      log('Failed to fetch FCM token: $e', name: 'FCMService');
-    }
   }
 
   /// Initialize local notifications plugin
@@ -185,12 +153,12 @@ class FCMService {
     if (message.data['screen'] != null) {}
   }
 
-  /// Send a push notification directly from the client to a specific FCM token.
+  /// Send a push notification directly from the client to multiple FCM tokens.
   /// NOTE: This uses the modern FCM HTTP v1 API.
   /// Since the Legacy API is shutting down, you MUST use a Service Account JSON.
   /// ⚠️ IMPORTANT: For production, this logic belongs on your backend!
   Future<void> sendNotification({
-    required String targetFcmToken,
+    required List<FCMTokenEntity> targetFcmTokens,
     required String title,
     required String body,
   }) async {
@@ -239,29 +207,38 @@ class FCMService {
       final url =
           'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
 
-      // 5. Build the modern HTTP v1 message payload
-      final Map<String, dynamic> data = {
-        'message': {
-          'token': targetFcmToken,
-          'notification': {'title': title, 'body': body},
-          'data': {
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'message': 'custom data',
+      for (var tokenData in targetFcmTokens) {
+        final token = tokenData.token;
+        final lang =
+            tokenData.lang; // If you want to use language for translations
+
+        if (token == null) continue;
+
+        // 5. Build the modern HTTP v1 message payload
+        final Map<String, dynamic> data = {
+          'message': {
+            'token': token,
+            'notification': {'title': title, 'body': body},
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'message': 'custom data',
+              'lang': lang ?? 'en',
+            },
           },
-        },
-      };
+        };
 
-      // 6. Send the notification
-      final response = await client.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(data),
-      );
+        // 6. Send the notification
+        final response = await client.post(
+          Uri.parse(url),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(data),
+        );
 
-      if (response.statusCode == 200) {
-        log('Notification sent successfully to $targetFcmToken');
-      } else {
-        log('Failed to send notification: ${response.body}');
+        if (response.statusCode == 200) {
+          log('Notification sent successfully to $token');
+        } else {
+          log('Failed to send notification to $token: ${response.body}');
+        }
       }
 
       client.close();
