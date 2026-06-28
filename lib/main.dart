@@ -26,6 +26,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppSharedPreferences.initialSharedPreference();
   await EasyLocalization.ensureInitialized();
+  // await AppSharedPreferences.clear();
   // await AppSharedPreferences.setString(
   //   key: APIkeys.accessToken,
   //   value:
