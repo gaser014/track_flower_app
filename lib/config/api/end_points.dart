@@ -1,5 +1,6 @@
 abstract class EndPoints {
   static const String baseUrl = "https://flower.elevateegy.com/api/v1";
+  static const String imagesUrl = "https://flower.elevateegy.com/uploads/";
   static const String login = "/auth/signin";
   static const String register = "/auth/signup";
   static const String forgetPasswordEndpoint = "/auth/forgotPassword";
