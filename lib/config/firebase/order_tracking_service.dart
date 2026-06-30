@@ -86,39 +86,35 @@ class OrderTrackingService {
       return null;
     }
   }
-  //
-  // /// Mirror the order onto the customer's user document so the customer app
-  // /// can read its latest order/driver state from `users/{userId}/orders/{id}`.
-  // Future<void> setUserOrder({
-  //   required String userId,
-  //   required String orderId,
-  //   required Map<String, dynamic> data,
-  // }) async {
-  //   if (userId.isEmpty || orderId.isEmpty) return;
-  //   try {
-  //     await _users.doc(userId).collection(ordersCollection).doc(orderId).set({
-  //       ...data,
-  //       'updatedAt': FieldValue.serverTimestamp(),
-  //     }, SetOptions(merge: true));
-  //   } catch (e, s) {
-  //     log(
-  //       'setUserOrder failed',
-  //       name: 'OrderTrackingService',
-  //       error: e,
-  //       stackTrace: s,
-  //     );
-  //   }
-  // }
+
+  /// Mirror the order onto the customer's user document so the customer app
+  /// can read its latest order/driver state from `users/{userId}/orders/{id}`.
+  Future<void> setUserOrder({
+    required String userId,
+    required String orderId,
+    required Map<String, dynamic> data,
+  }) async {
+    if (userId.isEmpty || orderId.isEmpty) return;
+    try {
+      await _users.doc(userId).collection(ordersCollection).doc(orderId).set({
+        ...data,
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e, s) {
+      log(
+        'setUserOrder failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
 
   /// Resolve the user's FCM tokens by id and send a push notification.
-  ///
-  /// [title] and [body] are localized maps keyed by language code (e.g.
-  /// `'en'`, `'ar'`). Each token is notified in the language stored on it,
-  /// falling back to English when a translation is missing.
   Future<void> notifyUser({
     required String userId,
-    required Map<String, String> title,
-    required Map<String, String> body,
+    required String title,
+    required String body,
   }) async {
     final user = await getUser(userId);
     final tokens = user?.fcmTokens ?? const <FCMTokenEntity>[];
