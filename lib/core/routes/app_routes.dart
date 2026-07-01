@@ -6,6 +6,10 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:track_flowers_app/features/profile/presentation/view/pages/edit_profile_page.dart';
+import 'package:track_flowers_app/features/profile/presentation/view/pages/edit_vehicle_page.dart';
+import 'package:track_flowers_app/features/profile/presentation/view/pages/reset_password_page.dart';
+import 'package:track_flowers_app/features/login/domain/entities/user_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:go_router/go_router.dart';
@@ -223,6 +227,28 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.editProfile,
+        name: Routes.editProfile,
+        builder: (BuildContext context, GoRouterState state) {
+          final user = state.extra as UserEntity;
+          return EditProfilePage(user: user);
+        },
+      ),
+      GoRoute(
+        path: Routes.editVehicle,
+        name: Routes.editVehicle,
+        builder: (BuildContext context, GoRouterState state) {
+          return const EditVehiclePage();
+        },
+      ),
+      GoRoute(
+        path: Routes.changePassword,
+        name: Routes.changePassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ResetPasswordPage();
         },
       ),
     ],

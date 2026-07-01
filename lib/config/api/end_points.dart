@@ -13,6 +13,9 @@ abstract class EndPoints {
   static const String getAllOccasions = "/occasions";
   static const String getAllProducts = "/products";
   static const String logout = "/auth/logout";
+  static const String driversUploadPhoto = "/drivers/upload-photo";
+  static const String driversLogout = "/drivers/logout";
+  static const String driversResetPassword = "/drivers/resetPassword";
 
   static const String profileData = "/auth/profile-data";
   static const String ordersPage = "/orders";
