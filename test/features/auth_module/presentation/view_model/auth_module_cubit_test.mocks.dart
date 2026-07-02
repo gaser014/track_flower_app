@@ -13,8 +13,12 @@ import 'package:track_flowers_app/features/auth_module/domain/entities/driver_lo
     as _i6;
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart'
     as _i5;
+import 'package:track_flowers_app/features/auth_module/domain/entities/save_credentials_request_entity.dart'
+    as _i14;
+import 'package:track_flowers_app/features/auth_module/domain/entities/saved_credentials_response_entity.dart'
+    as _i11;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart'
-    as _i13;
+    as _i15;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart'
     as _i10;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart'
@@ -22,9 +26,9 @@ import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_dr
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart'
     as _i8;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart'
-    as _i12;
+    as _i13;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_token_use_case.dart'
-    as _i11;
+    as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -100,24 +104,28 @@ class MockGetSavedCredentialsUseCase extends _i1.Mock
   }
 
   @override
-  _i3.Future<_i4.Result<Map<String, String?>>> call(_i9.NoParams? params) =>
+  _i3.Future<_i4.Result<_i11.SavedCredentialsResponseEntity>> call(
+    _i9.NoParams? params,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
-            returnValue: _i3.Future<_i4.Result<Map<String, String?>>>.value(
-              _i7.dummyValue<_i4.Result<Map<String, String?>>>(
-                this,
-                Invocation.method(#call, [params]),
-              ),
-            ),
+            returnValue:
+                _i3.Future<
+                  _i4.Result<_i11.SavedCredentialsResponseEntity>
+                >.value(
+                  _i7.dummyValue<
+                    _i4.Result<_i11.SavedCredentialsResponseEntity>
+                  >(this, Invocation.method(#call, [params])),
+                ),
           )
-          as _i3.Future<_i4.Result<Map<String, String?>>>);
+          as _i3.Future<_i4.Result<_i11.SavedCredentialsResponseEntity>>);
 }
 
 /// A class which mocks [SaveDriverTokenUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSaveDriverTokenUseCase extends _i1.Mock
-    implements _i11.SaveDriverTokenUseCase {
+    implements _i12.SaveDriverTokenUseCase {
   MockSaveDriverTokenUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -140,13 +148,15 @@ class MockSaveDriverTokenUseCase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSaveDriverCredentialsUseCase extends _i1.Mock
-    implements _i12.SaveDriverCredentialsUseCase {
+    implements _i13.SaveDriverCredentialsUseCase {
   MockSaveDriverCredentialsUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<_i4.Result<void>> call(_i12.SaveDriverCredentialsParams? params) =>
+  _i3.Future<_i4.Result<void>> call(
+    _i14.SaveCredentialsRequestEntity? params,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue: _i3.Future<_i4.Result<void>>.value(
@@ -163,7 +173,7 @@ class MockSaveDriverCredentialsUseCase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDeleteDriverCredentialsUseCase extends _i1.Mock
-    implements _i13.DeleteDriverCredentialsUseCase {
+    implements _i15.DeleteDriverCredentialsUseCase {
   MockDeleteDriverCredentialsUseCase() {
     _i1.throwOnMissingStub(this);
   }

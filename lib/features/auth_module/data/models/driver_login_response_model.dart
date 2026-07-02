@@ -1,4 +1,5 @@
 import 'package:track_flowers_app/features/auth_module/data/models/driver_model.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -24,9 +25,9 @@ class DriverLoginResponseModel {
 
   DriverLoginResponseEntity toEntity() {
     return DriverLoginResponseEntity(
-      message: message,
-      token: token,
-      driver: driver?.toEntity(),
+      message: message ?? "",
+      token: token ?? "",
+      driver: driver?.toEntity() ?? DriverEntity(),
     );
   }
 }

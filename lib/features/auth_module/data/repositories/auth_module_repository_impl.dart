@@ -5,7 +5,10 @@ import 'package:track_flowers_app/features/auth_module/domain/entities/driver_lo
 import 'package:track_flowers_app/features/auth_module/data/datasources/auth_module_local_data_source_contract.dart';
 import 'package:track_flowers_app/features/auth_module/data/datasources/auth_module_remote_data_source_contract.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/save_credentials_request_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/saved_credentials_response_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/repositories/auth_module_repository.dart';
+import 'package:track_flowers_app/config/error_handling/failures.dart';
 
 
 @Injectable(as: AuthModuleRepository)
@@ -35,8 +38,8 @@ class AuthModuleRepositoryImpl implements AuthModuleRepository {
     try {
       await _local.saveDriverToken(token);
       return const Success(data: null);
-    } on Exception catch (e) {
-      return Error(exception: e);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 
@@ -45,21 +48,18 @@ class AuthModuleRepositoryImpl implements AuthModuleRepository {
     try {
       await _local.deleteDriverToken();
       return const Success(data: null);
-    } on Exception catch (e) {
-      return Error(exception: e);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 
   @override
-  Future<Result<void>> saveCredentials({
-    required String email,
-    required String password,
-  }) async {
+  Future<Result<void>> saveCredentials(SaveCredentialsRequestEntity request) async {
     try {
-      await _local.saveCredentials(email: email, password: password);
+      await _local.saveCredentials(request);
       return const Success(data: null);
-    } on Exception catch (e) {
-      return Error(exception: e);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 
@@ -68,18 +68,21 @@ class AuthModuleRepositoryImpl implements AuthModuleRepository {
     try {
       await _local.deleteCredentials();
       return const Success(data: null);
-    } on Exception catch (e) {
-      return Error(exception: e);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 
   @override
-  Future<Result<Map<String, String?>>> getSavedCredentials() async {
+  Future<Result<SavedCredentialsResponseEntity>> getSavedCredentials() async {
     try {
       final credentials = await _local.getSavedCredentials();
-      return Success(data: credentials);
-    } on Exception catch (e) {
-      return Error(exception: e);
+      return Success(data: SavedCredentialsResponseEntity(
+        email: credentials['email'],
+        password: credentials['password'],
+      ));
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 }

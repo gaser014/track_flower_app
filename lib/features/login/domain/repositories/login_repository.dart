@@ -7,4 +7,5 @@ abstract interface class LoginRepositoryContract {
   Future<Result<LoginResponseEntity>> login(LoginParams params);
   Future<Result<UserEntity>> saveUser(UserEntity userEntity);
   Future<Result<UserEntity?>> getUser();
+  Future<Result<void>> saveToken(String token);
 }

@@ -47,13 +47,13 @@ class DriverModel {
 
   DriverEntity toEntity() {
     return DriverEntity(
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      photo: photo,
-      role: role,
+      id: id ?? "",
+      firstName: firstName ?? "",
+      lastName: lastName ?? "",
+      email: email ?? "",
+      phone: phone ?? "",
+      photo: photo ?? "",
+      role: role ?? "",
       createdAt: createdAt,
     );
   }

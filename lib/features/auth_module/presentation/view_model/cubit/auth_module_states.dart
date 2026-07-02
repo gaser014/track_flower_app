@@ -5,7 +5,7 @@ class AuthModuleState extends Equatable {
   final BaseState<bool> rememberMeState;
   final BaseState<bool> showPasswordState;
   final BaseState<dynamic> logoutState;
-  final BaseState<Map<String, String?>> savedCredentials;
+  final BaseState<SavedCredentialsResponseEntity> savedCredentials;
 
   const AuthModuleState({
     this.loginState = const BaseState.initial(),
@@ -20,7 +20,7 @@ class AuthModuleState extends Equatable {
     BaseState<bool>? rememberMeState,
     BaseState<bool>? showPasswordState,
     BaseState<dynamic>? logoutState,
-    BaseState<Map<String, String?>>? savedCredentials,
+    BaseState<SavedCredentialsResponseEntity>? savedCredentials,
   }) {
     return AuthModuleState(
       loginState: loginState ?? this.loginState,

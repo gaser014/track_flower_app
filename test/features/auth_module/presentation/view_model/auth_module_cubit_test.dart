@@ -7,6 +7,8 @@ import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/save_credentials_request_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/saved_credentials_response_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
@@ -68,6 +70,18 @@ void main() {
   );
 
   // ─── Setup ────────────────────────────────────────────────────────────────
+  setUpAll(() {
+    provideDummy<Result<SavedCredentialsResponseEntity>>(
+      const Success<SavedCredentialsResponseEntity>(data: null),
+    );
+    provideDummy<Result<DriverLoginResponseEntity>>(
+      const Success<DriverLoginResponseEntity>(data: null),
+    );
+    provideDummy<Result<void>>(
+      const Success<void>(data: null),
+    );
+  });
+
   setUp(() {
     mockLoginDriverUseCase = MockLoginDriverUseCase();
     mockLogoutDriverUseCase = MockLogoutDriverUseCase();
@@ -137,7 +151,7 @@ void main() {
         ).thenAnswer((_) async => const Success(data: null));
         when(
           mockSaveDriverCredentialsUseCase(
-            const SaveDriverCredentialsParams(
+            const SaveCredentialsRequestEntity(
               email: tEmail,
               password: tPassword,
             ),
@@ -149,7 +163,7 @@ void main() {
       verify: (_) {
         verify(
           mockSaveDriverCredentialsUseCase(
-            const SaveDriverCredentialsParams(
+            const SaveCredentialsRequestEntity(
               email: tEmail,
               password: tPassword,
             ),
@@ -185,13 +199,7 @@ void main() {
       'should not save token when response token is null',
       build: () {
         when(mockLoginDriverUseCase(tLoginParams)).thenAnswer(
-          (_) async => Success(
-            data: DriverLoginResponseEntity(
-              message: 'success',
-              token: null,
-              driver: tDriver,
-            ),
-          ),
+          (_) async => const Success(data: null),
         );
         when(
           mockDeleteDriverCredentialsUseCase(const NoParams()),
@@ -224,7 +232,7 @@ void main() {
         ),
         isA<AuthModuleState>().having(
           (s) => s.logoutState.isSuccess,
-          'isSuccess',
+          'isSuccess', 
           true,
         ),
       ],
@@ -316,10 +324,10 @@ void main() {
 
   // ─── Load Saved Credentials ───────────────────────────────────────────────
   group('loadSavedCredentials', () {
-    final tCredentials = {
-      'driverSavedEmail': tEmail,
-      'driverSavedPassword': tPassword,
-    };
+    const tCredentials = SavedCredentialsResponseEntity(
+      email: tEmail,
+      password: tPassword,
+    );
 
     blocTest<AuthModuleCubit, AuthModuleState>(
       'should emit savedCredentials and rememberMe=true when credentials exist',
@@ -345,9 +353,7 @@ void main() {
       'should not emit when credentials are empty',
       build: () {
         when(mockGetSavedCredentialsUseCase(const NoParams())).thenAnswer(
-          (_) async => Success(
-            data: {'driverSavedEmail': null, 'driverSavedPassword': null},
-          ),
+          (_) async => const Success(data: null),
         );
         return cubit;
       },

@@ -1,17 +1,13 @@
 import 'dart:developer';
-import 'package:track_flowers_app/config/dependency_injection/di.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-/// Shared Preferences Helper
-///
 class AppSharedPreferences {
   const AppSharedPreferences._();
-  static late FlutterSecureStorage flutterSecureStorage;
+  static late SharedPreferences sharedPreferences;
 
-  /// Initialize SharedPreferences
   static Future<void> initialSharedPreference() async {
     try {
-      flutterSecureStorage = getIt<FlutterSecureStorage>();
+      sharedPreferences = await SharedPreferences.getInstance();
       log('SharedPreferences initialized successfully');
     } catch (e, s) {
       log('Error initializing SharedPreferences', error: e, stackTrace: s);
@@ -19,73 +15,61 @@ class AppSharedPreferences {
     }
   }
 
-  /// Save String value
   static Future<bool> setString({
     required String key,
     required String value,
   }) async {
     try {
-      await flutterSecureStorage.write(key: key, value: value);
-      return true;
+      return await sharedPreferences.setString(key, value);
     } catch (e, s) {
-      log('Error saving string to secure storage', error: e, stackTrace: s);
+      log('Error saving string to shared preferences', error: e, stackTrace: s);
       return false;
     }
   }
 
-  /// Get String value
-  static Future<String?> getString({required String key}) async {
+  static String? getString({required String key}) {
     try {
-      return await flutterSecureStorage.read(key: key);
+      return sharedPreferences.getString(key);
     } catch (e, s) {
-      log('Error getting string from secure storage', error: e, stackTrace: s);
+      log('Error getting string from shared preferences', error: e, stackTrace: s);
       return null;
     }
-  }
+  } 
 
-  /// Save Bool value
   static Future<bool> setBool({
     required String key,
     required bool value,
   }) async {
     try {
-      await flutterSecureStorage.write(key: key, value: value.toString());
-      return true;
+      return await sharedPreferences.setBool(key, value);
     } catch (e, s) {
-      log('Error saving bool to secure storage', error: e, stackTrace: s);
+      log('Error saving bool to shared preferences', error: e, stackTrace: s);
       return false;
     }
   }
 
-  /// Get Bool value
-  static Future<bool?> getBool({required String key}) async {
+  static bool? getBool({required String key}) {
     try {
-      final value = await flutterSecureStorage.read(key: key);
-      return value != null ? value.toLowerCase() == 'true' : null;
+      return sharedPreferences.getBool(key);
     } catch (e, s) {
-      log('Error getting bool from secure storage', error: e, stackTrace: s);
+      log('Error getting bool from shared preferences', error: e, stackTrace: s);
       return null;
     }
   }
-
-  /// Save Int value
   static Future<bool> setInt({required String key, required int value}) async {
     try {
-      await flutterSecureStorage.write(key: key, value: value.toString());
-      return true;
+      return await sharedPreferences.setInt(key, value);
     } catch (e, s) {
-      log('Error saving int to secure storage', error: e, stackTrace: s);
+      log('Error saving int to shared preferences', error: e, stackTrace: s);
       return false;
     }
-  }
+  } 
 
-  /// Get Int value
-  static Future<int?> getInt({required String key}) async {
+  static int? getInt({required String key}) {
     try {
-      final value = await flutterSecureStorage.read(key: key);
-      return value != null ? int.parse(value) : null;
+      return sharedPreferences.getInt(key);
     } catch (e, s) {
-      log('Error getting int from secure storage', error: e, stackTrace: s);
+      log('Error getting int from shared preferences', error: e, stackTrace: s);
       return null;
     }
   }
@@ -93,10 +77,9 @@ class AppSharedPreferences {
   /// Remove value
   static Future<bool> remove({required String key}) async {
     try {
-      await flutterSecureStorage.delete(key: key);
-      return true;
+      return await sharedPreferences.remove(key);
     } catch (e, s) {
-      log('Error removing from secure storage', error: e, stackTrace: s);
+      log('Error removing from shared preferences', error: e, stackTrace: s);
       return false;
     }
   }
@@ -104,21 +87,19 @@ class AppSharedPreferences {
   /// Clear all values
   static Future<bool> clear() async {
     try {
-      await flutterSecureStorage.deleteAll();
-      return true;
+      return await sharedPreferences.clear();
     } catch (e, s) {
-      log('Error clearing secure storage', error: e, stackTrace: s);
+      log('Error clearing shared preferences', error: e, stackTrace: s);
       return false;
     }
   }
 
   /// Check if key exists
-  static Future<bool> containsKey({required String key}) async {
+  static bool containsKey({required String key}) {
     try {
-      final value = await flutterSecureStorage.read(key: key);
-      return value != null;
+      return sharedPreferences.containsKey(key);
     } catch (e, s) {
-      log('Error checking key in secure storage', error: e, stackTrace: s);
+      log('Error checking key in shared preferences', error: e, stackTrace: s);
       return false;
     }
   }

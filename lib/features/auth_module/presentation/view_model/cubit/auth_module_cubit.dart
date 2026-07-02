@@ -5,6 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/save_credentials_request_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/saved_credentials_response_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
@@ -51,8 +53,8 @@ class AuthModuleCubit extends Cubit<AuthModuleState> {
     result.when(
       success: (credentials) {
         if (credentials != null &&
-            credentials['driverSavedEmail'] != null &&
-            credentials['driverSavedPassword'] != null) {
+            credentials.email != null &&
+            credentials.password != null) {
           emit(
             state.copyWith(
               savedCredentials: BaseState.success(credentials),
@@ -71,11 +73,11 @@ class AuthModuleCubit extends Cubit<AuthModuleState> {
     result.when(
       success: (response) async {
         if (response?.token != null) {
-          await _saveDriverTokenUseCase(response!.token!);
+          await _saveDriverTokenUseCase(response!.token);
         }
         if (params.remember ?? false) {
           await _saveDriverCredentialsUseCase(
-            SaveDriverCredentialsParams(
+            SaveCredentialsRequestEntity(
               email: params.email,
               password: params.password,
             ),

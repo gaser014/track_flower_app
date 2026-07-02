@@ -61,6 +61,8 @@ import '../../features/login/domain/repositories/login_repository.dart'
     as _i902;
 import '../../features/login/domain/use_cases/get_user_use_case.dart' as _i12;
 import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
+import '../../features/login/domain/use_cases/save_token_use_case.dart'
+    as _i113;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
@@ -185,6 +187,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i935.DeleteDriverCredentialsUseCase>(),
       ),
     );
+    gh.factory<_i113.SaveTokenUseCase>(
+      () => _i113.SaveTokenUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
     gh.factory<_i12.GetUserUseCase>(
       () => _i12.GetUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
@@ -203,6 +208,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i753.LoginCubit(
         gh<_i191.LoginUseCase>(),
         gh<_i71.SaveUserUseCase>(),
+        gh<_i113.SaveTokenUseCase>(),
       ),
     );
     gh.factory<_i60.MainProfileCubit>(

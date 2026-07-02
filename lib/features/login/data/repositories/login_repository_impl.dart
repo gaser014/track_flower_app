@@ -1,4 +1,5 @@
 import 'package:track_flowers_app/config/base_response/result.dart';
+import 'package:track_flowers_app/config/error_handling/failures.dart';
 import 'package:track_flowers_app/config/uses_cases/login_params.dart';
 import 'package:track_flowers_app/features/login/data/datasources/login_local_data_source_contract.dart';
 import 'package:track_flowers_app/features/login/data/datasources/login_remote_data_source_contract.dart';
@@ -39,8 +40,8 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
         userModel,
       );
       return Success<UserEntity>(data: savedModel.toUserEntity());
-    } on Exception catch (e) {
-      return Error(exception: e);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 
@@ -49,8 +50,18 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
     try {
       final userModel = await _loginLocalDataSourceContract.getUser();
       return Success<UserEntity?>(data: userModel?.toUserEntity());
-    } on Exception catch (e) {
-      return Error(exception: e);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<void>> saveToken(String token) async {
+    try {
+      await _loginLocalDataSourceContract.saveToken(token);
+      return const Success(data: null);
+    } catch (e) {
+      return Error(exception: CacheFailures(errorMessage: e.toString()));
     }
   }
 }
