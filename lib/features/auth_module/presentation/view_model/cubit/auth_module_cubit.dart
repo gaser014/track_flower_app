@@ -2,6 +2,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:track_flowers_app/config/base_state/base_cubit.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
@@ -18,7 +19,7 @@ import 'package:track_flowers_app/features/auth_module/presentation/view_model/c
 part 'auth_module_states.dart';
 
 @injectable
-class AuthModuleCubit extends Cubit<AuthModuleState> {
+class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
   final LoginDriverUseCase _loginDriverUseCase;
   final LogoutDriverUseCase _logoutDriverUseCase;
   final GetSavedCredentialsUseCase _getSavedCredentialsUseCase;
