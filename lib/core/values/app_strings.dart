@@ -226,4 +226,9 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+
+  //SuccessPage
+  static const String title = "Thank you!!";
+  static const String message = "The order delivered\nsuccessfully";
+  static const String buttonText = "Done";
 }
