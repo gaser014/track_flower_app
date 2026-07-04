@@ -21,7 +21,7 @@ class ForgetPasswordWidget extends StatefulWidget {
 class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
   late final AuthModuleCubit _cubit;
   late final StreamSubscription _subscription;
-  
+
   final _pageController = PageController();
 
   final _emailController = TextEditingController();
@@ -42,16 +42,10 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
       switch (event) {
         case DisplayError():
           if (!mounted) return;
-          CustomToast.showError(
-            context: context,
-            message: event.errorMsg,
-          );
+          CustomToast.showError(context: context, message: event.errorMsg);
         case DisplaySuccess():
           if (!mounted) return;
-          CustomToast.showSuccess(
-            context: context,
-            message: event.successMsg,
-          );
+          CustomToast.showSuccess(context: context, message: event.successMsg);
         case NavigateEvent():
           if (!mounted) return;
           context.pushNamed(event.routeName, extra: event.extra);
@@ -61,9 +55,9 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
         case PopEvent():
           if (!mounted) return;
           if (context.canPop()) {
-             context.pop();
+            context.pop();
           } else {
-             context.go(Routes.login);
+            context.go(Routes.login);
           }
       }
     });
@@ -91,8 +85,8 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _cubit,
+    return BlocProvider<AuthModuleCubit>(
+      create: (context) => _cubit,
       child: ForgetPasswordView(
         pageController: _pageController,
         emailController: _emailController,
@@ -107,4 +101,3 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     );
   }
 }
-
