@@ -228,7 +228,7 @@ class AppStrings {
   static const String home = "Home";
 
   //SuccessPage
-  static const String title = "Thank you!!";
-  static const String message = "The order delivered\nsuccessfully";
-  static const String buttonText = "Done";
+  static const String thankYouTitle = "Thank you!!";
+  static const String orderDeliveredMessage = "The order delivered\nsuccessfully";
+  static const String doneButtonText = "Done";
 }

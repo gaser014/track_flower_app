@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:track_flowers_app/core/values/app_strings.dart';
 
 import '../values/app_colors.dart';
 import '../values/app_font_style.dart';
@@ -13,9 +14,9 @@ class SuccessPage extends StatelessWidget {
 
   const SuccessPage({
     super.key,
-    this.title = 'Thank you!!',
-    this.message = 'The order delivered\nsuccessfully',
-    this.buttonText = 'Done',
+    this.title = AppStrings.thankYouTitle,
+    this.message = AppStrings.orderDeliveredMessage,
+    this.buttonText = AppStrings.doneButtonText,
     required this.onButtonPressed,
   });
 
@@ -35,24 +36,23 @@ class SuccessPage extends StatelessWidget {
               SizedBox(height: 40.h),
               Text(
                 title,
-                style: AppFontStyle.semiBold24(context: context).copyWith(
-                  color: AppColors.green0C,
-                ),
+                style: AppFontStyle.semiBold24(
+                  context: context,
+                ).copyWith(color: AppColors.green0C),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 16.h),
               Text(
                 message,
                 style: AppFontStyle.medium20(context: context).copyWith(
-                  color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.black0C,
+                  color:
+                      Theme.of(context).textTheme.bodyLarge?.color ??
+                      AppColors.black0C,
                 ),
                 textAlign: TextAlign.center,
               ),
               const Spacer(flex: 2),
-              CustomButton(
-                text: buttonText,
-                onPressed: onButtonPressed,
-              ),
+              CustomButton(text: buttonText, onPressed: onButtonPressed),
               SizedBox(height: 32.h),
             ],
           ),
@@ -81,9 +81,10 @@ class _PulseCheckmarkState extends State<PulseCheckmark>
       vsync: this,
       duration: const Duration(seconds: 1),
     )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 1.0, end: 1.3).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: 1.0,
+      end: 1.3,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -129,11 +130,7 @@ class _PulseCheckmarkState extends State<PulseCheckmark>
                 shape: BoxShape.circle,
                 color: AppColors.green0C,
               ),
-              child: Icon(
-                Icons.check,
-                color: AppColors.white,
-                size: 50.w,
-              ),
+              child: Icon(Icons.check, color: AppColors.white, size: 50.w),
             ),
           ],
         );
