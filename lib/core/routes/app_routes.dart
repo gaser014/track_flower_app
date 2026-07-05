@@ -8,6 +8,7 @@ import 'package:track_flowers_app/features/main/presentation/screens/main_view.d
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
@@ -202,7 +203,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.applicationSubmitted,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -227,6 +228,14 @@ abstract class AppRoutes {
             },
           ),
         ],
+      ),
+
+      GoRoute(
+        path: Routes.applicationSubmitted,
+        name: Routes.applicationSubmitted,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ApplicationSubmittedPage();
+        },
       ),
 
       GoRoute(

@@ -206,6 +206,10 @@ class AppStrings {
   static const String viewAll = "View All";
   static const String deliverTo = "Deliver to";
   static const String egp = "EGP";
+  static const String yourApplicationHasBeenSubmitted =
+      "Your application has been submitted";
+  static const String thankYouForProvidingYourApplication =
+      "Thank you for providing your application,\nwe will review your application and will\nget back to you soon.";
 
   // Category Names
   static const String flowers = "Flowers";
