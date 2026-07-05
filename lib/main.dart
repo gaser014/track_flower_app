@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:track_flowers_app/app.dart';
+import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/fcm/fcm_service.dart';
 import 'package:track_flowers_app/config/helper/bloc_observer.dart';
@@ -10,17 +12,28 @@ import 'package:track_flowers_app/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/firebase_options.dart';
 import 'config/dependency_injection/di.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 //flutter pub run build_runner build --delete-conflicting-outputs
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
   configureDependencies();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppSharedPreferences.initialSharedPreference();
   await EasyLocalization.ensureInitialized();
+  await AppSharedPreferences.setString(
+    key: APIkeys.accessToken,
+    value:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkcml2ZXIiOiI2YTNkY2I3Nzk5MjYxMmFlNTk5YjVmZTgiLCJpYXQiOjE3ODI0MzQ2ODB9.U6HTRcwUSXvvkw-asVZj2EQRiszXyZ5zILGIcbHjCdU",
+  );
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // FCMService().initialize();
+  await FCMService().initialize();
   // FlutterError.onError = (errorDetails) {
   //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   // };
@@ -28,18 +41,6 @@ void main() async {
   //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
   //   return true;
   // };
-
-  // Initialize notification badge service
-  // await getIt.get<NotificationBadgeService>().initialize();
-
-  // SystemChrome.setSystemUIOverlayStyle(
-  //   const SystemUiOverlayStyle(
-  //     statusBarColor: Colors.transparent,
-  //     statusBarIconBrightness: Brightness.dark,
-  //     systemNavigationBarColor: Colors.white,
-  //     systemNavigationBarIconBrightness: Brightness.dark,
-  //   ),
-  // );
 
   runApp(
     EasyLocalization(

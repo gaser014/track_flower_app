@@ -154,6 +154,7 @@ class AppStrings {
 
   // Profile & Address
   static const String myOrders = "My orders";
+  static const String orders = "Orders";
   static const String savedAddresses = "Saved addresses";
   static const String logout = "Logout";
   static const String editProfile = "Edit profile";
@@ -231,4 +232,44 @@ class AppStrings {
   static const String thankYouTitle = "Thank you!!";
   static const String orderDeliveredMessage = "The order delivered\nsuccessfully";
   static const String doneButtonText = "Done";
+  // Driver order flow
+  static const String floweryRider = "Flowery rider";
+  static const String flowerOrder = "Flower order";
+  static const String floweryStore = "Flowery store";
+  static const String pickupAddress = "Pickup address";
+  static const String userAddress = "User address";
+  static const String reject = "Reject";
+  static const String accept = "Accept";
+  static const String recentOrders = "Recent orders";
+  static const String orderDetails = "Order details";
+  static const String status = "Status";
+  static const String orderId = "Order ID";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String statusPending = "Pending";
+  static const String statusAccepted = "Accepted";
+  static const String statusPicked = "Picked";
+  static const String statusArrived = "Arrived";
+  static const String statusDelivered = "Delivered";
+  static const String statusCompleted = "Completed";
+  static const String statusCancelled = "Cancelled";
+  static const String arrivedAtPickup = "Arrived at Pickup point";
+  static const String startDeliver = "Start deliver";
+  static const String deliveredToUser = "Delivered to the user";
+  static const String noPendingOrders = "No new orders";
+  static const String activeOrderInProgress =
+      "You already have an active order. Finish it before accepting a new one.";
+
+  // Order tracking notifications (sent to the customer)
+  static const String orderNotificationTitle = "Order update";
+  static const String orderUpdateBody = "Your order status has been updated.";
+  static const String orderAcceptedBody =
+      "Your order has been accepted by the driver.";
+  static const String orderPickedBody =
+      "The driver picked up your order and is on the way.";
+  static const String orderArrivedBody =
+      "The driver has arrived at your location.";
+  static const String orderDeliveredBody =
+      "Your order has been delivered. Enjoy!";
+  static const String orderCompletedBody = "Your order is now complete.";
+  static const String orderCancelledBody = "Your order has been cancelled.";
 }

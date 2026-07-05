@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
@@ -21,7 +22,7 @@ class AppInterceptors extends Interceptor {
   ) async {
     options.cancelToken = getIt<CancelToken>();
     String? authToken = await AppSharedPreferences.getString(
-      key: AppStrings.token,
+      key: APIkeys.accessToken,
     );
     if (authToken != null && authToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $authToken';

@@ -14,4 +14,7 @@ abstract class Routes {
   static const String profile = "/profile";
   static const String home = "/home";
   static const String occasionPage = "/occasion";
+  static const String testTracking = "/test-tracking";
+  static const String orders = "/orders";
+  static const String orderDetails = "order-details";
 }
