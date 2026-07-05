@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/opt/homebrew/share/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/gaser_mohamed/projects/track_flowers_app"
+export "FLUTTER_APPLICATION_PATH=/Users/ahmed.yosry.elesawygmail.com/Developer/Flutter/Elevate C5/track_flower_app"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

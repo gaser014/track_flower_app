@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
-import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
-import 'package:track_flowers_app/features/spalsh/splash_page.dart';
+import 'package:track_flowers_app/core/widgets/success_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -200,7 +203,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.applicationSubmitted,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -209,22 +212,55 @@ abstract class AppRoutes {
           child: const MainView(),
           animationType: AnimationType.fade,
         ),
+        routes: [
+          GoRoute(
+            path: Routes.orderDetails,
+            name: Routes.orderDetails,
+            pageBuilder: (context, state) {
+              final order = state.extra as OrderEntity?;
+              return buildAnimatedPage(
+                key: state.pageKey,
+                child: order == null
+                    ? const MainView()
+                    : OrderDetailsPage(order: order),
+                animationType: AnimationType.slideFromRight,
+              );
+            },
+          ),
+        ],
+      ),
+
+      GoRoute(
+        path: Routes.applicationSubmitted,
+        name: Routes.applicationSubmitted,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ApplicationSubmittedPage();
+        },
       ),
 
       GoRoute(
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
+          return SuccessPage(onButtonPressed: () {});
         },
       ),
       GoRoute(
-        path: Routes.login,
-        name: Routes.login,
+        path: Routes.testTracking,
+        name: Routes.testTracking,
         builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
+          return TrackingTestPage();
         },
       ),
+      // GoRoute(
+      //   path: Routes.orders,
+      //   name: Routes.orders,
+      //   pageBuilder: (context, state) => buildAnimatedPage(
+      //     key: state.pageKey,
+      //     child: const OrdersPage(),
+      //     animationType: AnimationType.slideFromRight,
+      //   ),
+      // ),
     ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;

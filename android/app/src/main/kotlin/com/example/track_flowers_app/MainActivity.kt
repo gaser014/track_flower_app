@@ -1,4 +1,4 @@
-package com.example.track_flowers_app
+package com.elevate.trackFlowers
 
 import io.flutter.embedding.android.FlutterActivity
 
