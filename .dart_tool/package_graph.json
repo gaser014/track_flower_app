@@ -1452,6 +1452,24 @@
       ]
     },
     {
+      "name": "google_identity_services_web",
+      "version": "0.3.3+1",
+      "dependencies": [
+        "meta",
+        "web"
+      ]
+    },
+    {
+      "name": "google_cloud",
+      "version": "0.5.0",
+      "dependencies": [
+        "collection",
+        "http",
+        "meta",
+        "stack_trace"
+      ]
+    },
+    {
       "name": "google_maps_flutter_web",
       "version": "0.6.2+3",
       "dependencies": [
@@ -2330,24 +2348,6 @@
       "version": "1.0.2",
       "dependencies": [
         "source_span"
-      ]
-    },
-    {
-      "name": "google_identity_services_web",
-      "version": "0.3.3+1",
-      "dependencies": [
-        "meta",
-        "web"
-      ]
-    },
-    {
-      "name": "google_cloud",
-      "version": "0.5.0",
-      "dependencies": [
-        "collection",
-        "http",
-        "meta",
-        "stack_trace"
       ]
     }
   ],
