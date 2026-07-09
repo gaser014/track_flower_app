@@ -211,7 +211,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.applicationSubmitted,
+    initialLocation: Routes.splash,
     routes: [
       // GoRoute(
       //   path: Routes.applicationSubmitted,
@@ -257,7 +257,7 @@ abstract class AppRoutes {
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return SuccessPage(onButtonPressed: () {});
+          return const SplashPage();
         },
       ),
       // GoRoute(
@@ -326,37 +326,37 @@ abstract class AppRoutes {
       //   ),
       // ),
     ],
-    redirect: (context, state) async {
-      final currentLocation = state.matchedLocation;
-
-      final authRoutes = [
-        Routes.login,
-        // Routes.main,
-        // // Routes.register,
-        // Routes.forgetPassword,
-        // Routes.resetPassword,
-        // AuthRoutes.otpVerification,
-        // AuthRoutes.completeProfile,
-        // AuthRoutes.success,
-      ];
-      //
-      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
-      //   // Redirect to account type selection (start of auth flow)
-      //   return Routes.login;
-      // }
-
-      if (authRoutes.contains(currentLocation)) {
-        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
-        final isLoggedIn = token != null && token.isNotEmpty;
-
-        // Redirect to home screen
-        if (isLoggedIn) {
-          return Routes.main;
-        }
-      }
-
-      // No redirect needed
-      return null;
-    },
+    // redirect: (context, state) async {
+    //   final currentLocation = state.matchedLocation;
+    //
+    //   final authRoutes = [
+    //     Routes.login,
+    //     // Routes.main,
+    //     // // Routes.register,
+    //     // Routes.forgetPassword,
+    //     // Routes.resetPassword,
+    //     // AuthRoutes.otpVerification,
+    //     // AuthRoutes.completeProfile,
+    //     // AuthRoutes.success,
+    //   ];
+    //   //
+    //   // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
+    //   //   // Redirect to account type selection (start of auth flow)
+    //   //   return Routes.login;
+    //   // }
+    //
+    //   if (authRoutes.contains(currentLocation)) {
+    //     final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+    //     final isLoggedIn = token != null && token.isNotEmpty;
+    //
+    //     // Redirect to home screen
+    //     if (isLoggedIn) {
+    //       return Routes.main;
+    //     }
+    //   }
+    //
+    //   // No redirect needed
+    //   return null;
+    // },
   );
 }

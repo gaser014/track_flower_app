@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
@@ -5,6 +7,7 @@ import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_assets.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
+import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_active_order_use_case.dart';
 import 'package:flutter/material.dart';
@@ -65,11 +68,22 @@ class _SplashPageState extends State<SplashPage>
         String? token = await AppSharedPreferences.getString(
           key: APIkeys.accessToken,
         );
-
+        bool remember =
+            await AppSharedPreferences.getBool(key: APIkeys.rememberMe) ??
+            false;
+        log("==" * 50);
+        log("Token: $token");
+        log("Remember Me: $remember");
         if (mounted) {
-          if (token == null) {
+          if (token == null || !remember) {
+            log(
+              "Token is null or remember me is false, navigating to login page",
+            );
             context.go(Routes.login);
           } else {
+            log(
+              "Token is not null and remember me is true, navigating to main page",
+            );
             OrderEntity? activeOrder;
             final result = await getIt<GetActiveOrderUseCase>()(
               const NoParams(),

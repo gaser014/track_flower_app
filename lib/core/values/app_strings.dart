@@ -22,6 +22,7 @@ class AppStrings {
   static const String invalidCode = "Invalid code";
   static const String occasion = "Occasion";
   static const String token = "token";
+  static const String remember = "Remember me";
   static const String occasionSubTitle =
       "Bloom with our exquisite best sellers";
   static const String enterUserName = "Enter first name";
@@ -298,7 +299,8 @@ class AppStrings {
 
   //SuccessPage
   static const String thankYouTitle = "Thank you!!";
-  static const String orderDeliveredMessage = "The order delivered\nsuccessfully";
+  static const String orderDeliveredMessage =
+      "The order delivered\nsuccessfully";
   static const String doneButtonText = "Done";
   // Driver order flow
   static const String floweryRider = "Flowery rider";

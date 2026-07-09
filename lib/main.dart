@@ -26,11 +26,12 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppSharedPreferences.initialSharedPreference();
   await EasyLocalization.ensureInitialized();
-  await AppSharedPreferences.setString(
-    key: APIkeys.accessToken,
-    value:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkcml2ZXIiOiI2YTNkY2I3Nzk5MjYxMmFlNTk5YjVmZTgiLCJpYXQiOjE3ODI0MzQ2ODB9.U6HTRcwUSXvvkw-asVZj2EQRiszXyZ5zILGIcbHjCdU",
-  );
+  // await AppSharedPreferences.clear();
+  // await AppSharedPreferences.setString(
+  //   key: APIkeys.accessToken,
+  //   value:
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkcml2ZXIiOiI2YTNkY2I3Nzk5MjYxMmFlNTk5YjVmZTgiLCJpYXQiOjE3ODI0MzQ2ODB9.U6HTRcwUSXvvkw-asVZj2EQRiszXyZ5zILGIcbHjCdU",
+  // );
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await FCMService().initialize();
