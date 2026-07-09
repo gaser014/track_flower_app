@@ -18,6 +18,22 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/auth_module/api/api_client/auth_module_api_client.dart'
+    as _i419;
+import '../../features/auth_module/api/datasources/auth_module_local_data_source_impl.dart'
+    as _i1034;
+import '../../features/auth_module/api/datasources/auth_module_remote_data_source_impl.dart'
+    as _i428;
+import '../../features/auth_module/data/datasources/auth_module_local_data_source_contract.dart'
+    as _i435;
+import '../../features/auth_module/data/datasources/auth_module_remote_data_source_contract.dart'
+    as _i72;
+import '../../features/auth_module/data/repositories/auth_module_repository_impl.dart'
+    as _i848;
+import '../../features/auth_module/domain/repositories/auth_module_repository.dart'
+    as _i1015;
+import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
+    as _i575;
 import '../../features/driver_orders/api/api_client/driver_orders_api_client.dart'
     as _i817;
 import '../../features/driver_orders/api/data_sources/driver_orders_remote_data_source_impl.dart'
@@ -98,6 +114,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
+    gh.factory<_i575.AuthModuleCubit>(() => _i575.AuthModuleCubit());
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -111,24 +128,28 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
     gh.lazySingleton<_i934.FirestoreService>(() => _i934.FirestoreService());
+    gh.factory<_i72.AuthModuleRemoteDataSourceContract>(
+      () => _i428.AuthModuleRemoteDataSourceImpl(),
+    );
+    gh.factory<_i435.AuthModuleLocalDataSourceContract>(
+      () => _i1034.AuthModuleLocalDataSourceImpl(),
+    );
     gh.lazySingleton<_i207.TrackingRepository>(
       () => _i1061.TrackingRepositoryImpl(
         firestoreService: gh<_i934.FirestoreService>(),
       ),
     );
-    gh.factory<_i817.DriverOrdersApiClient>(
-      () => _i817.DriverOrdersApiClient(gh<_i361.Dio>()),
+    gh.factory<_i1015.AuthModuleRepository>(
+      () => _i848.AuthModuleRepositoryImpl(),
+    );
+    gh.lazySingleton<_i419.AuthModuleApiClient>(
+      () => _i419.AuthModuleApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i89.MainProfileApiClient>(
       () => _i89.MainProfileApiClient(gh<_i361.Dio>()),
-    );
-    gh.lazySingleton<_i565.DriverOrdersRemoteDataSourceContract>(
-      () => _i1049.DriverOrdersRemoteDataSourceImpl(
-        apiClient: gh<_i817.DriverOrdersApiClient>(),
-      ),
     );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
@@ -148,13 +169,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
-    );
-    gh.lazySingleton<_i542.DriverOrdersRepository>(
-      () => _i356.DriverOrdersRepositoryImpl(
-        remoteDataSource: gh<_i565.DriverOrdersRemoteDataSourceContract>(),
-        trackingRepository: gh<_i207.TrackingRepository>(),
-        orderTrackingService: gh<_i468.OrderTrackingService>(),
-      ),
     );
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
@@ -196,18 +210,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i818.GetMainProfileUseCase>(
       () => _i818.GetMainProfileUseCase(
         gh<_i488.MainProfileRepositoryContract>(),
-      ),
-    );
-    gh.factory<_i249.DriverOrdersCubit>(
-      () => _i249.DriverOrdersCubit(
-        getPendingOrdersUseCase: gh<_i453.GetPendingOrdersUseCase>(),
-        getMyOrdersUseCase: gh<_i468.GetMyOrdersUseCase>(),
-        getActiveOrderUseCase: gh<_i911.GetActiveOrderUseCase>(),
-        acceptOrderUseCase: gh<_i738.AcceptOrderUseCase>(),
-        rejectOrderUseCase: gh<_i247.RejectOrderUseCase>(),
-        startOrderUseCase: gh<_i545.StartOrderUseCase>(),
-        completeOrderUseCase: gh<_i508.CompleteOrderUseCase>(),
-        mirrorOrderUseCase: gh<_i223.MirrorOrderUseCase>(),
       ),
     );
     gh.factory<_i753.LoginCubit>(

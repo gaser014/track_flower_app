@@ -22,5 +22,4 @@ abstract class Routes {
   static const String testTracking = "/test-tracking";
   static const String orders = "/orders";
   static const String orderDetails = "order-details";
-  static const String applicationSubmitted = "/application-submitted";
 }

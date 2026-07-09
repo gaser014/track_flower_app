@@ -29,7 +29,7 @@ class _LoginApiClient implements LoginApiClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/signin',
+            '/drivers/signin',
             queryParameters: queryParameters,
             data: _data,
           )
