@@ -139,6 +139,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
+    gh.lazySingleton<_i817.DriverOrdersApiClient>(
+      () => _i817.DriverOrdersApiClient(gh<_i361.Dio>()),
+    );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
@@ -156,6 +159,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
+      ),
+    );
+    gh.lazySingleton<_i565.DriverOrdersRemoteDataSourceContract>(
+      () => _i1049.DriverOrdersRemoteDataSourceImpl(
+        apiClient: gh<_i817.DriverOrdersApiClient>(),
       ),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
@@ -178,29 +186,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i71.SaveUserUseCase>(
       () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.factory<_i738.AcceptOrderUseCase>(
-      () => _i738.AcceptOrderUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i508.CompleteOrderUseCase>(
-      () => _i508.CompleteOrderUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i911.GetActiveOrderUseCase>(
-      () => _i911.GetActiveOrderUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i468.GetMyOrdersUseCase>(
-      () => _i468.GetMyOrdersUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i453.GetPendingOrdersUseCase>(
-      () => _i453.GetPendingOrdersUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i223.MirrorOrderUseCase>(
-      () => _i223.MirrorOrderUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i247.RejectOrderUseCase>(
-      () => _i247.RejectOrderUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
-    gh.factory<_i545.StartOrderUseCase>(
-      () => _i545.StartOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    gh.lazySingleton<_i542.DriverOrdersRepository>(
+      () => _i356.DriverOrdersRepositoryImpl(
+        remoteDataSource: gh<_i565.DriverOrdersRemoteDataSourceContract>(),
+        trackingRepository: gh<_i207.TrackingRepository>(),
+        orderTrackingService: gh<_i468.OrderTrackingService>(),
+      ),
     );
     gh.factory<_i818.GetMainProfileUseCase>(
       () => _i818.GetMainProfileUseCase(
@@ -229,6 +220,42 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i60.MainProfileCubit(
         gh<_i818.GetMainProfileUseCase>(),
         gh<_i71.SaveUserUseCase>(),
+      ),
+    );
+    gh.factory<_i738.AcceptOrderUseCase>(
+      () => _i738.AcceptOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i508.CompleteOrderUseCase>(
+      () => _i508.CompleteOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i911.GetActiveOrderUseCase>(
+      () => _i911.GetActiveOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i468.GetMyOrdersUseCase>(
+      () => _i468.GetMyOrdersUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i453.GetPendingOrdersUseCase>(
+      () => _i453.GetPendingOrdersUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i223.MirrorOrderUseCase>(
+      () => _i223.MirrorOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i247.RejectOrderUseCase>(
+      () => _i247.RejectOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i545.StartOrderUseCase>(
+      () => _i545.StartOrderUseCase(gh<_i542.DriverOrdersRepository>()),
+    );
+    gh.factory<_i249.DriverOrdersCubit>(
+      () => _i249.DriverOrdersCubit(
+        getPendingOrdersUseCase: gh<_i453.GetPendingOrdersUseCase>(),
+        getMyOrdersUseCase: gh<_i468.GetMyOrdersUseCase>(),
+        getActiveOrderUseCase: gh<_i911.GetActiveOrderUseCase>(),
+        acceptOrderUseCase: gh<_i738.AcceptOrderUseCase>(),
+        rejectOrderUseCase: gh<_i247.RejectOrderUseCase>(),
+        startOrderUseCase: gh<_i545.StartOrderUseCase>(),
+        completeOrderUseCase: gh<_i508.CompleteOrderUseCase>(),
+        mirrorOrderUseCase: gh<_i223.MirrorOrderUseCase>(),
       ),
     );
     return this;

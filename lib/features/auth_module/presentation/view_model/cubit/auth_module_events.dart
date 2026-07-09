@@ -1,1 +1,1 @@
-// TODO: presentation Auth_moduleEvents
+sealed class AuthModuleEvent {}

@@ -83,17 +83,6 @@ enum OrderStatus {
 
   final OrderStatusUi ui;
   const OrderStatus(this.ui);
-
-  factory OrderStatus.fromString(String value) =>
-      switch (value.toLowerCase()) {
-        'accepted' => OrderStatus.accepted,
-        'inprogress' || 'picked' => OrderStatus.picked,
-        'arrived' => OrderStatus.arrived,
-        'delivered' => OrderStatus.delivered,
-        'completed' => OrderStatus.completed,
-        'cancelled' || 'canceled' => OrderStatus.cancelled,
-        _ => OrderStatus.pending,
-      };
 }
 
 enum PaymentMethod { cashOnDelivery }

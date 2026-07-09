@@ -8,6 +8,11 @@ abstract class EndPoints {
   static const String forgetPasswordEndpoint = "/drivers/forgotPassword";
   static const String verifyResetEndpoint = "/drivers/verifyResetCode";
   static const String resetPasswordEndpoint = "/drivers/resetPassword";
+  static const String login = "/auth/signin";
+  static const String register = "/auth/signup";
+  static const String forgetPasswordEndpoint = "/auth/forgotPassword";
+  static const String verifyResetEndpoint = "/auth/verifyResetCode";
+  static const String resetPasswordEndpoint = "/auth/resetPassword";
   static const String productsEndpoint = "/products";
   static const String bestSellersEndpoint = "/best-seller";
   static const String allCategories = "/categories";
@@ -19,6 +24,7 @@ abstract class EndPoints {
   static const String logoutDriver = "/drivers/logout";
 
   static const String profileData = "/drivers/profile-data";
+  static const String profileData = "/auth/profile-data";
   static const String ordersPage = "/orders/pending-orders";
   static const String driverPendingOrders = "/orders/pending-orders";
   static const String driverMyOrders = "/orders/driver-orders";

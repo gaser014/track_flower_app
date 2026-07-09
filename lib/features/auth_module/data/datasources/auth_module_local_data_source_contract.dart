@@ -1,1 +1,1 @@
-abstract class AuthModuleLocalDataSourceContract {}
+abstract interface class AuthModuleLocalDataSourceContract {}

@@ -296,6 +296,10 @@ class AppStrings {
   static const String driverLogoutSuccessfully = "Logged out successfully";
   static const String driverLogoutError = "Failed to logout, please try again";
 
+  //SuccessPage
+  static const String thankYouTitle = "Thank you!!";
+  static const String orderDeliveredMessage = "The order delivered\nsuccessfully";
+  static const String doneButtonText = "Done";
   // Driver order flow
   static const String floweryRider = "Flowery rider";
   static const String flowerOrder = "Flower order";

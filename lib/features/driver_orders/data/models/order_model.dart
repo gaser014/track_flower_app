@@ -1,5 +1,16 @@
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 
+OrderStatus orderStatusFromString(String value) =>
+    switch (value.toLowerCase()) {
+      'accepted' => OrderStatus.accepted,
+      'inprogress' || 'picked' => OrderStatus.picked,
+      'arrived' => OrderStatus.arrived,
+      'delivered' => OrderStatus.delivered,
+      'completed' => OrderStatus.completed,
+      'cancelled' || 'canceled' => OrderStatus.cancelled,
+      _ => OrderStatus.pending,
+    };
+
 class OrderModel {
   final String id;
   final String userId;
@@ -30,8 +41,6 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     final order = json['order'] is Map
         ? Map<String, dynamic>.from(json['order'] as Map)
-        : json['orders'] is Map
-        ? Map<String, dynamic>.from(json['orders'] as Map)
         : json;
     final store = json['store'] is Map ? json['store'] : order['store'];
     final user = order['user'] is Map ? order['user'] as Map : const {};
@@ -67,7 +76,7 @@ class OrderModel {
     orderNumber: orderNumber,
     type: type,
     date: DateTime.tryParse(createdAt)?.toLocal() ?? DateTime.now(),
-    status: OrderStatus.fromString(state),
+    status: orderStatusFromString(state),
     store: store.toEntity(),
     customer: customer.toEntity(),
     items: items.map((e) => e.toEntity()).toList(),
