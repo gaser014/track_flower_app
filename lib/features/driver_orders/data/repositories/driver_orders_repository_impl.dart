@@ -100,15 +100,7 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
   }
 
   @override
-  Future<Result<OrderEntity>> acceptOrder(OrderEntity order) async =>
-      Success(data: order.copyWith(status: OrderStatus.accepted));
-
-  @override
-  Future<Result<OrderEntity>> rejectOrder(OrderEntity order) async =>
-      Success(data: order);
-
-  @override
-  Future<Result<OrderEntity>> startOrder(OrderEntity order) async {
+  Future<Result<OrderEntity>> acceptOrder(OrderEntity order) async {
     final result = await _remoteDataSource.startOrder(order.id);
     return result.makeDummyData(
       dummyData: order.copyWith(status: order.status.next),
@@ -116,6 +108,14 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
       error: (exception) => Error(exception: exception),
     );
   }
+
+  @override
+  Future<Result<OrderEntity>> rejectOrder(OrderEntity order) async =>
+      Success(data: order);
+
+  @override
+  Future<Result<OrderEntity>> startOrder(OrderEntity order) async =>
+      Success(data: order.copyWith(status: OrderStatus.accepted));
 
   @override
   Future<Result<OrderEntity>> completeOrder(OrderEntity order) async {

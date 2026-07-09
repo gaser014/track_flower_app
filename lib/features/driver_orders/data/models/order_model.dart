@@ -2,8 +2,8 @@ import 'package:track_flowers_app/features/driver_orders/domain/entities/order_e
 
 OrderStatus orderStatusFromString(String value) =>
     switch (value.toLowerCase()) {
-      'accepted' => OrderStatus.accepted,
-      'inprogress' || 'picked' => OrderStatus.picked,
+      'accepted' || 'inprogress' => OrderStatus.accepted,
+      'picked' => OrderStatus.picked,
       'arrived' => OrderStatus.arrived,
       'delivered' => OrderStatus.delivered,
       'completed' => OrderStatus.completed,
