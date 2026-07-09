@@ -20,7 +20,7 @@ class DriverOrdersApiClient {
   Future<OrdersPageModel> getMyOrders(int page, int limit) async {
     final response = await _dio.get(
       EndPoints.driverMyOrders,
-      queryParameters: {'page': page, 'limit': limit},
+      queryParameters: {'page': page, 'limit': 200, 'sort': '-createdAt'},
     );
     return OrdersPageModel.fromJson(response.data);
   }

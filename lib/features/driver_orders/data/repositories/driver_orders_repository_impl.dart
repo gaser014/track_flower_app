@@ -102,9 +102,15 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
   @override
   Future<Result<OrderEntity>> acceptOrder(OrderEntity order) async {
     final result = await _remoteDataSource.startOrder(order.id);
+    final status = order.status.next;
+    log(
+      'acceptOrder: ${order.id} status: $status',
+      name: 'DriverOrdersRepository',
+    );
     return result.makeDummyData(
       dummyData: order.copyWith(status: order.status.next),
-      success: (data) => Success(data: data?.toEntity()),
+      success: (data) =>
+          Success(data: order.copyWith(status: order.status.next)),
       error: (exception) => Error(exception: exception),
     );
   }

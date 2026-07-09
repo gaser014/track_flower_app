@@ -105,6 +105,7 @@ extension OrderStatusX on OrderStatus {
   };
 
   OrderStatus get next => switch (this) {
+    OrderStatus.pending => OrderStatus.accepted,
     OrderStatus.accepted => OrderStatus.picked,
     OrderStatus.picked => OrderStatus.arrived,
     OrderStatus.arrived => OrderStatus.delivered,
