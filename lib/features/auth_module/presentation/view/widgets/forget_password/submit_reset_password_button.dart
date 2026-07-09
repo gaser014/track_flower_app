@@ -27,9 +27,13 @@ class SubmitResetPasswordButton extends StatelessWidget {
           prev.resetPasswordState != curr.resetPasswordState,
       builder: (context, state) {
         return ListenableBuilder(
-          listenable: Listenable.merge([newPasswordController, confirmPasswordController]),
+          listenable: Listenable.merge([
+            newPasswordController,
+            confirmPasswordController,
+          ]),
           builder: (context, _) {
-            final isEnabled = newPasswordController.text.isNotEmpty &&
+            final isEnabled =
+                newPasswordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty;
             return CustomButton(
               text: AppStrings.confirm,
@@ -46,13 +50,13 @@ class SubmitResetPasswordButton extends StatelessWidget {
   void _submit(BuildContext context) {
     if (formKey.currentState!.validate()) {
       context.read<AuthModuleCubit>().doIndented(
-            ResetPasswordEvent(
-              params: ForgetPasswordParams(
-                email: emailController.text.trim(),
-                newPassword: newPasswordController.text,
-              ),
-            ),
-          );
+        ResetPasswordEvent(
+          params: ForgetPasswordParams(
+            email: emailController.text.trim(),
+            newPassword: newPasswordController.text,
+          ),
+        ),
+      );
     }
   }
 }
