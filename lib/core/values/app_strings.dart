@@ -21,6 +21,7 @@ class AppStrings {
   static const String retryButton = "Retry...";
   static const String invalidCode = "Invalid code";
   static const String occasion = "Occasion";
+  static const String token = "token";
   static const String occasionSubTitle =
       "Bloom with our exquisite best sellers";
   static const String enterUserName = "Enter first name";
@@ -67,6 +68,9 @@ class AppStrings {
 
   // Global
   static const String currencyIQD = "IQD";
+  static const String continueButton = "Continue";
+  static const String welcomeToFlowery = "Welcome to\nFlowery rider app";
+
   static const String ok = "OK";
   static const String confirm = "Confirm";
   static const String cancel = "Cancel";
@@ -121,6 +125,10 @@ class AppStrings {
   static const String signUp = "Sign up";
   static const String loginSuccessfully = "Login successfully";
   static const String loginError = "Invalid Phone Number or Password";
+  static const String driverLoginSuccessfully = "Login successfully";
+  static const String driverSavedEmail = "Driver email saved successfully";
+  static const String driverSavedPassword =
+      "Driver password saved successfully";
 
   // Register
   static const String registerTitle = "Sign up";
@@ -130,6 +138,42 @@ class AppStrings {
   static const String termsConditionsPart1 =
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
+
+  // Apply Page
+  static const String photoLibrary = "Photo Library";
+  static const String uploadVehicleLicenseError =
+      "Please upload vehicle license";
+  static const String uploadNidImageError = "Please upload national ID image";
+  static const String apply = "Apply";
+  static const String applicationSubmittedSuccess =
+      "Application submitted successfully!";
+  static const String applicationSubmittedTitle =
+      "Your application has been\nsubmitted!";
+  static const String applicationSubmittedDesc =
+      "Thank you for providing your application, we will review your application and will get back to you soon.";
+  static const String welcomeExclamation = "Welcome!!";
+  static const String joinOurTeam =
+      "You want to be a delivery man?\nJoin our team";
+  static const String country = "Country";
+  static const String firstLegalName = "First legal name";
+  static const String enterFirstLegalName = "Enter first legal name";
+  static const String secondLegalName = "Second legal name";
+  static const String enterSecondLegalName = "Enter second legal name";
+  static const String vehicleType = "Vehicle type";
+  static const String vehicleNumber = "Vehicle number";
+  static const String enterVehicleNumber = "Enter vehicle number";
+  static const String vehicleLicense = "Vehicle license";
+  static const String uploadLicensePhoto = "Upload license photo";
+  static const String idNumber = "ID number";
+  static const String enterIdNumber = "Enter national ID number";
+  static const String idImage = "ID image";
+  static const String uploadIdImage = "Upload ID image";
+  static const String enterPassword = "Enter password";
+  static const String confirmPasswordTitle = "Confirm password";
+  static const String confirmPasswordHint = "Confirm password";
+  static const String femailLabel = "Femail";
+  static const String requiredField = "Required";
+  static const String mismatchError = "Mismatch";
 
   // Product Details
   static const String inStock = "In stock";
@@ -197,8 +241,9 @@ class AppStrings {
   static const String somethingWentWrong =
       "Something went wrong, please try again";
 
-  static const String token = "token";
+  static const String driverToken = "driver_token";
   static const String user = "user";
+  static const String driverLoginError = "Invalid email or password";
 
   // Home
   static const String categories = "Categories";
@@ -231,6 +276,25 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+
+  // Forget Password Flow
+  static const String forgetPasswordTitle = "Forgot Password?";
+  static const String forgetPasswordSubtitle =
+      "Enter your email and we'll send you a reset code";
+  static const String confirmForgetPassword = "Send Code";
+  static const String verificationCodeTitle = "Verification Code";
+  static const String verificationCodeSubtitle =
+      "Enter the 4-digit code sent to your email";
+  static const String resetPasswordTitle = "Reset Password";
+  static const String resetPasswordSubtitle = "Create a new password below";
+  static const String newPassword = "New Password";
+  static const String confirmNewPassword = "Confirm New Password";
+  static const String passwordResetSuccess =
+      "Password reset successfully. Please login.";
+  // Driver Auth
+
+  static const String driverLogoutSuccessfully = "Logged out successfully";
+  static const String driverLogoutError = "Failed to logout, please try again";
 
   //SuccessPage
   static const String thankYouTitle = "Thank you!!";
@@ -276,4 +340,16 @@ class AppStrings {
       "Your order has been delivered. Enjoy!";
   static const String orderCompletedBody = "Your order is now complete.";
   static const String orderCancelledBody = "Your order has been cancelled.";
+
+  // Order tracking notifications - Arabic (sent to the customer)
+  static const String orderNotificationTitleAr = "تحديث الطلب";
+  static const String orderUpdateBodyAr = "تم تحديث حالة طلبك.";
+  static const String orderAcceptedBodyAr = "تم قبول طلبك من قبل السائق.";
+  static const String orderPickedBodyAr =
+      "استلم السائق طلبك وهو في الطريق إليك.";
+  static const String orderArrivedBodyAr = "وصل السائق إلى موقعك.";
+  static const String orderDeliveredBodyAr =
+      "تم توصيل طلبك. نتمنى لك وقتاً ممتعاً!";
+  static const String orderCompletedBodyAr = "تم اكتمال طلبك الآن.";
+  static const String orderCancelledBodyAr = "تم إلغاء طلبك.";
 }

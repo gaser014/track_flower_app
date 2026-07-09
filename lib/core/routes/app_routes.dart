@@ -3,11 +3,19 @@ import 'dart:io';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_page.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_success_page.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
+import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/core/widgets/success_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
 import 'package:flutter/cupertino.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
+// import 'package:track_flowers_app/features/main_profile/presentation/view/pages/profile_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 
 import 'package:go_router/go_router.dart';
@@ -205,6 +213,13 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.applicationSubmitted,
     routes: [
+      // GoRoute(
+      //   path: Routes.applicationSubmitted,
+      //   name: Routes.applicationSubmitted,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const ApplicationSubmittedPage();
+      //   },
+      // ),
       GoRoute(
         path: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
@@ -245,6 +260,20 @@ abstract class AppRoutes {
           return SuccessPage(onButtonPressed: () {});
         },
       ),
+      // GoRoute(
+      //   path: Routes.forgetPassword,
+      //   name: Routes.forgetPassword,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return ForgetPasswordPage();
+      //   },
+      // ),
+      GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (BuildContext context, GoRouterState state) {
+          return const LoginPage();
+        },
+      ),
       GoRoute(
         path: Routes.testTracking,
         name: Routes.testTracking,
@@ -253,6 +282,41 @@ abstract class AppRoutes {
         },
       ),
       // GoRoute(
+      //   path: Routes.register,
+      //   name: Routes.register,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return ApplyPage();
+      //   },
+      // ),
+      // GoRoute(
+      //   path: Routes.applySuccess,
+      //   name: Routes.applySuccess,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return ApplySuccessPage();
+      //   },
+      // ),
+      GoRoute(
+        path: Routes.home,
+        name: Routes.home,
+        builder: (BuildContext context, GoRouterState state) {
+          return const MainView();
+        },
+      ),
+      //
+      // GoRoute(
+      //   path: Routes.onboardingDriver,
+      //   name: Routes.onboardingDriver,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const OnboardingDriverPage();
+      //   },
+      // ),
+
+      // GoRoute(
+      //   path: Routes.profile,
+      //   name: Routes.profile,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const MainProfilePage();
+      //   },
       //   path: Routes.orders,
       //   name: Routes.orders,
       //   pageBuilder: (context, state) => buildAnimatedPage(
@@ -267,8 +331,8 @@ abstract class AppRoutes {
 
       final authRoutes = [
         Routes.login,
-        Routes.main,
-        // Routes.register,
+        // Routes.main,
+        // // Routes.register,
         // Routes.forgetPassword,
         // Routes.resetPassword,
         // AuthRoutes.otpVerification,

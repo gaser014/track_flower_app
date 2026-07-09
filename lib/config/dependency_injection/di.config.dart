@@ -116,11 +116,19 @@ extension GetItInjectableX on _i174.GetIt {
         firestoreService: gh<_i934.FirestoreService>(),
       ),
     );
+    gh.factory<_i817.DriverOrdersApiClient>(
+      () => _i817.DriverOrdersApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i89.MainProfileApiClient>(
       () => _i89.MainProfileApiClient(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i565.DriverOrdersRemoteDataSourceContract>(
+      () => _i1049.DriverOrdersRemoteDataSourceImpl(
+        apiClient: gh<_i817.DriverOrdersApiClient>(),
+      ),
     );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
@@ -140,6 +148,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
+    );
+    gh.lazySingleton<_i542.DriverOrdersRepository>(
+      () => _i356.DriverOrdersRepositoryImpl(
+        remoteDataSource: gh<_i565.DriverOrdersRemoteDataSourceContract>(),
+        trackingRepository: gh<_i207.TrackingRepository>(),
+        orderTrackingService: gh<_i468.OrderTrackingService>(),
+      ),
     );
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
@@ -181,6 +196,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i818.GetMainProfileUseCase>(
       () => _i818.GetMainProfileUseCase(
         gh<_i488.MainProfileRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i249.DriverOrdersCubit>(
+      () => _i249.DriverOrdersCubit(
+        getPendingOrdersUseCase: gh<_i453.GetPendingOrdersUseCase>(),
+        getMyOrdersUseCase: gh<_i468.GetMyOrdersUseCase>(),
+        getActiveOrderUseCase: gh<_i911.GetActiveOrderUseCase>(),
+        acceptOrderUseCase: gh<_i738.AcceptOrderUseCase>(),
+        rejectOrderUseCase: gh<_i247.RejectOrderUseCase>(),
+        startOrderUseCase: gh<_i545.StartOrderUseCase>(),
+        completeOrderUseCase: gh<_i508.CompleteOrderUseCase>(),
+        mirrorOrderUseCase: gh<_i223.MirrorOrderUseCase>(),
       ),
     );
     gh.factory<_i753.LoginCubit>(
