@@ -54,6 +54,16 @@ class OrderDetailsView extends StatelessWidget {
   final OrderEntity order;
   final VoidCallback? onAdvance;
 
+  /// Opens a map leg and, when the driver confirms arrival there, advances the
+  /// order status via the parent [DriverOrdersCubit].
+  Future<void> _openLeg(BuildContext context, String leg) async {
+    final arrived = await context.push<bool>(
+      '${Routes.main}/$leg',
+      extra: order,
+    );
+    if (arrived == true) onAdvance?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isActive = order.status.isActive;
@@ -84,11 +94,20 @@ class OrderDetailsView extends StatelessWidget {
                     ],
                   ),
                 const SizedBox(height: 16),
-                PickupAddressTile(store: order.store, showActions: isActive),
+                PickupAddressTile(
+                  store: order.store,
+                  showActions: isActive,
+                  onTap: isActive
+                      ? () => _openLeg(context, Routes.pickupLocation)
+                      : null,
+                ),
                 const SizedBox(height: 24),
                 UserAddressTile(
                   customer: order.customer,
                   showActions: isActive,
+                  onTap: isActive
+                      ? () => _openLeg(context, Routes.userLocation)
+                      : null,
                 ),
                 const SizedBox(height: 24),
                 Text(

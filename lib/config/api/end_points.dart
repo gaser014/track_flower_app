@@ -2,12 +2,11 @@ abstract class EndPoints {
   static const String baseUrl = "https://flower.elevateegy.com/api/v1";
   static const String imagesUrl = "https://flower.elevateegy.com/uploads/";
   static const String loginDriver = "/drivers/signin";
-
-  static const String login = "/drivers/signin";
-  static const String register = "/drivers/signup";
-  static const String forgetPasswordEndpoint = "/drivers/forgotPassword";
-  static const String verifyResetEndpoint = "/drivers/verifyResetCode";
-  static const String resetPasswordEndpoint = "/drivers/resetPassword";
+  static const String login = "/auth/signin";
+  static const String register = "/auth/signup";
+  static const String forgetPasswordEndpoint = "/auth/forgotPassword";
+  static const String verifyResetEndpoint = "/auth/verifyResetCode";
+  static const String resetPasswordEndpoint = "/auth/resetPassword";
   static const String productsEndpoint = "/products";
   static const String bestSellersEndpoint = "/best-seller";
   static const String allCategories = "/categories";

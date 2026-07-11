@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/core/values/notification_keys.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/entities/lat_lng_entity.dart';
 
 class OrderStatusUi {
   final String label;
@@ -105,6 +107,7 @@ extension OrderStatusX on OrderStatus {
   };
 
   OrderStatus get next => switch (this) {
+    OrderStatus.pending => OrderStatus.accepted,
     OrderStatus.accepted => OrderStatus.picked,
     OrderStatus.picked => OrderStatus.arrived,
     OrderStatus.arrived => OrderStatus.delivered,
@@ -158,11 +161,13 @@ class StoreEntity extends Equatable {
   final String name;
   final String address;
   final String phone;
+  final LatLngEntity? location;
 
   const StoreEntity({
     required this.name,
     required this.address,
     required this.phone,
+    this.location,
   });
 
   @override
@@ -174,12 +179,14 @@ class CustomerEntity extends Equatable {
   final String address;
   final String phone;
   final String photo;
+  final LatLngEntity? location;
 
   const CustomerEntity({
     required this.name,
     required this.address,
     required this.phone,
     this.photo = "",
+    this.location,
   });
 
   @override

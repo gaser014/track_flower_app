@@ -21,6 +21,8 @@ class AppStrings {
   static const String retryButton = "Retry...";
   static const String invalidCode = "Invalid code";
   static const String occasion = "Occasion";
+  static const String token = "token";
+  static const String remember = "Remember me";
   static const String occasionSubTitle =
       "Bloom with our exquisite best sellers";
   static const String enterUserName = "Enter first name";
@@ -295,6 +297,100 @@ class AppStrings {
   static const String driverLogoutSuccessfully = "Logged out successfully";
   static const String driverLogoutError = "Failed to logout, please try again";
 
+  //SuccessPage
+  static const String thankYouTitle = "Thank you!!";
+  static const String orderDeliveredMessage =
+      "The order delivered\nsuccessfully";
+  static const String doneButtonText = "Done";
+  // Driver order flow
+  static const String floweryRider = "Flowery rider";
+  static const String flowerOrder = "Flower order";
+  static const String floweryStore = "Flowery store";
+  static const String pickupAddress = "Pickup address";
+  static const String userAddress = "User address";
+  static const String reject = "Reject";
+  static const String accept = "Accept";
+  static const String recentOrders = "Recent orders";
+  static const String orderDetails = "Order details";
+  static const String status = "Status";
+  static const String orderId = "Order ID";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String statusPending = "Pending";
+  static const String statusAccepted = "Accepted";
+  static const String statusPicked = "Picked";
+  static const String statusArrived = "Arrived";
+  static const String statusDelivered = "Delivered";
+  static const String statusCompleted = "Completed";
+  static const String statusCancelled = "Cancelled";
+  static const String arrivedAtPickup = "Arrived at Pickup point";
+  static const String startDeliver = "Start deliver";
+  static const String deliveredToUser = "Delivered to the user";
+  static const String noPendingOrders = "No new orders";
+  static const String activeOrderInProgress =
+      "You already have an active order. Finish it before accepting a new one.";
+
+  // Route / map screens
+  static const String yourLocation = "Your location";
+  // static const String user = "User";
+  static const String pickupLocationTitle = "Pickup location";
+  static const String userLocationTitle = "User location";
+  static const String routeUnavailable =
+      "Couldn't load the route. Please check your connection and location permission.";
+
+  // Arrival prompt (shown when the driver reaches the destination)
+  static const String arrivedTitle = "You have arrived";
+  static const String arrivedAtPickupMessage =
+      "You're at the pickup location. Update the order status to continue.";
+  static const String arrivedAtUserMessage =
+      "You're at the customer's location. Update the order status to continue.";
+  static const String updateStatus = "Update status";
+  static const String notNow = "Not now";
+
+  // Order tracking notifications (sent to the customer)
+  static const String orderNotificationTitle = "Order update";
+  static const String orderUpdateBody = "Your order status has been updated.";
+  static const String orderAcceptedBody =
+      "Your order has been accepted by the driver.";
+  static const String orderPickedBody =
+      "The driver picked up your order and is on the way.";
+  static const String orderArrivedBody =
+      "The driver has arrived at your location.";
+  static const String orderDeliveredBody =
+      "Your order has been delivered. Enjoy!";
+  static const String orderCompletedBody = "Your order is now complete.";
+  static const String orderCancelledBody = "Your order has been cancelled.";
+
+  // Order tracking notifications - Arabic (sent to the customer)
+  static const String orderNotificationTitleAr = "تحديث الطلب";
+  static const String orderUpdateBodyAr = "تم تحديث حالة طلبك.";
+  static const String orderAcceptedBodyAr = "تم قبول طلبك من قبل السائق.";
+  static const String orderPickedBodyAr =
+      "استلم السائق طلبك وهو في الطريق إليك.";
+  static const String orderArrivedBodyAr = "وصل السائق إلى موقعك.";
+  static const String orderDeliveredBodyAr =
+      "تم توصيل طلبك. نتمنى لك وقتاً ممتعاً!";
+  static const String orderCompletedBodyAr = "تم اكتمال طلبك الآن.";
+  static const String orderCancelledBodyAr = "تم إلغاء طلبك.";
+
+  // Forget Password Flow
+  static const String forgetPasswordTitle = "Forgot Password?";
+  static const String forgetPasswordSubtitle =
+      "Enter your email and we'll send you a reset code";
+  static const String confirmForgetPassword = "Send Code";
+  static const String verificationCodeTitle = "Verification Code";
+  static const String verificationCodeSubtitle =
+      "Enter the 4-digit code sent to your email";
+  static const String resetPasswordTitle = "Reset Password";
+  static const String resetPasswordSubtitle = "Create a new password below";
+  static const String newPassword = "New Password";
+  static const String confirmNewPassword = "Confirm New Password";
+  static const String passwordResetSuccess =
+      "Password reset successfully. Please login.";
+  // Driver Auth
+
+  static const String driverLogoutSuccessfully = "Logged out successfully";
+  static const String driverLogoutError = "Failed to logout, please try again";
+
   // Driver order flow
   static const String floweryRider = "Flowery rider";
   static const String flowerOrder = "Flower order";
@@ -348,3 +444,5 @@ class AppStrings {
   static const String orderCompletedBodyAr = "تم اكتمال طلبك الآن.";
   static const String orderCancelledBodyAr = "تم إلغاء طلبك.";
 }
+
+

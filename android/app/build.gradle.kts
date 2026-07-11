@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -8,6 +10,44 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { load(it) }
+    }
+}
+
+/// Reads a value from the Flutter project's `.env` file (one level above the
+/// `android/` directory). Matches the key case-insensitively and strips any
+/// surrounding single/double quotes.
+fun readEnvValue(name: String): String? {
+    val envFile = rootProject.file("../.env")
+    if (!envFile.exists()) return null
+    envFile.readLines().forEach { rawLine ->
+        val line = rawLine.trim()
+        if (line.isEmpty() || line.startsWith("#")) return@forEach
+        val separator = line.indexOf('=')
+        if (separator <= 0) return@forEach
+        val key = line.substring(0, separator).trim()
+        if (key.equals(name, ignoreCase = true)) {
+            var value = line.substring(separator + 1).trim()
+            if (value.length >= 2 &&
+                ((value.startsWith("\"") && value.endsWith("\"")) ||
+                    (value.startsWith("'") && value.endsWith("'")))
+            ) {
+                value = value.substring(1, value.length - 1)
+            }
+            return value.trim()
+        }
+    }
+    return null
+}
+
+// Google Maps SDK key: sourced from `.env` (google_map_key) first, falling
+// back to local.properties (MAPS_API_KEY) so the build never breaks.
+val mapsApiKey: String =
+    readEnvValue("google_map_key") ?: localProperties.getProperty("MAPS_API_KEY", "")
 
 android {
     namespace = "com.elevate.trackFlowers"
@@ -33,6 +73,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Exposes ${MAPS_API_KEY} to AndroidManifest.xml for the Maps SDK.
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {

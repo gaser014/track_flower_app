@@ -24,5 +24,17 @@
         "deliver_to": "Deliver to ",
         "no_addresses_yet": "No addresses yet",
         "add_address_to_start": "Add your first address to get started"
+    },
+    "notifications": {
+        "order_update_title": "Order Update",
+        "order_accepted": "Your order has been accepted by the driver.",
+        "order_picked": "The driver has picked up your order.",
+        "order_arrived": "The driver has arrived at your location.",
+        "order_delivered": "Your order has been delivered.",
+        "order_completed": "Your order is now complete.",
+        "order_cancelled": "Your order has been cancelled.",
+        "order_update": "Your order status has been updated.",
+        "delivered_by_customer_title": "Order Delivered",
+        "delivered_by_customer": "The customer confirmed receiving the order."
     }
 }

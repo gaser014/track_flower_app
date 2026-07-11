@@ -6,6 +6,7 @@ import 'package:track_flowers_app/config/base_response/entity/meta_entity.dart';
 import 'package:track_flowers_app/config/base_response/result.dart';
 import 'package:track_flowers_app/config/firebase/order_tracking_service.dart';
 import 'package:track_flowers_app/config/uses_cases/pagination_params.dart';
+import 'package:track_flowers_app/core/values/notification_keys.dart';
 import 'package:track_flowers_app/features/driver_orders/data/data_sources/driver_orders_remote_data_source_contract.dart';
 import 'package:track_flowers_app/features/driver_orders/data/fixtures/driver_orders_fixtures.dart';
 import 'package:track_flowers_app/features/driver_orders/data/mapper/order_firestore_mapper.dart';
@@ -115,6 +116,11 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
   @override
   Future<Result<OrderEntity>> startOrder(OrderEntity order) async {
     final result = await _remoteDataSource.startOrder(order.id);
+    final status = order.status.next;
+    log(
+      'acceptOrder: ${order.id} status: $status',
+      name: 'DriverOrdersRepository',
+    );
     return result.makeDummyData(
       dummyData: order.copyWith(status: order.status.next),
       success: (data) => Success(data: data?.toEntity()),
@@ -152,6 +158,10 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
         driverPhoto: driver.photo,
         driverLat: driverLat,
         driverLng: driverLng,
+        storeLat: order.store.location?.lat,
+        storeLng: order.store.location?.lng,
+        customerLat: order.customer.location?.lat,
+        customerLng: order.customer.location?.lng,
       );
 
       await _trackingRepository.upsertOrder(order.id, firestoreMap);
@@ -159,6 +169,11 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
       // Mirror the order onto the customer's user document and notify them
       // of the latest status change.
       if (order.userId.isNotEmpty) {
+        await _orderTrackingService.setUserOrder(
+          userId: order.userId,
+          orderId: order.id,
+          data: firestoreMap,
+        );
         await _orderTrackingService.notifyUser(
           userId: order.userId,
           title: order.status.notificationTitle,

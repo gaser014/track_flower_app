@@ -60,6 +60,10 @@ class LoginCubit extends Cubit<LoginStates> {
           if (response.user != null) {
             await saveUserUseCase.call(response.user!);
           }
+          await AppSharedPreferences.setBool(
+            key: APIkeys.rememberMe,
+            value: params.remember ?? false,
+          );
           if (response.token != null) {
             await AppSharedPreferences.setString(
               key: APIkeys.accessToken,

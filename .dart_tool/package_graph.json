@@ -34,6 +34,7 @@
         "image_picker",
         "injectable",
         "internet_connection_checker_plus",
+        "intl",
         "json_annotation",
         "location",
         "logger",
@@ -345,6 +346,15 @@
       "version": "4.12.0",
       "dependencies": [
         "meta"
+      ]
+    },
+    {
+      "name": "intl",
+      "version": "0.20.2",
+      "dependencies": [
+        "clock",
+        "meta",
+        "path"
       ]
     },
     {
@@ -1786,15 +1796,6 @@
       "version": "0.0.2",
       "dependencies": [
         "flutter"
-      ]
-    },
-    {
-      "name": "intl",
-      "version": "0.20.2",
-      "dependencies": [
-        "clock",
-        "meta",
-        "path"
       ]
     },
     {

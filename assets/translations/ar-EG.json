@@ -24,5 +24,17 @@
         "deliver_to": "التوصيل إلى ",
         "no_addresses_yet": "لا توجد عناوين بعد",
         "add_address_to_start": "أضف عنوانك الأول للبدء"
+    },
+    "notifications": {
+        "order_update_title": "تحديث الطلب",
+        "order_accepted": "تم قبول طلبك من قبل السائق.",
+        "order_picked": "قام السائق باستلام طلبك.",
+        "order_arrived": "وصل السائق إلى موقعك.",
+        "order_delivered": "تم توصيل طلبك.",
+        "order_completed": "تم اكتمال طلبك الآن.",
+        "order_cancelled": "تم إلغاء طلبك.",
+        "order_update": "تم تحديث حالة طلبك.",
+        "delivered_by_customer_title": "تم توصيل الطلب",
+        "delivered_by_customer": "أكد العميل استلام الطلب."
     }
 }

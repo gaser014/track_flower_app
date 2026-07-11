@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/fcm/fcm_service.dart';
 import 'package:track_flowers_app/config/fcm/user_entity.dart';
@@ -12,12 +13,16 @@ class OrderTrackingService {
 
   static const String ordersCollection = 'orders';
   static const String usersCollection = 'users';
+  static const String notificationsCollection = 'notifications';
 
   CollectionReference<Map<String, dynamic>> get _orders =>
       _firestore.collection(ordersCollection);
 
   CollectionReference<Map<String, dynamic>> get _users =>
       _firestore.collection(usersCollection);
+
+  CollectionReference<Map<String, dynamic>> get _notifications =>
+      _firestore.collection(notificationsCollection);
 
   Future<void> upsertOrder(String orderId, Map<String, dynamic> data) async {
     if (orderId.isEmpty) return;
@@ -67,6 +72,24 @@ class OrderTrackingService {
     return _orders.doc(orderId).snapshots().map((snapshot) => snapshot.data());
   }
 
+  /// One-time read of an order document (used to fetch cached store/customer
+  /// coordinates from the `orders` collection).
+  Future<Map<String, dynamic>?> getOrderData(String orderId) async {
+    if (orderId.isEmpty) return null;
+    try {
+      final snapshot = await _orders.doc(orderId).get();
+      return snapshot.data();
+    } catch (e, s) {
+      log(
+        'getOrderData failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+      return null;
+    }
+  }
+
   /// Fetch a user document from the `users` collection by id and parse the
   /// stored FCM tokens into a [UserEntity].
   Future<UserEntity?> getUser(String userId) async {
@@ -110,16 +133,116 @@ class OrderTrackingService {
   //   }
   // }
 
-  /// Resolve the user's FCM tokens by id and send a push notification.
+  /// Mirror the order onto the customer's user document so the customer app
+  /// can read its latest order/driver state from `users/{userId}/orders/{id}`.
+  Future<void> setUserOrder({
+    required String userId,
+    required String orderId,
+    required Map<String, dynamic> data,
+  }) async {
+    if (userId.isEmpty || orderId.isEmpty) return;
+    try {
+      await _users.doc(userId).collection(ordersCollection).doc(orderId).set({
+        ...data,
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e, s) {
+      log(
+        'setUserOrder failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
+  /// Register this device's FCM [token] under `users/{userId}` so the customer
+  /// app can resolve it and push order-status notifications to the driver.
+  Future<void> saveUserToken({
+    required String userId,
+    required String token,
+    String lang = 'en',
+  }) async {
+    if (userId.isEmpty || token.isEmpty) return;
+    try {
+      await _users.doc(userId).set({
+        'fcmTokens': FieldValue.arrayUnion([
+          {'token': token, 'lang': lang},
+        ]),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e, s) {
+      log(
+        'saveUserToken failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
+  /// Persist a notification to the shared `notifications` collection. The
+  /// translation KEYS are stored (not translated text) so any reader shows it
+  /// in their own locale.
+  Future<void> addNotification({
+    required String recipientId,
+    required String titleKey,
+    required String bodyKey,
+    String recipientType = 'user',
+    String orderId = '',
+    String orderNumber = '',
+    String status = '',
+    String type = 'order_status',
+  }) async {
+    if (recipientId.isEmpty) return;
+    try {
+      await _notifications.add({
+        'recipientId': recipientId,
+        'recipientType': recipientType,
+        'type': type,
+        'orderId': orderId,
+        'orderNumber': orderNumber,
+        'status': status,
+        'titleKey': titleKey,
+        'bodyKey': bodyKey,
+        'read': false,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e, s) {
+      log(
+        'addNotification failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
+  /// Persist a notification and push it to the user's devices.
   ///
-  /// [title] and [body] are localized maps keyed by language code (e.g.
-  /// `'en'`, `'ar'`). Each token is notified in the language stored on it,
-  /// falling back to English when a translation is missing.
   Future<void> notifyUser({
     required String userId,
-    required Map<String, String> title,
-    required Map<String, String> body,
+    required String titleKey,
+    required String bodyKey,
+    String orderId = '',
+    String orderNumber = '',
+    String status = '',
+    String type = 'order_status',
+    String recipientType = 'user',
   }) async {
+    // 1. Always persist the notification, even if the user has no live device.
+    await addNotification(
+      recipientId: userId,
+      recipientType: recipientType,
+      titleKey: titleKey,
+      bodyKey: bodyKey,
+      orderId: orderId,
+      orderNumber: orderNumber,
+      status: status,
+      type: type,
+    );
+
+    // 2. Push to the user's registered devices.
     final user = await getUser(userId);
     final tokens = user?.fcmTokens ?? const <FCMTokenEntity>[];
     if (tokens.isEmpty) {
@@ -128,8 +251,18 @@ class OrderTrackingService {
     }
     await _fcmService.sendNotification(
       targetFcmTokens: tokens,
-      title: title,
-      body: body,
+      // English fallback for the system tray (background); the receiver
+      // re-translates from the keys in `data` when it handles the message.
+      title: titleKey.tr(),
+      body: bodyKey.tr(),
+      data: {
+        'type': type,
+        'orderId': orderId,
+        'orderNumber': orderNumber,
+        'status': status,
+        'titleKey': titleKey,
+        'bodyKey': bodyKey,
+      },
     );
   }
 

@@ -1,9 +1,10 @@
+import 'package:track_flowers_app/features/driver_orders/domain/entities/lat_lng_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 
 OrderStatus orderStatusFromString(String value) =>
     switch (value.toLowerCase()) {
-      'accepted' => OrderStatus.accepted,
-      'inprogress' || 'picked' => OrderStatus.picked,
+      'accepted' || 'inprogress' => OrderStatus.accepted,
+      'picked' => OrderStatus.picked,
       'arrived' => OrderStatus.arrived,
       'delivered' => OrderStatus.delivered,
       'completed' => OrderStatus.completed,
@@ -88,21 +89,29 @@ class StoreModel {
   final String name;
   final String address;
   final String phone;
+  final LatLngEntity? location;
 
   const StoreModel({
     required this.name,
     required this.address,
     required this.phone,
+    this.location,
   });
 
   factory StoreModel.fromJson(Map<String, dynamic> json) => StoreModel(
     name: json['name'] ?? '',
     address: json['address'] ?? '',
     phone: json['phoneNumber'] ?? json['phone'] ?? '',
+    // API sends `latLong` as a "lat,long" string; also tolerate flat fields.
+    location: LatLngEntity(lat: 30.9456534, lng: 31.2922893),
   );
 
-  StoreEntity toEntity() =>
-      StoreEntity(name: name, address: address, phone: phone);
+  StoreEntity toEntity() => StoreEntity(
+    name: name,
+    address: address,
+    phone: phone,
+    location: location,
+  );
 }
 
 class CustomerModel {
@@ -110,12 +119,14 @@ class CustomerModel {
   final String address;
   final String phone;
   final String photo;
+  final LatLngEntity? location;
 
   const CustomerModel({
     required this.name,
     required this.address,
     required this.phone,
     required this.photo,
+    this.location,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
@@ -133,11 +144,19 @@ class CustomerModel {
       address: address.isNotEmpty ? address : (user['address'] ?? ''),
       phone: shipping['phone'] ?? user['phone'] ?? '',
       photo: user['photo'] ?? '',
+      // Coordinates may live on the shipping address or the user object.
+      location:
+          LatLngEntity.fromDynamic(shipping) ?? LatLngEntity.fromDynamic(user),
     );
   }
 
-  CustomerEntity toEntity() =>
-      CustomerEntity(name: name, address: address, phone: phone, photo: photo);
+  CustomerEntity toEntity() => CustomerEntity(
+    name: name,
+    address: address,
+    phone: phone,
+    photo: photo,
+    location: location,
+  );
 }
 
 class OrderItemModel {

@@ -41,12 +41,14 @@ class OrderLocationTile extends StatelessWidget {
     required this.title,
     required this.address,
     this.trailing,
+    this.onTap,
   });
 
   final Widget leading;
   final String title;
   final String address;
   final Widget? trailing;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +100,13 @@ class OrderLocationTile extends StatelessWidget {
         ],
       ),
     );
+
+    if (onTap == null) return tile;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: tile,
+    );
   }
 }
 
@@ -106,10 +115,12 @@ class PickupAddressTile extends StatelessWidget {
     super.key,
     required this.store,
     this.showActions = false,
+    this.onTap,
   });
 
   final StoreEntity store;
   final bool showActions;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +131,7 @@ class PickupAddressTile extends StatelessWidget {
         title: store.name,
         address: store.address,
         trailing: showActions ? AddressCallActions(phone: store.phone) : null,
+        onTap: onTap,
       ),
     );
   }
@@ -130,10 +142,12 @@ class UserAddressTile extends StatelessWidget {
     super.key,
     required this.customer,
     this.showActions = false,
+    this.onTap,
   });
 
   final CustomerEntity customer;
   final bool showActions;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +160,7 @@ class UserAddressTile extends StatelessWidget {
         trailing: showActions
             ? AddressCallActions(phone: customer.phone)
             : null,
+        onTap: onTap,
       ),
     );
   }
