@@ -52,8 +52,6 @@ import '../../features/driver_orders/domain/repositories/order_route_repository.
     as _i1071;
 import '../../features/driver_orders/domain/use_cases/accept_order_use_case.dart'
     as _i738;
-import '../../features/driver_orders/domain/use_cases/complete_order_use_case.dart'
-    as _i508;
 import '../../features/driver_orders/domain/use_cases/get_active_order_use_case.dart'
     as _i911;
 import '../../features/driver_orders/domain/use_cases/get_my_orders_use_case.dart'
@@ -267,9 +265,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i738.AcceptOrderUseCase>(
       () => _i738.AcceptOrderUseCase(gh<_i542.DriverOrdersRepository>()),
     );
-    gh.factory<_i508.CompleteOrderUseCase>(
-      () => _i508.CompleteOrderUseCase(gh<_i542.DriverOrdersRepository>()),
-    );
     gh.factory<_i911.GetActiveOrderUseCase>(
       () => _i911.GetActiveOrderUseCase(gh<_i542.DriverOrdersRepository>()),
     );
@@ -296,7 +291,6 @@ extension GetItInjectableX on _i174.GetIt {
         acceptOrderUseCase: gh<_i738.AcceptOrderUseCase>(),
         rejectOrderUseCase: gh<_i247.RejectOrderUseCase>(),
         startOrderUseCase: gh<_i545.StartOrderUseCase>(),
-        completeOrderUseCase: gh<_i508.CompleteOrderUseCase>(),
         mirrorOrderUseCase: gh<_i223.MirrorOrderUseCase>(),
       ),
     );

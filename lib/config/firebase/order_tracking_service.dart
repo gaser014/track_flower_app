@@ -128,6 +128,31 @@ class OrderTrackingService {
     }
   }
 
+  /// Register this device's FCM [token] under `users/{userId}` so the customer
+  /// app can resolve it and push order-status notifications to the driver.
+  Future<void> saveUserToken({
+    required String userId,
+    required String token,
+    String lang = 'en',
+  }) async {
+    if (userId.isEmpty || token.isEmpty) return;
+    try {
+      await _users.doc(userId).set({
+        'fcmTokens': FieldValue.arrayUnion([
+          {'token': token, 'lang': lang},
+        ]),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e, s) {
+      log(
+        'saveUserToken failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
   /// Resolve the user's FCM tokens by id and send a push notification.
   Future<void> notifyUser({
     required String userId,

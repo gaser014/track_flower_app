@@ -52,8 +52,8 @@ enum OrderStatus {
     OrderStatusUi(
       label: AppStrings.statusArrived,
       color: AppColors.green0C,
-      actionLabel: AppStrings.deliveredToUser,
-      canAdvance: true,
+      // The driver's journey ends when they arrive at the customer. Marking the
+      // order as "delivered" is the customer's action from their own app.
       sortIndex: 4,
     ),
   ),
@@ -61,7 +61,8 @@ enum OrderStatus {
     OrderStatusUi(
       label: AppStrings.statusDelivered,
       color: AppColors.green0C,
-      actionLabel: AppStrings.deliveredToUser,
+      // No action for the driver here: completing the order is the customer's
+      // responsibility from their app. The driver's last step is "delivered".
       sortIndex: 5,
     ),
   ),
@@ -98,10 +99,9 @@ extension OrderStatusX on OrderStatus {
   };
 
   bool get isActive => switch (this) {
-    OrderStatus.accepted ||
-    OrderStatus.picked ||
-    OrderStatus.arrived ||
-    OrderStatus.delivered => true,
+    OrderStatus.accepted || OrderStatus.picked || OrderStatus.arrived => true,
+    // Once delivered, the order leaves the driver's active queue — it now waits
+    // for the customer to confirm completion from their app.
     _ => false,
   };
 

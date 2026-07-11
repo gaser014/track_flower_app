@@ -7,7 +7,9 @@ import 'package:track_flowers_app/app.dart';
 import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/fcm/fcm_service.dart';
+import 'package:track_flowers_app/config/firebase/order_tracking_service.dart';
 import 'package:track_flowers_app/config/helper/bloc_observer.dart';
+import 'package:track_flowers_app/features/tracking_test/domain/entities/driver_entity.dart';
 import 'package:track_flowers_app/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +39,13 @@ void main() async {
   // );
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await FCMService().initialize();
+  await FCMService().initialize(
+    // Register this driver's token so the customer app can push order updates.
+    onToken: (token) => getIt<OrderTrackingService>().saveUserToken(
+      userId: const DriverEntity().id,
+      token: token,
+    ),
+  );
   // FlutterError.onError = (errorDetails) {
   //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   // };

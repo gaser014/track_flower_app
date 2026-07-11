@@ -124,19 +124,6 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
       Success(data: order.copyWith(status: OrderStatus.accepted));
 
   @override
-  Future<Result<OrderEntity>> completeOrder(OrderEntity order) async {
-    final result = await _remoteDataSource.updateOrderState(
-      order.id,
-      'completed',
-    );
-    return result.makeDummyData(
-      dummyData: order.copyWith(status: OrderStatus.completed),
-      success: (data) => Success(data: data?.toEntity()),
-      error: (exception) => Error(exception: exception),
-    );
-  }
-
-  @override
   Future<void> mirrorOrderToFirebase(
     OrderEntity order, {
     double? driverLat,

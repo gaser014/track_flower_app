@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:firebase_messaging/firebase_messaging.dart';import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:track_flowers_app/config/fcm/user_entity.dart';
@@ -10,6 +12,22 @@ bool isFCMInitialized = false;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+
+/// A parsed order-status push (e.g. the customer confirming delivery).
+class OrderStatusPush {
+  final String orderId;
+  final String status;
+
+  const OrderStatusPush({required this.orderId, required this.status});
+
+  static OrderStatusPush? fromData(Map<String, dynamic> data) {
+    if (data['type'] != 'order_status') return null;
+    final orderId = (data['orderId'] ?? '').toString();
+    final status = (data['status'] ?? '').toString();
+    if (orderId.isEmpty || status.isEmpty) return null;
+    return OrderStatusPush(orderId: orderId, status: status);
+  }
+}
 
 class FCMService {
   static final FCMService _instance = FCMService._internal();
@@ -23,8 +41,18 @@ class FCMService {
   String? _fcmToken;
   String? get fcmToken => _fcmToken;
 
-  /// Initialize FCM and set up all notification handlers
-  Future<void> initialize() async {
+  /// Broadcasts order-status pushes so interested cubits can react live
+  /// (e.g. move an order to "delivered" when the customer confirms receipt).
+  final StreamController<OrderStatusPush> _orderStatusController =
+      StreamController<OrderStatusPush>.broadcast();
+  Stream<OrderStatusPush> get orderStatusStream =>
+      _orderStatusController.stream;
+
+  /// Initialize FCM and set up all notification handlers.
+  ///
+  /// [onToken] is invoked with the current token and on every refresh so the
+  /// caller can persist it (e.g. register the driver under `users/{driverId}`).
+  Future<void> initialize({void Function(String token)? onToken}) async {
     if (isFCMInitialized) return;
     // Request notification permissions (iOS and Android 13+)
     NotificationSettings settings = await _firebaseMessaging
@@ -38,13 +66,14 @@ class FCMService {
     // Get and store FCM token (unique device identifier)
     _fcmToken = await _firebaseMessaging.getToken();
     log('FCM Token: $_fcmToken');
-    // Send this token to your backend server to send notifications
+    // Register the token (e.g. persist it under users/{driverId}).
+    if (_fcmToken != null) onToken?.call(_fcmToken!);
 
     // Listen for token refresh (happens when app reinstalled, data cleared, etc.)
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
       _fcmToken = newToken;
       log('FCM Token refreshed: $newToken');
-      // Update token on your server
+      onToken?.call(newToken);
     });
 
     // Set up background message handler
@@ -104,6 +133,15 @@ class FCMService {
   /// Handle messages when app is in FOREGROUND
   void _handleForegroundMessage(RemoteMessage message) {
     showLocalNotification(message);
+    _emitOrderStatus(message);
+  }
+
+  /// Parse an order-status data payload and broadcast it to listeners.
+  void _emitOrderStatus(RemoteMessage message) {
+    final push = OrderStatusPush.fromData(message.data);
+    if (push != null && !_orderStatusController.isClosed) {
+      _orderStatusController.add(push);
+    }
   }
 
   /// Display local notification
@@ -149,6 +187,7 @@ class FCMService {
   void _handleNotificationTap(RemoteMessage message) {
     log('Notification tapped!');
     log('Message data: ${message.data}');
+    _emitOrderStatus(message);
 
     if (message.data['screen'] != null) {}
   }
