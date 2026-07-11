@@ -63,3 +63,19 @@ app.*.map.json
 **/android/local.properties
 **/android/key.properties
 **/android/.gradle/
+
+# Environments
+.env
+*.env
+
+# Android Keystores
+*.jks
+*.keystore
+
+# Flutter Plugin Dependencies (Already tracked partially but usually ignored)
+.flutter-plugins
+
+# Platform-specific ephemeral files
+**/macos/Flutter/ephemeral/
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
