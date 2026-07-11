@@ -21,6 +21,17 @@ class LocationHelper {
     }
   }
 
+  /// Live location updates for the current device.
+  ///
+  /// Ensures the location service is enabled and permission is granted, then
+  /// returns the platform's [onLocationChanged] stream. This uses the free
+  /// on-device GPS (no Google API cost).
+  Future<Stream<LocationData>> watchUserLocation() async {
+    await _checkServiceEnabled();
+    await _checkPermissionGranted();
+    return _location.onLocationChanged;
+  }
+
   // ------------------ PRIVATE METHODS ------------------
 
   Future<void> _checkServiceEnabled() async {

@@ -41,6 +41,8 @@ class AppAssets {
 
   static const String iconsLocation = "assets/icons/location.svg";
 
+  static const String motorcycleDelivery = "assets/icons/motorcycle_delivery.svg";
+
   static const String iconsLock = "assets/icons/lock.svg";
 
   static const String iconsLogout = "assets/icons/logout.svg";

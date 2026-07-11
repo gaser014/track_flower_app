@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "dataModelVersion": 1,
+  "id": "sess_36b67d16-b445-4860-8289-7327c2aec537",
+  "title": "Figma map screens for driver orders",
+  "agentMode": "vibe",
+  "workspacePaths": [
+    "/Users/gaser_mohamed/projects/track_flowers_app"
+  ],
+  "createdAt": "2026-07-09T15:46:04.324Z",
+  "lastModifiedAt": "2026-07-09T18:45:38.933Z",
+  "modelId": "claude-opus-4.8",
+  "autopilot": true,
+  "effortLevel": "high",
+  "semanticReviewEnabled": true,
+  "ftaEnabled": false,
+  "description": "Implemented both Figma map screens (Pickup + User location) with cost-optimized Google Maps routing, driver GPS origin, and store/user coordinates sourced from Firebase. build_runner + flutter analyze pass with 0 errors.",
+  "status": "completed"
+}

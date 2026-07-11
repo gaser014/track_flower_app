@@ -329,6 +329,23 @@ class AppStrings {
   static const String activeOrderInProgress =
       "You already have an active order. Finish it before accepting a new one.";
 
+  // Route / map screens
+  static const String yourLocation = "Your location";
+  // static const String user = "User";
+  static const String pickupLocationTitle = "Pickup location";
+  static const String userLocationTitle = "User location";
+  static const String routeUnavailable =
+      "Couldn't load the route. Please check your connection and location permission.";
+
+  // Arrival prompt (shown when the driver reaches the destination)
+  static const String arrivedTitle = "You have arrived";
+  static const String arrivedAtPickupMessage =
+      "You're at the pickup location. Update the order status to continue.";
+  static const String arrivedAtUserMessage =
+      "You're at the customer's location. Update the order status to continue.";
+  static const String updateStatus = "Update status";
+  static const String notNow = "Not now";
+
   // Order tracking notifications (sent to the customer)
   static const String orderNotificationTitle = "Order update";
   static const String orderUpdateBody = "Your order status has been updated.";

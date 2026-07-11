@@ -12,6 +12,8 @@ import 'package:track_flowers_app/core/widgets/success_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/pickup_location_page.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/user_location_page.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 // import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
@@ -238,6 +240,34 @@ abstract class AppRoutes {
                 child: order == null
                     ? const MainView()
                     : OrderDetailsPage(order: order),
+                animationType: AnimationType.slideFromRight,
+              );
+            },
+          ),
+          GoRoute(
+            path: Routes.pickupLocation,
+            name: Routes.pickupLocation,
+            pageBuilder: (context, state) {
+              final order = state.extra as OrderEntity?;
+              return buildAnimatedPage(
+                key: state.pageKey,
+                child: order == null
+                    ? const MainView()
+                    : PickupLocationPage(order: order),
+                animationType: AnimationType.slideFromRight,
+              );
+            },
+          ),
+          GoRoute(
+            path: Routes.userLocation,
+            name: Routes.userLocation,
+            pageBuilder: (context, state) {
+              final order = state.extra as OrderEntity?;
+              return buildAnimatedPage(
+                key: state.pageKey,
+                child: order == null
+                    ? const MainView()
+                    : UserLocationPage(order: order),
                 animationType: AnimationType.slideFromRight,
               );
             },

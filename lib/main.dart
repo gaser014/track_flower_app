@@ -16,11 +16,14 @@ import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/firebase_options.dart';
 import 'config/dependency_injection/di.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:track_flowers_app/config/env/google_maps_initializer.dart';
 
 //flutter pub run build_runner build --delete-conflicting-outputs
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  // Provide the Google Maps key (from .env) to the native iOS SDK.
+  await GoogleMapsInitializer.configureIfNeeded();
 
   configureDependencies();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

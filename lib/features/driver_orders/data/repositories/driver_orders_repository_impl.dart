@@ -153,6 +153,10 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
         driverPhoto: driver.photo,
         driverLat: driverLat,
         driverLng: driverLng,
+        storeLat: order.store.location?.lat,
+        storeLng: order.store.location?.lng,
+        customerLat: order.customer.location?.lat,
+        customerLng: order.customer.location?.lng,
       );
 
       await _trackingRepository.upsertOrder(order.id, firestoreMap);

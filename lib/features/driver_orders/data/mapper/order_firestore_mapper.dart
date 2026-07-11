@@ -8,8 +8,14 @@ extension OrderFirestoreMapper on OrderEntity {
     String? driverPhoto,
     double? driverLat,
     double? driverLng,
+    double? storeLat,
+    double? storeLng,
+    double? customerLat,
+    double? customerLng,
   }) {
     final hasDriverLocation = driverLat != null && driverLng != null;
+    final hasStoreLocation = storeLat != null && storeLng != null;
+    final hasCustomerLocation = customerLat != null && customerLng != null;
 
     final driver = <String, dynamic>{
       if (driverId != null && driverId.isNotEmpty) 'id': driverId,
@@ -31,11 +37,14 @@ extension OrderFirestoreMapper on OrderEntity {
         'name': store.name,
         'address': store.address,
         'phone': store.phone,
+        if (hasStoreLocation) 'location': {'lat': storeLat, 'lng': storeLng},
       },
       'customer': {
         'name': customer.name,
         'address': customer.address,
         'phone': customer.phone,
+        if (hasCustomerLocation)
+          'location': {'lat': customerLat, 'lng': customerLng},
       },
       'items': items
           .map(

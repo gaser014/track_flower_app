@@ -67,6 +67,24 @@ class OrderTrackingService {
     return _orders.doc(orderId).snapshots().map((snapshot) => snapshot.data());
   }
 
+  /// One-time read of an order document (used to fetch cached store/customer
+  /// coordinates from the `orders` collection).
+  Future<Map<String, dynamic>?> getOrderData(String orderId) async {
+    if (orderId.isEmpty) return null;
+    try {
+      final snapshot = await _orders.doc(orderId).get();
+      return snapshot.data();
+    } catch (e, s) {
+      log(
+        'getOrderData failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+      return null;
+    }
+  }
+
   /// Fetch a user document from the `users` collection by id and parse the
   /// stored FCM tokens into a [UserEntity].
   Future<UserEntity?> getUser(String userId) async {
