@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -172,15 +173,24 @@ class FCMService {
       android: androidNotificationDetails,
       iOS: darwinNotificationDetails,
     );
-    if (notification != null) {
-      await _localNotifications.show(
-        id: notification.hashCode, // Unique notification ID
-        title: notification.title,
-        body: notification.body,
-        notificationDetails: notificationDetails,
-        payload: message.data.toString(), // Pass data for tap handling
-      );
-    }
+
+    // Prefer localization keys from the data payload so the notification shows
+    // in THIS device's language, regardless of the sender's locale.
+    final data = message.data;
+    final titleKey = (data['titleKey'] ?? '').toString();
+    final bodyKey = (data['bodyKey'] ?? '').toString();
+    final title = titleKey.isNotEmpty ? titleKey.tr() : notification?.title;
+    final body = bodyKey.isNotEmpty ? bodyKey.tr() : notification?.body;
+
+    if (title == null && body == null) return;
+
+    await _localNotifications.show(
+      id: (notification?.hashCode ?? DateTime.now().millisecondsSinceEpoch),
+      title: title,
+      body: body,
+      notificationDetails: notificationDetails,
+      payload: message.data.toString(), // Pass data for tap handling
+    );
   }
 
   /// Handle notification tap (from background or terminated state)
@@ -200,6 +210,7 @@ class FCMService {
     required List<FCMTokenEntity> targetFcmTokens,
     required String title,
     required String body,
+    Map<String, String> data = const {},
   }) async {
     try {
       // 1. Go to Firebase Console -> Project Settings -> Service Accounts
@@ -248,20 +259,20 @@ class FCMService {
 
       for (var tokenData in targetFcmTokens) {
         final token = tokenData.token;
-        final lang =
-            tokenData.lang; // If you want to use language for translations
+        final lang = tokenData.lang;
 
-        if (token == null) continue;
+        if (token.isEmpty) continue;
 
-        // 5. Build the modern HTTP v1 message payload
-        final Map<String, dynamic> data = {
+        // 5. Build the modern HTTP v1 message payload. The `data` block carries
+        // localization keys so the receiver translates in its own locale.
+        final Map<String, dynamic> payload = {
           'message': {
             'token': token,
             'notification': {'title': title, 'body': body},
             'data': {
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'message': 'custom data',
-              'lang': lang ?? 'en',
+              'lang': lang,
+              ...data,
             },
           },
         };
@@ -270,7 +281,7 @@ class FCMService {
         final response = await client.post(
           Uri.parse(url),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(data),
+          body: jsonEncode(payload),
         );
 
         if (response.statusCode == 200) {

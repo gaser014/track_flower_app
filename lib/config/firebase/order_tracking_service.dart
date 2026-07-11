@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/fcm/fcm_service.dart';
 import 'package:track_flowers_app/config/fcm/user_entity.dart';
@@ -12,12 +13,16 @@ class OrderTrackingService {
 
   static const String ordersCollection = 'orders';
   static const String usersCollection = 'users';
+  static const String notificationsCollection = 'notifications';
 
   CollectionReference<Map<String, dynamic>> get _orders =>
       _firestore.collection(ordersCollection);
 
   CollectionReference<Map<String, dynamic>> get _users =>
       _firestore.collection(usersCollection);
+
+  CollectionReference<Map<String, dynamic>> get _notifications =>
+      _firestore.collection(notificationsCollection);
 
   Future<void> upsertOrder(String orderId, Map<String, dynamic> data) async {
     if (orderId.isEmpty) return;
@@ -153,12 +158,71 @@ class OrderTrackingService {
     }
   }
 
-  /// Resolve the user's FCM tokens by id and send a push notification.
+  /// Persist a notification to the shared `notifications` collection. The
+  /// translation KEYS are stored (not translated text) so any reader shows it
+  /// in their own locale.
+  Future<void> addNotification({
+    required String recipientId,
+    required String titleKey,
+    required String bodyKey,
+    String recipientType = 'user',
+    String orderId = '',
+    String orderNumber = '',
+    String status = '',
+    String type = 'order_status',
+  }) async {
+    if (recipientId.isEmpty) return;
+    try {
+      await _notifications.add({
+        'recipientId': recipientId,
+        'recipientType': recipientType,
+        'type': type,
+        'orderId': orderId,
+        'orderNumber': orderNumber,
+        'status': status,
+        'titleKey': titleKey,
+        'bodyKey': bodyKey,
+        'read': false,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e, s) {
+      log(
+        'addNotification failed',
+        name: 'OrderTrackingService',
+        error: e,
+        stackTrace: s,
+      );
+    }
+  }
+
+  /// Persist a notification and push it to the user's devices.
+  ///
+  /// We send localization KEYS (not translated text) so the customer app
+  /// renders the message in its own language — no need to resolve the
+  /// recipient's language here.
   Future<void> notifyUser({
     required String userId,
-    required String title,
-    required String body,
+    required String titleKey,
+    required String bodyKey,
+    String orderId = '',
+    String orderNumber = '',
+    String status = '',
+    String type = 'order_status',
+    String recipientType = 'user',
   }) async {
+    // 1. Always persist the notification, even if the user has no live device.
+    await addNotification(
+      recipientId: userId,
+      recipientType: recipientType,
+      titleKey: titleKey,
+      bodyKey: bodyKey,
+      orderId: orderId,
+      orderNumber: orderNumber,
+      status: status,
+      type: type,
+    );
+
+    // 2. Push to the user's registered devices.
     final user = await getUser(userId);
     final tokens = user?.fcmTokens ?? const <FCMTokenEntity>[];
     if (tokens.isEmpty) {
@@ -167,8 +231,18 @@ class OrderTrackingService {
     }
     await _fcmService.sendNotification(
       targetFcmTokens: tokens,
-      title: title,
-      body: body,
+      // English fallback for the system tray (background); the receiver
+      // re-translates from the keys in `data` when it handles the message.
+      title: titleKey.tr(),
+      body: bodyKey.tr(),
+      data: {
+        'type': type,
+        'orderId': orderId,
+        'orderNumber': orderNumber,
+        'status': status,
+        'titleKey': titleKey,
+        'bodyKey': bodyKey,
+      },
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
+import 'package:track_flowers_app/core/values/notification_keys.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/lat_lng_entity.dart';
 
 class OrderStatusUi {
@@ -123,6 +124,19 @@ extension OrderStatusX on OrderStatus {
     OrderStatus.completed => AppStrings.orderCompletedBody,
     OrderStatus.cancelled => AppStrings.orderCancelledBody,
     OrderStatus.pending => AppStrings.orderUpdateBody,
+  };
+
+  /// Localization KEY for the customer-facing notification body. Sent inside
+  /// the notification payload so the customer app translates it in its own
+  /// locale (no language resolution needed at send time).
+  String get notificationBodyKey => switch (this) {
+    OrderStatus.accepted => NotificationKeys.orderAccepted,
+    OrderStatus.picked => NotificationKeys.orderPicked,
+    OrderStatus.arrived => NotificationKeys.orderArrived,
+    OrderStatus.delivered => NotificationKeys.orderDelivered,
+    OrderStatus.completed => NotificationKeys.orderCompleted,
+    OrderStatus.cancelled => NotificationKeys.orderCancelled,
+    OrderStatus.pending => NotificationKeys.orderUpdate,
   };
 }
 
