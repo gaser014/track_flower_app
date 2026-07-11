@@ -35,6 +35,6 @@
         "order_cancelled": "Your order has been cancelled.",
         "order_update": "Your order status has been updated.",
         "delivered_by_customer_title": "Order Delivered",
-        "delivered_by_customer": "The customer confirmed receiving the order."
+        "delivered_by_customer": "The customer received your order #{orderNumber}"
     }
 }

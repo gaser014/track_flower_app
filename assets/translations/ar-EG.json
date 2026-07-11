@@ -35,6 +35,6 @@
         "order_cancelled": "تم إلغاء طلبك.",
         "order_update": "تم تحديث حالة طلبك.",
         "delivered_by_customer_title": "تم توصيل الطلب",
-        "delivered_by_customer": "أكد العميل استلام الطلب."
+        "delivered_by_customer": "استلم العميل طلبك رقم #{orderNumber}"
     }
 }
