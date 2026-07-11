@@ -4,13 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:developer';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:track_flowers_app/config/fcm/user_entity.dart';
-import 'package:track_flowers_app/core/values/app_colors.dart';
 
 bool isFCMInitialized = false;
 
@@ -182,8 +179,13 @@ class FCMService {
     final data = message.data;
     final titleKey = (data['titleKey'] ?? '').toString();
     final bodyKey = (data['bodyKey'] ?? '').toString();
-    final title = titleKey.isNotEmpty ? titleKey.tr() : notification?.title;
-    final body = bodyKey.isNotEmpty ? bodyKey.tr() : notification?.body;
+    final namedArgs = {'orderNumber': (data['orderNumber'] ?? '').toString()};
+    final title = titleKey.isNotEmpty
+        ? titleKey.tr(namedArgs: namedArgs)
+        : notification?.title;
+    final body = bodyKey.isNotEmpty
+        ? bodyKey.tr(namedArgs: namedArgs)
+        : notification?.body;
 
     if (title == null && body == null) return;
 
@@ -211,8 +213,8 @@ class FCMService {
   /// ⚠️ IMPORTANT: For production, this logic belongs on your backend!
   Future<void> sendNotification({
     required List<FCMTokenEntity> targetFcmTokens,
-    required Map<String, String> title,
-    required Map<String, String> body,
+    required String title,
+    required String body,
     Map<String, String> data = const {},
   }) async {
     try {
@@ -262,25 +264,18 @@ class FCMService {
 
       for (var tokenData in targetFcmTokens) {
         final token = tokenData.token;
-        final lang =
-            tokenData.lang; // Pick the copy matching the user's localization.
 
         if (token.isEmpty) continue;
 
-        // Resolve the localized title/body for this token's language,
-        // falling back to English when a translation is missing.
-        final localizedTitle = title[lang] ?? title['en'] ?? '';
-        final localizedBody = body[lang] ?? body['en'] ?? '';
-
         // 5. Build the modern HTTP v1 message payload
-        final Map<String, dynamic> data = {
+        final Map<String, dynamic> messageData = {
           'message': {
             'token': token,
-            'notification': {'title': localizedTitle, 'body': localizedBody},
+            'notification': {'title': title, 'body': body},
             'data': {
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
               'message': 'custom data',
-              'lang': lang ?? 'en',
+              ...data,
             },
           },
         };
@@ -289,7 +284,7 @@ class FCMService {
         final response = await client.post(
           Uri.parse(url),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(data),
+          body: jsonEncode(messageData),
         );
 
         if (response.statusCode == 200) {

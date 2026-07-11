@@ -19,7 +19,7 @@ abstract class AuthModuleApiClient {
   @factoryMethod
   factory AuthModuleApiClient(Dio dio) = _AuthModuleApiClient;
 
-  @POST(EndPoints.loginDriver)
+  @POST(EndPoints.login)
   Future<dynamic> loginDriver(@Field() String email, @Field() String password);
 
   @GET(EndPoints.vehiclesEndpoint)

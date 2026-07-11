@@ -8,27 +8,27 @@ import '../../../../helpers/test_helper.mocks.dart';
 
 void main() {
   late ResetPasswordUseCase useCase;
-  late MockAuthModuleRepository mockRepository;
+  late MockProfileRepository mockRepository;
 
   setUpAll(() {
-    provideDummy<Result<ResetPasswordResponseEntity>>(const Success<ResetPasswordResponseEntity>());
+    provideDummy<Result<ResetPasswordResponseEntity>>(
+      const Success<ResetPasswordResponseEntity>(),
+    );
   });
 
   setUp(() {
-    mockRepository = MockAuthModuleRepository();
+    mockRepository = MockProfileRepository();
     useCase = ResetPasswordUseCase(mockRepository);
   });
 
-  final tBody = {
-    "oldPassword": "password123",
-    "newPassword": "newPassword123"
-  };
+  final tBody = {"oldPassword": "password123", "newPassword": "newPassword123"};
   final tResponseEntity = ResetPasswordResponseEntity(message: "Success");
 
   test('should forward the call to the repository', () async {
     // arrange
-    when(mockRepository.resetPassword(any))
-        .thenAnswer((_) async => Success(data: tResponseEntity));
+    when(
+      mockRepository.resetPassword(any),
+    ).thenAnswer((_) async => Success(data: tResponseEntity));
 
     // act
     final result = await useCase(tBody);

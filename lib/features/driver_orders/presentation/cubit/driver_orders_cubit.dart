@@ -9,8 +9,8 @@ import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/config/base_state/pagination_state.dart';
 import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
+import 'package:track_flowers_app/config/fcm/fcm_service.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/accept_order_use_case.dart';
-import 'package:track_flowers_app/features/driver_orders/domain/use_cases/complete_order_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_active_order_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_my_orders_use_case.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/use_cases/get_pending_orders_use_case.dart';
@@ -30,7 +30,6 @@ class DriverOrdersCubit
   final AcceptOrderUseCase _acceptOrderUseCase;
   final RejectOrderUseCase _rejectOrderUseCase;
   final StartOrderUseCase _startOrderUseCase;
-  final CompleteOrderUseCase _completeOrderUseCase;
   final MirrorOrderUseCase _mirrorOrderUseCase;
 
   DriverOrdersCubit({
@@ -40,7 +39,6 @@ class DriverOrdersCubit
     required AcceptOrderUseCase acceptOrderUseCase,
     required RejectOrderUseCase rejectOrderUseCase,
     required StartOrderUseCase startOrderUseCase,
-    required CompleteOrderUseCase completeOrderUseCase,
     required MirrorOrderUseCase mirrorOrderUseCase,
   }) : _getPendingOrdersUseCase = getPendingOrdersUseCase,
        _getMyOrdersUseCase = getMyOrdersUseCase,
@@ -48,14 +46,59 @@ class DriverOrdersCubit
        _acceptOrderUseCase = acceptOrderUseCase,
        _rejectOrderUseCase = rejectOrderUseCase,
        _startOrderUseCase = startOrderUseCase,
-       _completeOrderUseCase = completeOrderUseCase,
        _mirrorOrderUseCase = mirrorOrderUseCase,
-       super(const DriverOrdersStates());
+       super(const DriverOrdersStates()) {
+    _listenForCustomerPush();
+  }
+
+  /// Subscription to customer-triggered order-status pushes (delivery
+  /// confirmation) so the driver's active order and list update live.
+  StreamSubscription<OrderStatusPush>? _orderStatusSub;
 
   @override
   void emit(DriverOrdersStates state) {
     if (!isClosed) super.emit(state);
   }
+
+  void _listenForCustomerPush() {
+    _orderStatusSub = FCMService().orderStatusStream.listen(_onOrderStatusPush);
+  }
+
+  /// The customer confirmed receipt → reflect the new status on the driver's
+  /// active order and orders list without any manual refresh.
+  void _onOrderStatusPush(OrderStatusPush push) {
+    if (isClosed) return;
+    final status = _statusFromString(push.status);
+
+    final active = state.activeState.data;
+    if (active != null && active.id == push.orderId) {
+      emit(
+        state.copyWith(
+          activeState: BaseState.success(active.copyWith(status: status)),
+        ),
+      );
+    }
+
+    final myOrders = state.myOrdersState.data;
+    if (myOrders.any((o) => o.id == push.orderId)) {
+      final updated = myOrders
+          .map((o) => o.id == push.orderId ? o.copyWith(status: status) : o)
+          .toList();
+      emit(
+        state.copyWith(myOrdersState: state.myOrdersState.withData(updated)),
+      );
+    }
+  }
+
+  OrderStatus _statusFromString(String value) => switch (value.toLowerCase()) {
+    'accepted' => OrderStatus.accepted,
+    'picked' => OrderStatus.picked,
+    'arrived' => OrderStatus.arrived,
+    'delivered' => OrderStatus.delivered,
+    'completed' => OrderStatus.completed,
+    'cancelled' || 'canceled' => OrderStatus.cancelled,
+    _ => OrderStatus.pending,
+  };
 
   Future<void> doIntent(DriverOrdersEvents event) async => switch (event) {
     GetPendingOrdersEvent() => _getPendingOrders(),
@@ -221,39 +264,43 @@ class DriverOrdersCubit
   Future<void> _advanceOrder() async {
     final current = state.activeState.data;
     if (current == null) return;
-    switch (current.status) {
-      case OrderStatus.accepted:
-        final result = await _startOrderUseCase(current);
-        result.when(
-          success: (_) {
-            final next = current.copyWith(status: OrderStatus.picked);
-            emit(state.copyWith(activeState: BaseState.success(next)));
-            unawaited(_mirrorOrderUseCase(next));
-          },
-          error: (e) => emit(
-            state.copyWith(
-              activeState: BaseState.error(e ?? Exception('Unknown')),
-            ),
-          ),
-        );
-      case OrderStatus.arrived || OrderStatus.delivered:
-        final result = await _completeOrderUseCase(current);
-        result.when(
-          success: (_) {
-            final next = current.copyWith(status: OrderStatus.completed);
-            emit(state.copyWith(activeState: BaseState.success(next)));
-            unawaited(_mirrorOrderUseCase(next));
-          },
-          error: (e) => emit(
-            state.copyWith(
-              activeState: BaseState.error(e ?? Exception('Unknown')),
-            ),
-          ),
-        );
-      default:
-        final next = current.copyWith(status: current.status.next);
-        emit(state.copyWith(activeState: BaseState.success(next)));
-        unawaited(_mirrorOrderUseCase(next));
+
+    // The driver can only advance up to "arrived". Confirming delivery/receipt
+    // (and completing the order) is exclusively the customer's action.
+    if (current.status == OrderStatus.arrived ||
+        current.status == OrderStatus.delivered ||
+        current.status == OrderStatus.completed) {
+      return;
     }
+
+    // Heading to the store is backed by the "start order" API call; every other
+    // step just advances locally and mirrors to Firebase + notifies the customer.
+    if (current.status == OrderStatus.accepted) {
+      final result = await _startOrderUseCase(current);
+      result.when(
+        success: (_) {
+          final next = current.copyWith(status: OrderStatus.picked);
+          emit(state.copyWith(activeState: BaseState.success(next)));
+          unawaited(_mirrorOrderUseCase(next));
+        },
+        error: (e) => emit(
+          state.copyWith(
+            activeState: BaseState.error(e ?? Exception('Unknown')),
+          ),
+        ),
+      );
+      return;
+    }
+
+    // picked -> arrived (driver's final step).
+    final next = current.copyWith(status: current.status.next);
+    emit(state.copyWith(activeState: BaseState.success(next)));
+    unawaited(_mirrorOrderUseCase(next));
+  }
+
+  @override
+  Future<void> close() {
+    _orderStatusSub?.cancel();
+    return super.close();
   }
 }

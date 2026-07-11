@@ -53,8 +53,8 @@ enum OrderStatus {
     OrderStatusUi(
       label: AppStrings.statusArrived,
       color: AppColors.green0C,
-      actionLabel: AppStrings.deliveredToUser,
-      canAdvance: true,
+      // The driver's journey ends at "arrived". Confirming delivery/receipt is
+      // exclusively the customer's action from their own app.
       sortIndex: 4,
     ),
   ),
@@ -62,7 +62,6 @@ enum OrderStatus {
     OrderStatusUi(
       label: AppStrings.statusDelivered,
       color: AppColors.green0C,
-      actionLabel: AppStrings.deliveredToUser,
       sortIndex: 5,
     ),
   ),
@@ -99,10 +98,9 @@ extension OrderStatusX on OrderStatus {
   };
 
   bool get isActive => switch (this) {
-    OrderStatus.accepted ||
-    OrderStatus.picked ||
-    OrderStatus.arrived ||
-    OrderStatus.delivered => true,
+    OrderStatus.accepted || OrderStatus.picked || OrderStatus.arrived => true,
+    // Once the customer confirms delivery, the order leaves the driver's
+    // active queue.
     _ => false,
   };
 
@@ -119,40 +117,41 @@ extension OrderStatusX on OrderStatus {
   /// ('en' and 'ar'). The right entry is chosen based on the user's
   /// stored localization on their FCM token.
   Map<String, String> get notificationTitle => {
-    'en': AppStrings.orderNotificationTitle,
-    'ar': AppStrings.orderNotificationTitleAr,
+    'en': NotificationKeys.orderUpdateTitle,
+    'ar': NotificationKeys.orderUpdateTitle,
   };
 
-  /// Customer-facing notification body for the current status, localized
-  /// per language code ('en' and 'ar').
+  /// Customer-facing notification body key for the current status.
+  /// Always returns the [NotificationKeys] constant so the receiving
+  /// customer app translates it with its own locale.
   Map<String, String> get notificationBody => switch (this) {
     OrderStatus.accepted => {
-      'en': AppStrings.orderAcceptedBody,
-      'ar': AppStrings.orderAcceptedBodyAr,
+      'en': NotificationKeys.orderAccepted,
+      'ar': NotificationKeys.orderAccepted,
     },
     OrderStatus.picked => {
-      'en': AppStrings.orderPickedBody,
-      'ar': AppStrings.orderPickedBodyAr,
+      'en': NotificationKeys.orderPicked,
+      'ar': NotificationKeys.orderPicked,
     },
     OrderStatus.arrived => {
-      'en': AppStrings.orderArrivedBody,
-      'ar': AppStrings.orderArrivedBodyAr,
+      'en': NotificationKeys.orderArrived,
+      'ar': NotificationKeys.orderArrived,
     },
     OrderStatus.delivered => {
-      'en': AppStrings.orderDeliveredBody,
-      'ar': AppStrings.orderDeliveredBodyAr,
+      'en': NotificationKeys.orderDelivered,
+      'ar': NotificationKeys.orderDelivered,
     },
     OrderStatus.completed => {
-      'en': AppStrings.orderCompletedBody,
-      'ar': AppStrings.orderCompletedBodyAr,
+      'en': NotificationKeys.orderCompleted,
+      'ar': NotificationKeys.orderCompleted,
     },
     OrderStatus.cancelled => {
-      'en': AppStrings.orderCancelledBody,
-      'ar': AppStrings.orderCancelledBodyAr,
+      'en': NotificationKeys.orderCancelled,
+      'ar': NotificationKeys.orderCancelled,
     },
     OrderStatus.pending => {
-      'en': AppStrings.orderUpdateBody,
-      'ar': AppStrings.orderUpdateBodyAr,
+      'en': NotificationKeys.orderUpdate,
+      'ar': NotificationKeys.orderUpdate,
     },
   };
 }

@@ -283,14 +283,6 @@ abstract class AppRoutes {
       ),
 
       GoRoute(
-        path: Routes.applicationSubmitted,
-        name: Routes.applicationSubmitted,
-        builder: (BuildContext context, GoRouterState state) {
-          return const ApplicationSubmittedPage();
-        },
-      ),
-
-      GoRoute(
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
@@ -319,19 +311,13 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.login,
-        name: Routes.login,
-        builder: (BuildContext context, GoRouterState state) {
-          return const LoginPage();
-        },
-      ),
-      GoRoute(
         path: Routes.testTracking,
         name: Routes.testTracking,
         builder: (BuildContext context, GoRouterState state) {
           return TrackingTestPage();
         },
       ),
+
       GoRoute(
         path: Routes.register,
         name: Routes.register,

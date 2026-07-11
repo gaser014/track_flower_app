@@ -7,8 +7,12 @@ import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/forget_password_use_cases.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_countries_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_vehicles_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart';
@@ -25,6 +29,12 @@ import 'auth_module_cubit_test.mocks.dart';
   SaveDriverTokenUseCase,
   SaveDriverCredentialsUseCase,
   DeleteDriverCredentialsUseCase,
+  SendForgetPasswordCodeUseCase,
+  VerifyForgetPasswordCodeUseCase,
+  ResetPasswordUseCase,
+  GetVehiclesUseCase,
+  GetCountriesUseCase,
+  ApplyDriverUseCase,
 ])
 void main() {
   late AuthModuleCubit cubit;
@@ -34,6 +44,12 @@ void main() {
   late MockSaveDriverTokenUseCase mockSaveDriverTokenUseCase;
   late MockSaveDriverCredentialsUseCase mockSaveDriverCredentialsUseCase;
   late MockDeleteDriverCredentialsUseCase mockDeleteDriverCredentialsUseCase;
+  late MockSendForgetPasswordCodeUseCase mockSendForgetPasswordCodeUseCase;
+  late MockVerifyForgetPasswordCodeUseCase mockVerifyForgetPasswordCodeUseCase;
+  late MockResetPasswordUseCase mockResetPasswordUseCase;
+  late MockGetVehiclesUseCase mockGetVehiclesUseCase;
+  late MockGetCountriesUseCase mockGetCountriesUseCase;
+  late MockApplyDriverUseCase mockApplyDriverUseCase;
 
   // ─── Test Data ────────────────────────────────────────────────────────────
   const tEmail = 'driver@test.com';
@@ -75,6 +91,12 @@ void main() {
     mockSaveDriverTokenUseCase = MockSaveDriverTokenUseCase();
     mockSaveDriverCredentialsUseCase = MockSaveDriverCredentialsUseCase();
     mockDeleteDriverCredentialsUseCase = MockDeleteDriverCredentialsUseCase();
+    mockSendForgetPasswordCodeUseCase = MockSendForgetPasswordCodeUseCase();
+    mockVerifyForgetPasswordCodeUseCase = MockVerifyForgetPasswordCodeUseCase();
+    mockResetPasswordUseCase = MockResetPasswordUseCase();
+    mockGetVehiclesUseCase = MockGetVehiclesUseCase();
+    mockGetCountriesUseCase = MockGetCountriesUseCase();
+    mockApplyDriverUseCase = MockApplyDriverUseCase();
     cubit = AuthModuleCubit(
       mockLoginDriverUseCase,
       mockLogoutDriverUseCase,
@@ -82,6 +104,12 @@ void main() {
       mockSaveDriverTokenUseCase,
       mockSaveDriverCredentialsUseCase,
       mockDeleteDriverCredentialsUseCase,
+      mockSendForgetPasswordCodeUseCase,
+      mockVerifyForgetPasswordCodeUseCase,
+      mockResetPasswordUseCase,
+      mockGetVehiclesUseCase,
+      mockGetCountriesUseCase,
+      mockApplyDriverUseCase,
     );
   });
 

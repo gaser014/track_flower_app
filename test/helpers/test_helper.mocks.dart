@@ -4,38 +4,54 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
-import 'dart:io' as _i10;
+import 'dart:io' as _i19;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i9;
+import 'package:mockito/src/dummies.dart' as _i10;
 import 'package:track_flowers_app/config/base_response/result.dart' as _i7;
-import 'package:track_flowers_app/config/uses_cases/use_cases.dart' as _i17;
+import 'package:track_flowers_app/config/uses_cases/use_cases.dart' as _i25;
 import 'package:track_flowers_app/features/auth_module/api/api_client/auth_module_api_client.dart'
-    as _i14;
+    as _i18;
 import 'package:track_flowers_app/features/auth_module/data/datasources/auth_module_local_data_source_contract.dart'
-    as _i13;
+    as _i17;
 import 'package:track_flowers_app/features/auth_module/data/datasources/auth_module_remote_data_source_contract.dart'
     as _i12;
-import 'package:track_flowers_app/features/auth_module/data/models/profile_model.dart'
-    as _i2;
-import 'package:track_flowers_app/features/auth_module/data/models/reset_password_response_model.dart'
+import 'package:track_flowers_app/features/auth_module/data/models/apply_response_model.dart'
+    as _i3;
+import 'package:track_flowers_app/features/auth_module/data/models/driver_login_response_model.dart'
+    as _i13;
+import 'package:track_flowers_app/features/auth_module/data/models/forget_password_request.dart'
+    as _i14;
+import 'package:track_flowers_app/features/auth_module/data/models/forget_password_response_models.dart'
     as _i4;
-import 'package:track_flowers_app/features/auth_module/domain/entities/profile_response_entity.dart'
+import 'package:track_flowers_app/features/auth_module/data/models/reset_password_request.dart'
+    as _i16;
+import 'package:track_flowers_app/features/auth_module/data/models/vehicle_type_model.dart'
+    as _i2;
+import 'package:track_flowers_app/features/auth_module/data/models/verify_code_request.dart'
+    as _i15;
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart'
+    as _i9;
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart'
     as _i8;
-import 'package:track_flowers_app/features/auth_module/domain/entities/reset_password_response_entity.dart'
+import 'package:track_flowers_app/features/auth_module/domain/entities/forget_password_params.dart'
     as _i11;
 import 'package:track_flowers_app/features/auth_module/domain/repositories/auth_module_repository.dart'
     as _i5;
-import 'package:track_flowers_app/features/auth_module/domain/use_cases/edit_profile_use_case.dart'
-    as _i18;
-import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_profile_use_case.dart'
-    as _i16;
-import 'package:track_flowers_app/features/auth_module/domain/use_cases/reset_password_use_case.dart'
-    as _i15;
-import 'package:track_flowers_app/features/auth_module/domain/use_cases/update_profile_photo_use_case.dart'
-    as _i19;
-import 'package:track_flowers_app/features/login/data/models/login_response_model.dart'
-    as _i3;
+import 'package:track_flowers_app/features/main_profile/domain/entities/profile_response_entity.dart'
+    as _i21;
+import 'package:track_flowers_app/features/main_profile/domain/entities/reset_password_response_entity.dart'
+    as _i22;
+import 'package:track_flowers_app/features/main_profile/domain/repositories/profile_repository.dart'
+    as _i20;
+import 'package:track_flowers_app/features/main_profile/domain/use_cases/edit_profile_use_case.dart'
+    as _i26;
+import 'package:track_flowers_app/features/main_profile/domain/use_cases/get_profile_use_case.dart'
+    as _i24;
+import 'package:track_flowers_app/features/main_profile/domain/use_cases/reset_password_use_case.dart'
+    as _i23;
+import 'package:track_flowers_app/features/main_profile/domain/use_cases/update_profile_photo_use_case.dart'
+    as _i27;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -52,20 +68,27 @@ import 'package:track_flowers_app/features/login/data/models/login_response_mode
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeProfileModel_0 extends _i1.SmartFake implements _i2.ProfileModel {
-  _FakeProfileModel_0(Object parent, Invocation parentInvocation)
+class _FakeVehicleResponseModel_0 extends _i1.SmartFake
+    implements _i2.VehicleResponseModel {
+  _FakeVehicleResponseModel_0(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeLoginResponseModel_1 extends _i1.SmartFake
-    implements _i3.LoginResponseModel {
-  _FakeLoginResponseModel_1(Object parent, Invocation parentInvocation)
+class _FakeApplyResponseModel_1 extends _i1.SmartFake
+    implements _i3.ApplyResponseModel {
+  _FakeApplyResponseModel_1(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeResetPasswordResponseModel_2 extends _i1.SmartFake
-    implements _i4.ResetPasswordResponseModel {
-  _FakeResetPasswordResponseModel_2(Object parent, Invocation parentInvocation)
+class _FakeForgetPasswordResponse_2 extends _i1.SmartFake
+    implements _i4.ForgetPasswordResponse {
+  _FakeForgetPasswordResponse_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeResetPasswordResponse_3 extends _i1.SmartFake
+    implements _i4.ResetPasswordResponse {
+  _FakeResetPasswordResponse_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -79,66 +102,152 @@ class MockAuthModuleRepository extends _i1.Mock
   }
 
   @override
-  _i6.Future<_i7.Result<_i8.ProfileResponseEntity>> getProfile() =>
-      (super.noSuchMethod(
-            Invocation.method(#getProfile, []),
-            returnValue:
-                _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i8.ProfileResponseEntity>>(
-                    this,
-                    Invocation.method(#getProfile, []),
-                  ),
-                ),
-          )
-          as _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>);
-
-  @override
-  _i6.Future<_i7.Result<_i8.ProfileResponseEntity>> editProfile(
-    Map<String, dynamic>? body,
+  _i6.Future<_i7.Result<_i8.DriverLoginResponseEntity>> loginDriver(
+    _i9.DriverLoginRequestEntity? params,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#editProfile, [body]),
+            Invocation.method(#loginDriver, [params]),
             returnValue:
-                _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i8.ProfileResponseEntity>>(
+                _i6.Future<_i7.Result<_i8.DriverLoginResponseEntity>>.value(
+                  _i10.dummyValue<_i7.Result<_i8.DriverLoginResponseEntity>>(
                     this,
-                    Invocation.method(#editProfile, [body]),
+                    Invocation.method(#loginDriver, [params]),
                   ),
                 ),
           )
-          as _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>);
+          as _i6.Future<_i7.Result<_i8.DriverLoginResponseEntity>>);
 
   @override
-  _i6.Future<_i7.Result<_i8.ProfileResponseEntity>> updateProfilePhoto(
-    _i10.File? file,
-  ) =>
+  _i6.Future<_i7.Result<void>> saveDriverToken(String? token) =>
       (super.noSuchMethod(
-            Invocation.method(#updateProfilePhoto, [file]),
-            returnValue:
-                _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i8.ProfileResponseEntity>>(
-                    this,
-                    Invocation.method(#updateProfilePhoto, [file]),
-                  ),
-                ),
+            Invocation.method(#saveDriverToken, [token]),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#saveDriverToken, [token]),
+              ),
+            ),
           )
-          as _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>);
+          as _i6.Future<_i7.Result<void>>);
 
   @override
-  _i6.Future<_i7.Result<_i11.ResetPasswordResponseEntity>> resetPassword(
-    Map<String, dynamic>? body,
+  _i6.Future<_i7.Result<void>> deleteDriverToken() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteDriverToken, []),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#deleteDriverToken, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> saveCredentials({
+    required String? email,
+    required String? password,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveCredentials, [], {
+              #email: email,
+              #password: password,
+            }),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#saveCredentials, [], {
+                  #email: email,
+                  #password: password,
+                }),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> deleteCredentials() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteCredentials, []),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#deleteCredentials, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
+
+  @override
+  _i6.Future<_i7.Result<Map<String, String?>>> getSavedCredentials() =>
+      (super.noSuchMethod(
+            Invocation.method(#getSavedCredentials, []),
+            returnValue: _i6.Future<_i7.Result<Map<String, String?>>>.value(
+              _i10.dummyValue<_i7.Result<Map<String, String?>>>(
+                this,
+                Invocation.method(#getSavedCredentials, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<Map<String, String?>>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> sendForgetPasswordCode(
+    _i11.ForgetPasswordParams? params,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#resetPassword, [body]),
-            returnValue:
-                _i6.Future<_i7.Result<_i11.ResetPasswordResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i11.ResetPasswordResponseEntity>>(
-                    this,
-                    Invocation.method(#resetPassword, [body]),
-                  ),
-                ),
+            Invocation.method(#sendForgetPasswordCode, [params]),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#sendForgetPasswordCode, [params]),
+              ),
+            ),
           )
-          as _i6.Future<_i7.Result<_i11.ResetPasswordResponseEntity>>);
+          as _i6.Future<_i7.Result<void>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> verifyForgetPasswordCode(
+    _i11.ForgetPasswordParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#verifyForgetPasswordCode, [params]),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#verifyForgetPasswordCode, [params]),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> resetPassword(
+    _i11.ForgetPasswordParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#resetPassword, [params]),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#resetPassword, [params]),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> logoutDriver() =>
+      (super.noSuchMethod(
+            Invocation.method(#logoutDriver, []),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#logoutDriver, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
 }
 
 /// A class which mocks [AuthModuleRemoteDataSourceContract].
@@ -151,257 +260,453 @@ class MockAuthModuleRemoteDataSourceContract extends _i1.Mock
   }
 
   @override
-  _i6.Future<_i7.Result<_i3.LoginResponseModel>> getProfile() =>
-      (super.noSuchMethod(
-            Invocation.method(#getProfile, []),
-            returnValue: _i6.Future<_i7.Result<_i3.LoginResponseModel>>.value(
-              _i9.dummyValue<_i7.Result<_i3.LoginResponseModel>>(
-                this,
-                Invocation.method(#getProfile, []),
-              ),
-            ),
-          )
-          as _i6.Future<_i7.Result<_i3.LoginResponseModel>>);
-
-  @override
-  _i6.Future<_i7.Result<_i3.LoginResponseModel>> editProfile(
-    Map<String, dynamic>? body,
+  _i6.Future<_i7.Result<_i13.DriverLoginResponseModel>> loginDriver(
+    _i9.DriverLoginRequestEntity? params,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#editProfile, [body]),
-            returnValue: _i6.Future<_i7.Result<_i3.LoginResponseModel>>.value(
-              _i9.dummyValue<_i7.Result<_i3.LoginResponseModel>>(
-                this,
-                Invocation.method(#editProfile, [body]),
-              ),
-            ),
-          )
-          as _i6.Future<_i7.Result<_i3.LoginResponseModel>>);
-
-  @override
-  _i6.Future<_i7.Result<_i3.LoginResponseModel>> updateProfilePhoto(
-    _i10.File? file,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateProfilePhoto, [file]),
-            returnValue: _i6.Future<_i7.Result<_i3.LoginResponseModel>>.value(
-              _i9.dummyValue<_i7.Result<_i3.LoginResponseModel>>(
-                this,
-                Invocation.method(#updateProfilePhoto, [file]),
-              ),
-            ),
-          )
-          as _i6.Future<_i7.Result<_i3.LoginResponseModel>>);
-
-  @override
-  _i6.Future<_i7.Result<_i4.ResetPasswordResponseModel>> resetPassword(
-    Map<String, dynamic>? body,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#resetPassword, [body]),
+            Invocation.method(#loginDriver, [params]),
             returnValue:
-                _i6.Future<_i7.Result<_i4.ResetPasswordResponseModel>>.value(
-                  _i9.dummyValue<_i7.Result<_i4.ResetPasswordResponseModel>>(
+                _i6.Future<_i7.Result<_i13.DriverLoginResponseModel>>.value(
+                  _i10.dummyValue<_i7.Result<_i13.DriverLoginResponseModel>>(
                     this,
-                    Invocation.method(#resetPassword, [body]),
+                    Invocation.method(#loginDriver, [params]),
                   ),
                 ),
           )
-          as _i6.Future<_i7.Result<_i4.ResetPasswordResponseModel>>);
+          as _i6.Future<_i7.Result<_i13.DriverLoginResponseModel>>);
+
+  @override
+  _i6.Future<_i7.Result<_i4.ForgetPasswordResponse>> sendForgetPasswordCode(
+    _i14.ForgetPasswordRequest? request,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#sendForgetPasswordCode, [request]),
+            returnValue:
+                _i6.Future<_i7.Result<_i4.ForgetPasswordResponse>>.value(
+                  _i10.dummyValue<_i7.Result<_i4.ForgetPasswordResponse>>(
+                    this,
+                    Invocation.method(#sendForgetPasswordCode, [request]),
+                  ),
+                ),
+          )
+          as _i6.Future<_i7.Result<_i4.ForgetPasswordResponse>>);
+
+  @override
+  _i6.Future<_i7.Result<_i4.ForgetPasswordResponse>> verifyForgetPasswordCode(
+    _i15.VerifyCodeRequest? request,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#verifyForgetPasswordCode, [request]),
+            returnValue:
+                _i6.Future<_i7.Result<_i4.ForgetPasswordResponse>>.value(
+                  _i10.dummyValue<_i7.Result<_i4.ForgetPasswordResponse>>(
+                    this,
+                    Invocation.method(#verifyForgetPasswordCode, [request]),
+                  ),
+                ),
+          )
+          as _i6.Future<_i7.Result<_i4.ForgetPasswordResponse>>);
+
+  @override
+  _i6.Future<_i7.Result<_i4.ResetPasswordResponse>> resetPassword(
+    _i16.ResetPasswordRequest? request,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#resetPassword, [request]),
+            returnValue:
+                _i6.Future<_i7.Result<_i4.ResetPasswordResponse>>.value(
+                  _i10.dummyValue<_i7.Result<_i4.ResetPasswordResponse>>(
+                    this,
+                    Invocation.method(#resetPassword, [request]),
+                  ),
+                ),
+          )
+          as _i6.Future<_i7.Result<_i4.ResetPasswordResponse>>);
+
+  @override
+  _i6.Future<_i7.Result<void>> logoutDriver() =>
+      (super.noSuchMethod(
+            Invocation.method(#logoutDriver, []),
+            returnValue: _i6.Future<_i7.Result<void>>.value(
+              _i10.dummyValue<_i7.Result<void>>(
+                this,
+                Invocation.method(#logoutDriver, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i7.Result<void>>);
 }
 
 /// A class which mocks [AuthModuleLocalDataSourceContract].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAuthModuleLocalDataSourceContract extends _i1.Mock
-    implements _i13.AuthModuleLocalDataSourceContract {
+    implements _i17.AuthModuleLocalDataSourceContract {
   MockAuthModuleLocalDataSourceContract() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i2.ProfileModel> saveProfile(_i2.ProfileModel? profileModel) =>
+  _i6.Future<void> saveDriverToken(String? token) =>
       (super.noSuchMethod(
-            Invocation.method(#saveProfile, [profileModel]),
-            returnValue: _i6.Future<_i2.ProfileModel>.value(
-              _FakeProfileModel_0(
-                this,
-                Invocation.method(#saveProfile, [profileModel]),
-              ),
-            ),
+            Invocation.method(#saveDriverToken, [token]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
           )
-          as _i6.Future<_i2.ProfileModel>);
+          as _i6.Future<void>);
 
   @override
-  _i6.Future<_i2.ProfileModel?> getProfile() =>
+  _i6.Future<void> deleteDriverToken() =>
       (super.noSuchMethod(
-            Invocation.method(#getProfile, []),
-            returnValue: _i6.Future<_i2.ProfileModel?>.value(),
+            Invocation.method(#deleteDriverToken, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
           )
-          as _i6.Future<_i2.ProfileModel?>);
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> saveCredentials({
+    required String? email,
+    required String? password,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveCredentials, [], {
+              #email: email,
+              #password: password,
+            }),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> deleteCredentials() =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteCredentials, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<Map<String, String?>> getSavedCredentials() =>
+      (super.noSuchMethod(
+            Invocation.method(#getSavedCredentials, []),
+            returnValue: _i6.Future<Map<String, String?>>.value(
+              <String, String?>{},
+            ),
+          )
+          as _i6.Future<Map<String, String?>>);
 }
 
 /// A class which mocks [AuthModuleApiClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAuthModuleApiClient extends _i1.Mock
-    implements _i14.AuthModuleApiClient {
+    implements _i18.AuthModuleApiClient {
   MockAuthModuleApiClient() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i3.LoginResponseModel> getProfile() =>
+  _i6.Future<dynamic> loginDriver(String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#loginDriver, [email, password]),
+            returnValue: _i6.Future<dynamic>.value(),
+          )
+          as _i6.Future<dynamic>);
+
+  @override
+  _i6.Future<_i2.VehicleResponseModel> getVehicles() =>
+      (super.noSuchMethod(
+            Invocation.method(#getVehicles, []),
+            returnValue: _i6.Future<_i2.VehicleResponseModel>.value(
+              _FakeVehicleResponseModel_0(
+                this,
+                Invocation.method(#getVehicles, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i2.VehicleResponseModel>);
+
+  @override
+  _i6.Future<_i3.ApplyResponseModel> applyDriver({
+    required String? country,
+    required String? firstName,
+    required String? lastName,
+    required String? vehicleType,
+    required String? vehicleNumber,
+    required _i19.File? vehicleLicense,
+    required String? nid,
+    required _i19.File? nidImg,
+    required String? email,
+    required String? password,
+    required String? rePassword,
+    required String? gender,
+    required String? phone,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#applyDriver, [], {
+              #country: country,
+              #firstName: firstName,
+              #lastName: lastName,
+              #vehicleType: vehicleType,
+              #vehicleNumber: vehicleNumber,
+              #vehicleLicense: vehicleLicense,
+              #nid: nid,
+              #nidImg: nidImg,
+              #email: email,
+              #password: password,
+              #rePassword: rePassword,
+              #gender: gender,
+              #phone: phone,
+            }),
+            returnValue: _i6.Future<_i3.ApplyResponseModel>.value(
+              _FakeApplyResponseModel_1(
+                this,
+                Invocation.method(#applyDriver, [], {
+                  #country: country,
+                  #firstName: firstName,
+                  #lastName: lastName,
+                  #vehicleType: vehicleType,
+                  #vehicleNumber: vehicleNumber,
+                  #vehicleLicense: vehicleLicense,
+                  #nid: nid,
+                  #nidImg: nidImg,
+                  #email: email,
+                  #password: password,
+                  #rePassword: rePassword,
+                  #gender: gender,
+                  #phone: phone,
+                }),
+              ),
+            ),
+          )
+          as _i6.Future<_i3.ApplyResponseModel>);
+
+  @override
+  _i6.Future<void> logoutDriver() =>
+      (super.noSuchMethod(
+            Invocation.method(#logoutDriver, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<_i4.ForgetPasswordResponse> sendForgetPasswordCode(
+    _i14.ForgetPasswordRequest? request,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#sendForgetPasswordCode, [request]),
+            returnValue: _i6.Future<_i4.ForgetPasswordResponse>.value(
+              _FakeForgetPasswordResponse_2(
+                this,
+                Invocation.method(#sendForgetPasswordCode, [request]),
+              ),
+            ),
+          )
+          as _i6.Future<_i4.ForgetPasswordResponse>);
+
+  @override
+  _i6.Future<_i4.ForgetPasswordResponse> verifyForgetPasswordCode(
+    _i15.VerifyCodeRequest? request,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#verifyForgetPasswordCode, [request]),
+            returnValue: _i6.Future<_i4.ForgetPasswordResponse>.value(
+              _FakeForgetPasswordResponse_2(
+                this,
+                Invocation.method(#verifyForgetPasswordCode, [request]),
+              ),
+            ),
+          )
+          as _i6.Future<_i4.ForgetPasswordResponse>);
+
+  @override
+  _i6.Future<_i4.ResetPasswordResponse> resetPassword(
+    _i16.ResetPasswordRequest? request,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#resetPassword, [request]),
+            returnValue: _i6.Future<_i4.ResetPasswordResponse>.value(
+              _FakeResetPasswordResponse_3(
+                this,
+                Invocation.method(#resetPassword, [request]),
+              ),
+            ),
+          )
+          as _i6.Future<_i4.ResetPasswordResponse>);
+}
+
+/// A class which mocks [ProfileRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockProfileRepository extends _i1.Mock implements _i20.ProfileRepository {
+  MockProfileRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i7.Result<_i21.ProfileResponseEntity>> getProfile() =>
       (super.noSuchMethod(
             Invocation.method(#getProfile, []),
-            returnValue: _i6.Future<_i3.LoginResponseModel>.value(
-              _FakeLoginResponseModel_1(
-                this,
-                Invocation.method(#getProfile, []),
-              ),
-            ),
+            returnValue:
+                _i6.Future<_i7.Result<_i21.ProfileResponseEntity>>.value(
+                  _i10.dummyValue<_i7.Result<_i21.ProfileResponseEntity>>(
+                    this,
+                    Invocation.method(#getProfile, []),
+                  ),
+                ),
           )
-          as _i6.Future<_i3.LoginResponseModel>);
+          as _i6.Future<_i7.Result<_i21.ProfileResponseEntity>>);
 
   @override
-  _i6.Future<_i3.LoginResponseModel> editProfile(Map<String, dynamic>? body) =>
+  _i6.Future<_i7.Result<_i21.ProfileResponseEntity>> editProfile(
+    Map<String, dynamic>? body,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#editProfile, [body]),
-            returnValue: _i6.Future<_i3.LoginResponseModel>.value(
-              _FakeLoginResponseModel_1(
-                this,
-                Invocation.method(#editProfile, [body]),
-              ),
-            ),
+            returnValue:
+                _i6.Future<_i7.Result<_i21.ProfileResponseEntity>>.value(
+                  _i10.dummyValue<_i7.Result<_i21.ProfileResponseEntity>>(
+                    this,
+                    Invocation.method(#editProfile, [body]),
+                  ),
+                ),
           )
-          as _i6.Future<_i3.LoginResponseModel>);
+          as _i6.Future<_i7.Result<_i21.ProfileResponseEntity>>);
 
   @override
-  _i6.Future<_i3.LoginResponseModel> updateProfilePhoto(_i10.File? file) =>
+  _i6.Future<_i7.Result<_i21.ProfileResponseEntity>> updateProfilePhoto(
+    _i19.File? file,
+  ) =>
       (super.noSuchMethod(
             Invocation.method(#updateProfilePhoto, [file]),
-            returnValue: _i6.Future<_i3.LoginResponseModel>.value(
-              _FakeLoginResponseModel_1(
-                this,
-                Invocation.method(#updateProfilePhoto, [file]),
-              ),
-            ),
+            returnValue:
+                _i6.Future<_i7.Result<_i21.ProfileResponseEntity>>.value(
+                  _i10.dummyValue<_i7.Result<_i21.ProfileResponseEntity>>(
+                    this,
+                    Invocation.method(#updateProfilePhoto, [file]),
+                  ),
+                ),
           )
-          as _i6.Future<_i3.LoginResponseModel>);
+          as _i6.Future<_i7.Result<_i21.ProfileResponseEntity>>);
 
   @override
-  _i6.Future<_i4.ResetPasswordResponseModel> resetPassword(
+  _i6.Future<_i7.Result<_i22.ResetPasswordResponseEntity>> resetPassword(
     Map<String, dynamic>? body,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#resetPassword, [body]),
-            returnValue: _i6.Future<_i4.ResetPasswordResponseModel>.value(
-              _FakeResetPasswordResponseModel_2(
-                this,
-                Invocation.method(#resetPassword, [body]),
-              ),
-            ),
+            returnValue:
+                _i6.Future<_i7.Result<_i22.ResetPasswordResponseEntity>>.value(
+                  _i10.dummyValue<_i7.Result<_i22.ResetPasswordResponseEntity>>(
+                    this,
+                    Invocation.method(#resetPassword, [body]),
+                  ),
+                ),
           )
-          as _i6.Future<_i4.ResetPasswordResponseModel>);
+          as _i6.Future<_i7.Result<_i22.ResetPasswordResponseEntity>>);
 }
 
 /// A class which mocks [ResetPasswordUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockResetPasswordUseCase extends _i1.Mock
-    implements _i15.ResetPasswordUseCase {
+    implements _i23.ResetPasswordUseCase {
   MockResetPasswordUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i7.Result<_i11.ResetPasswordResponseEntity>> call(
+  _i6.Future<_i7.Result<_i22.ResetPasswordResponseEntity>> call(
     Map<String, dynamic>? params,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue:
-                _i6.Future<_i7.Result<_i11.ResetPasswordResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i11.ResetPasswordResponseEntity>>(
+                _i6.Future<_i7.Result<_i22.ResetPasswordResponseEntity>>.value(
+                  _i10.dummyValue<_i7.Result<_i22.ResetPasswordResponseEntity>>(
                     this,
                     Invocation.method(#call, [params]),
                   ),
                 ),
           )
-          as _i6.Future<_i7.Result<_i11.ResetPasswordResponseEntity>>);
+          as _i6.Future<_i7.Result<_i22.ResetPasswordResponseEntity>>);
 }
 
 /// A class which mocks [GetProfileUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetProfileUseCase extends _i1.Mock implements _i16.GetProfileUseCase {
+class MockGetProfileUseCase extends _i1.Mock implements _i24.GetProfileUseCase {
   MockGetProfileUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i7.Result<_i8.ProfileResponseEntity>> call(
-    _i17.NoParams? params,
+  _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>> call(
+    _i25.NoParams? params,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue:
-                _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i8.ProfileResponseEntity>>(
+                _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>>.value(
+                  _i10.dummyValue<_i7.Result<_i21.ProfileResponseEntity?>>(
                     this,
                     Invocation.method(#call, [params]),
                   ),
                 ),
           )
-          as _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>);
+          as _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>>);
 }
 
 /// A class which mocks [EditProfileUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockEditProfileUseCase extends _i1.Mock
-    implements _i18.EditProfileUseCase {
+    implements _i26.EditProfileUseCase {
   MockEditProfileUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i7.Result<_i8.ProfileResponseEntity>> call(
+  _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>> call(
     Map<String, dynamic>? params,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue:
-                _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i8.ProfileResponseEntity>>(
+                _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>>.value(
+                  _i10.dummyValue<_i7.Result<_i21.ProfileResponseEntity?>>(
                     this,
                     Invocation.method(#call, [params]),
                   ),
                 ),
           )
-          as _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>);
+          as _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>>);
 }
 
 /// A class which mocks [UpdateProfilePhotoUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUpdateProfilePhotoUseCase extends _i1.Mock
-    implements _i19.UpdateProfilePhotoUseCase {
+    implements _i27.UpdateProfilePhotoUseCase {
   MockUpdateProfilePhotoUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<_i7.Result<_i8.ProfileResponseEntity>> call(_i10.File? params) =>
+  _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>> call(_i19.File? params) =>
       (super.noSuchMethod(
             Invocation.method(#call, [params]),
             returnValue:
-                _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>.value(
-                  _i9.dummyValue<_i7.Result<_i8.ProfileResponseEntity>>(
+                _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>>.value(
+                  _i10.dummyValue<_i7.Result<_i21.ProfileResponseEntity?>>(
                     this,
                     Invocation.method(#call, [params]),
                   ),
                 ),
           )
-          as _i6.Future<_i7.Result<_i8.ProfileResponseEntity>>);
+          as _i6.Future<_i7.Result<_i21.ProfileResponseEntity?>>);
 }

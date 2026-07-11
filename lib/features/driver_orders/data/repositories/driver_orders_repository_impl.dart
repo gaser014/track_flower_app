@@ -176,8 +176,17 @@ class DriverOrdersRepositoryImpl implements DriverOrdersRepository {
         );
         await _orderTrackingService.notifyUser(
           userId: order.userId,
-          title: order.status.notificationTitle,
-          body: order.status.notificationBody,
+          titleKey:
+              order.status.notificationTitle['en'] ??
+              NotificationKeys.orderUpdateTitle,
+          bodyKey:
+              order.status.notificationBody['en'] ??
+              NotificationKeys.orderUpdate,
+          // Without these the push data has empty orderId/status, so the
+          // customer app discards the push and the status never updates.
+          orderId: order.id,
+          orderNumber: order.orderNumber,
+          status: order.status.name,
         );
       }
     } catch (e, s) {

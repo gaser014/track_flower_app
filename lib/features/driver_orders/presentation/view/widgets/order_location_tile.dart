@@ -52,7 +52,7 @@ class OrderLocationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OrderSurface(
+    final tile = OrderSurface(
       child: Row(
         children: [
           leading,

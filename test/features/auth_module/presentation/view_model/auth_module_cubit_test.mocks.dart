@@ -9,14 +9,32 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:track_flowers_app/config/base_response/result.dart' as _i4;
 import 'package:track_flowers_app/config/uses_cases/use_cases.dart' as _i9;
+import 'package:track_flowers_app/features/auth_module/data/models/apply_response_model.dart'
+    as _i21;
+import 'package:track_flowers_app/features/auth_module/data/models/country_model.dart'
+    as _i19;
+import 'package:track_flowers_app/features/auth_module/data/models/vehicle_type_model.dart'
+    as _i17;
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart'
     as _i6;
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_response_entity.dart'
     as _i5;
+import 'package:track_flowers_app/features/auth_module/domain/entities/forget_password_params.dart'
+    as _i15;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_driver_params.dart'
+    as _i22;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/apply_driver_use_case.dart'
+    as _i20;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart'
     as _i13;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/forget_password_use_cases.dart'
+    as _i14;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_countries_use_case.dart'
+    as _i18;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart'
     as _i10;
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_vehicles_use_case.dart'
+    as _i16;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart'
     as _i2;
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart'
@@ -180,4 +198,147 @@ class MockDeleteDriverCredentialsUseCase extends _i1.Mock
             ),
           )
           as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [SendForgetPasswordCodeUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSendForgetPasswordCodeUseCase extends _i1.Mock
+    implements _i14.SendForgetPasswordCodeUseCase {
+  MockSendForgetPasswordCodeUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<void>> call(_i15.ForgetPasswordParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i7.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [VerifyForgetPasswordCodeUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockVerifyForgetPasswordCodeUseCase extends _i1.Mock
+    implements _i14.VerifyForgetPasswordCodeUseCase {
+  MockVerifyForgetPasswordCodeUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<void>> call(_i15.ForgetPasswordParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i7.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [ResetPasswordUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockResetPasswordUseCase extends _i1.Mock
+    implements _i14.ResetPasswordUseCase {
+  MockResetPasswordUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<void>> call(_i15.ForgetPasswordParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<void>>.value(
+              _i7.dummyValue<_i4.Result<void>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<void>>);
+}
+
+/// A class which mocks [GetVehiclesUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetVehiclesUseCase extends _i1.Mock
+    implements _i16.GetVehiclesUseCase {
+  MockGetVehiclesUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<_i17.VehicleResponseModel>> call(
+    _i9.NoParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue:
+                _i3.Future<_i4.Result<_i17.VehicleResponseModel>>.value(
+                  _i7.dummyValue<_i4.Result<_i17.VehicleResponseModel>>(
+                    this,
+                    Invocation.method(#call, [params]),
+                  ),
+                ),
+          )
+          as _i3.Future<_i4.Result<_i17.VehicleResponseModel>>);
+}
+
+/// A class which mocks [GetCountriesUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetCountriesUseCase extends _i1.Mock
+    implements _i18.GetCountriesUseCase {
+  MockGetCountriesUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<List<_i19.CountryModel>>> call(_i9.NoParams? params) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<List<_i19.CountryModel>>>.value(
+              _i7.dummyValue<_i4.Result<List<_i19.CountryModel>>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<List<_i19.CountryModel>>>);
+}
+
+/// A class which mocks [ApplyDriverUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockApplyDriverUseCase extends _i1.Mock
+    implements _i20.ApplyDriverUseCase {
+  MockApplyDriverUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<_i4.Result<_i21.ApplyResponseModel>> call(
+    _i22.ApplyDriverParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue: _i3.Future<_i4.Result<_i21.ApplyResponseModel>>.value(
+              _i7.dummyValue<_i4.Result<_i21.ApplyResponseModel>>(
+                this,
+                Invocation.method(#call, [params]),
+              ),
+            ),
+          )
+          as _i3.Future<_i4.Result<_i21.ApplyResponseModel>>);
 }

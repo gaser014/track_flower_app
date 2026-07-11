@@ -45,7 +45,7 @@ class OrderStatusBanner extends StatelessWidget {
           ),
           const Gap(8),
           Text(
-            "${AppStrings.orderId} : # ${order.id}",
+            "${AppStrings.orderId} : # ${order.orderNumber}",
             style: AppFontStyle.semiBold14(context: context),
           ),
           const Gap(4),
