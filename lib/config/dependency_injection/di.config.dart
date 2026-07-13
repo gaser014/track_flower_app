@@ -32,6 +32,10 @@ import '../../features/auth_module/data/repositories/auth_module_repository_impl
     as _i848;
 import '../../features/auth_module/domain/repositories/auth_module_repository.dart'
     as _i1015;
+import '../../features/auth_module/domain/use_cases/forget_password_use_cases.dart'
+    as _i960;
+import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
+    as _i575;
 import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
     as _i575;
 import '../../features/driver_orders/api/api_client/driver_orders_api_client.dart'
@@ -127,6 +131,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i468.OrderTrackingService(),
     );
     gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
+    gh.factory<_i435.AuthModuleLocalDataSourceContract>(
+      () => _i1034.AuthModuleLocalDataSourceImpl(),
+    );
     gh.lazySingleton<_i934.FirestoreService>(() => _i934.FirestoreService());
     gh.factory<_i72.AuthModuleRemoteDataSourceContract>(
       () => _i428.AuthModuleRemoteDataSourceImpl(),
@@ -170,10 +177,32 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
+    gh.factory<_i72.AuthModuleRemoteDataSourceContract>(
+      () =>
+          _i428.AuthModuleRemoteDataSourceImpl(gh<_i419.AuthModuleApiClient>()),
+    );
+    gh.factory<_i1015.AuthModuleRepository>(
+      () => _i848.AuthModuleRepositoryImpl(
+        gh<_i72.AuthModuleRemoteDataSourceContract>(),
+      ),
+    );
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
       ),
+    );
+    gh.factory<_i960.SendForgetPasswordCodeUseCase>(
+      () => _i960.SendForgetPasswordCodeUseCase(
+        gh<_i1015.AuthModuleRepository>(),
+      ),
+    );
+    gh.factory<_i960.VerifyForgetPasswordCodeUseCase>(
+      () => _i960.VerifyForgetPasswordCodeUseCase(
+        gh<_i1015.AuthModuleRepository>(),
+      ),
+    );
+    gh.factory<_i960.ResetPasswordUseCase>(
+      () => _i960.ResetPasswordUseCase(gh<_i1015.AuthModuleRepository>()),
     );
     gh.lazySingleton<_i565.DriverOrdersRemoteDataSourceContract>(
       () => _i1049.DriverOrdersRemoteDataSourceImpl(
@@ -210,6 +239,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i818.GetMainProfileUseCase>(
       () => _i818.GetMainProfileUseCase(
         gh<_i488.MainProfileRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i575.AuthModuleCubit>(
+      () => _i575.AuthModuleCubit(
+        gh<_i960.SendForgetPasswordCodeUseCase>(),
+        gh<_i960.VerifyForgetPasswordCodeUseCase>(),
+        gh<_i960.ResetPasswordUseCase>(),
       ),
     );
     gh.factory<_i753.LoginCubit>(

@@ -7,6 +7,7 @@ import 'package:track_flowers_app/core/routes/routes.dart';
 // import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_success_page.dart';
 // import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
 import 'package:track_flowers_app/core/widgets/success_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
@@ -302,6 +303,27 @@ abstract class AppRoutes {
           return const MainView();
         },
       ),
+      GoRoute(
+        path: Routes.forgetPassword,
+        name: Routes.forgetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ForgetPasswordPage();
+        },
+      ),
+    ],
+    redirect: (context, state) async {
+      final currentLocation = state.matchedLocation;
+
+      final authRoutes = [
+        Routes.login,
+        Routes.main,
+        // Routes.register,
+        Routes.forgetPassword,
+        // Routes.resetPassword,
+        // AuthRoutes.otpVerification,
+        // AuthRoutes.completeProfile,
+        // AuthRoutes.success,
+      ];
       //
       // GoRoute(
       //   path: Routes.onboardingDriver,
