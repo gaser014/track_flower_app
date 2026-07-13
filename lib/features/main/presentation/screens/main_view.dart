@@ -1,11 +1,11 @@
 import 'package:track_flowers_app/core/values/app_assets.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
-import 'package:track_flowers_app/features/main/presentation/screens/home_app_bar_widget.dart';
-import 'package:track_flowers_app/features/main/presentation/screens/profile_appbar.dart';
 import 'package:track_flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:track_flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:track_flowers_app/features/main_profile/presentation/view/pages/main_profile_page.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/driver_home_page.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/my_orders_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,8 +14,8 @@ class MainView extends StatelessWidget {
   const MainView({super.key});
 
   final List<Widget> _pages = const <Widget>[
-    Center(child: Text('Categories')),
-    Center(child: Text('Cart')),
+    DriverHomePage(),
+    MyOrdersPage(),
     MainProfilePage(),
   ];
 
@@ -26,11 +26,7 @@ class MainView extends StatelessWidget {
       builder: (context, state) {
         final selectedIndex = state.bottomNavIndex;
         return Scaffold(
-          appBar: selectedIndex == 0
-              ? const HomeAppBarWidget()
-              : selectedIndex == 3
-              ? const ProfileAppBarWidget()
-              : null,
+          backgroundColor: AppColors.whiteF9,
           body: IndexedStack(index: selectedIndex, children: _pages),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
@@ -38,6 +34,7 @@ class MainView extends StatelessWidget {
               cubit.doIndented(ChangeBottomNavIndexEvent(index));
             },
             type: BottomNavigationBarType.fixed,
+            backgroundColor: AppColors.whiteF9,
             selectedItemColor: AppColors.primerColor,
             unselectedItemColor: AppColors.grayA6,
             items: [
@@ -55,7 +52,7 @@ class MainView extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  AppAssets.iconsCategory,
+                  AppAssets.iconsOrders,
                   colorFilter: ColorFilter.mode(
                     selectedIndex == 1
                         ? AppColors.primerColor
@@ -63,25 +60,13 @@ class MainView extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: AppStrings.categories,
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  AppAssets.iconsCart,
-                  colorFilter: ColorFilter.mode(
-                    selectedIndex == 2
-                        ? AppColors.primerColor
-                        : AppColors.grayA6,
-                    BlendMode.srcIn,
-                  ),
-                ),
-                label: AppStrings.cart,
+                label: AppStrings.orders,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
                   AppAssets.iconsProfile,
                   colorFilter: ColorFilter.mode(
-                    selectedIndex == 3
+                    selectedIndex == 2
                         ? AppColors.primerColor
                         : AppColors.grayA6,
                     BlendMode.srcIn,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/uses_cases/login_params.dart';
@@ -40,9 +41,13 @@ class LoginCubit extends Cubit<LoginStates> {
           if (response.user != null) {
             await saveUserUseCase.call(response.user!);
           }
-          if (params.remember == true && response.token != null) {
+          await AppSharedPreferences.setBool(
+            key: APIkeys.rememberMe,
+            value: params.remember ?? false,
+          );
+          if (response.token != null) {
             await AppSharedPreferences.setString(
-              key: AppStrings.token,
+              key: APIkeys.accessToken,
               value: response.token!,
             );
           }

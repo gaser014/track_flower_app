@@ -3,13 +3,24 @@ import 'dart:io';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_page.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_success_page.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
+import 'package:track_flowers_app/core/widgets/success_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
+import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
 import 'package:flutter/cupertino.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
+// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
+// import 'package:track_flowers_app/features/main_profile/presentation/view/pages/profile_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/application_submitted_page.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:track_flowers_app/features/tracking_test/presentation/pages/tracking_test_page.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -203,6 +214,13 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
     routes: [
+      // GoRoute(
+      //   path: Routes.applicationSubmitted,
+      //   name: Routes.applicationSubmitted,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const ApplicationSubmittedPage();
+      //   },
+      // ),
       GoRoute(
         path: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
@@ -210,20 +228,79 @@ abstract class AppRoutes {
           child: const MainView(),
           animationType: AnimationType.fade,
         ),
+        routes: [
+          GoRoute(
+            path: Routes.orderDetails,
+            name: Routes.orderDetails,
+            pageBuilder: (context, state) {
+              final order = state.extra as OrderEntity?;
+              return buildAnimatedPage(
+                key: state.pageKey,
+                child: order == null
+                    ? const MainView()
+                    : OrderDetailsPage(order: order),
+                animationType: AnimationType.slideFromRight,
+              );
+            },
+          ),
+        ],
+      ),
+
+      GoRoute(
+        path: Routes.applicationSubmitted,
+        name: Routes.applicationSubmitted,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ApplicationSubmittedPage();
+        },
       ),
 
       GoRoute(
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
+          return const SplashPage();
         },
       ),
+      // GoRoute(
+      //   path: Routes.forgetPassword,
+      //   name: Routes.forgetPassword,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return ForgetPasswordPage();
+      //   },
+      // ),
       GoRoute(
         path: Routes.login,
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
+          return const LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.testTracking,
+        name: Routes.testTracking,
+        builder: (BuildContext context, GoRouterState state) {
+          return TrackingTestPage();
+        },
+      ),
+      // GoRoute(
+      //   path: Routes.register,
+      //   name: Routes.register,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return ApplyPage();
+      //   },
+      // ),
+      // GoRoute(
+      //   path: Routes.applySuccess,
+      //   name: Routes.applySuccess,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return ApplySuccessPage();
+      //   },
+      // ),
+      GoRoute(
+        path: Routes.home,
+        name: Routes.home,
+        builder: (BuildContext context, GoRouterState state) {
+          return const MainView();
         },
       ),
       GoRoute(
@@ -248,23 +325,60 @@ abstract class AppRoutes {
         // AuthRoutes.success,
       ];
       //
-      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
-      //   // Redirect to account type selection (start of auth flow)
-      //   return Routes.login;
-      // }
+      // GoRoute(
+      //   path: Routes.onboardingDriver,
+      //   name: Routes.onboardingDriver,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const OnboardingDriverPage();
+      //   },
+      // ),
 
-      if (authRoutes.contains(currentLocation)) {
-        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
-        final isLoggedIn = token != null && token.isNotEmpty;
-
-        // Redirect to home screen
-        if (isLoggedIn) {
-          return Routes.main;
-        }
-      }
-
-      // No redirect needed
-      return null;
-    },
+      // GoRoute(
+      //   path: Routes.profile,
+      //   name: Routes.profile,
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return const MainProfilePage();
+      //   },
+      //   path: Routes.orders,
+      //   name: Routes.orders,
+      //   pageBuilder: (context, state) => buildAnimatedPage(
+      //     key: state.pageKey,
+      //     child: const OrdersPage(),
+      //     animationType: AnimationType.slideFromRight,
+      //   ),
+      // ),
+    ],
+    // redirect: (context, state) async {
+    //   final currentLocation = state.matchedLocation;
+    //
+    //   final authRoutes = [
+    //     Routes.login,
+    //     // Routes.main,
+    //     // // Routes.register,
+    //     // Routes.forgetPassword,
+    //     // Routes.resetPassword,
+    //     // AuthRoutes.otpVerification,
+    //     // AuthRoutes.completeProfile,
+    //     // AuthRoutes.success,
+    //   ];
+    //   //
+    //   // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
+    //   //   // Redirect to account type selection (start of auth flow)
+    //   //   return Routes.login;
+    //   // }
+    //
+    //   if (authRoutes.contains(currentLocation)) {
+    //     final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+    //     final isLoggedIn = token != null && token.isNotEmpty;
+    //
+    //     // Redirect to home screen
+    //     if (isLoggedIn) {
+    //       return Routes.main;
+    //     }
+    //   }
+    //
+    //   // No redirect needed
+    //   return null;
+    // },
   );
 }

@@ -6,8 +6,11 @@ class AppAssets {
   static const String iconsCalendar = "assets/icons/calendar.svg";
 
   static const String iconsCart = "assets/icons/cart.svg";
+  static const String whatsapp = "assets/icons/whatsapp.svg";
+  static const String call = "assets/icons/call.svg";
 
   static const String iconsCategory = "assets/icons/category.svg";
+  static const String iconsOrders = "assets/icons/orders.svg";
 
   static const String iconsCheckCircle = "assets/icons/check_circle.svg";
 
@@ -83,4 +86,7 @@ class AppAssets {
   static const String logoTextSplash = "assets/images/flowery-text.png";
   static const String splashLogo = "assets/images/flower.png";
   //!=======
+
+  static const String bgImage = "assets/images/bg.png";
+  static const String checkCircle = "assets/icons/check-circle.svg";
 }
