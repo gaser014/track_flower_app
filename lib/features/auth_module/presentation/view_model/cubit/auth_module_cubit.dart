@@ -1,6 +1,5 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:track_flowers_app/config/base_state/base_cubit.dart';
 import 'package:track_flowers_app/config/base_state/base_event.dart';
@@ -23,7 +22,7 @@ import 'package:track_flowers_app/features/auth_module/presentation/view_model/c
 part 'auth_module_states.dart';
 
 @injectable
-class AuthModuleCubit extends BaseCubit<AuthModuleState, AuthModuleEvent> {
+class AuthModuleCubit extends BaseCubit<AuthModuleState, BaseEvent> {
   final SendForgetPasswordCodeUseCase _sendForgetPasswordCodeUseCase;
   final VerifyForgetPasswordCodeUseCase _verifyForgetPasswordCodeUseCase;
   final ResetPasswordUseCase _resetPasswordUseCase;

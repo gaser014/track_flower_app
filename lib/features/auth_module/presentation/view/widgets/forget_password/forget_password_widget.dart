@@ -40,18 +40,18 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
     _cubit = getIt<AuthModuleCubit>();
     _subscription = _cubit.eventStream.listen((event) {
       switch (event) {
-        case DisplayError():
+        case DisplayError e:
           if (!mounted) return;
-          CustomToast.showError(context: context, message: event.errorMsg);
-        case DisplaySuccess():
+          CustomToast.showError(context: context, message: e.errorMsg);
+        case DisplaySuccess e:
           if (!mounted) return;
-          CustomToast.showSuccess(context: context, message: event.successMsg);
-        case NavigateEvent():
+          CustomToast.showSuccess(context: context, message: e.successMsg);
+        case NavigateEvent e:
           if (!mounted) return;
-          context.pushNamed(event.routeName, extra: event.extra);
-        case PageChangeEvent():
+          context.pushNamed(e.routeName, extra: e.extra);
+        case PageChangeEvent e:
           if (!mounted) return;
-          _goToPage(event.page);
+          _goToPage(e.page);
         case PopEvent():
           if (!mounted) return;
           if (context.canPop()) {

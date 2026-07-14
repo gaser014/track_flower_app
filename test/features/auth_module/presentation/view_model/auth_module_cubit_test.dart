@@ -10,6 +10,7 @@ import 'package:track_flowers_app/features/auth_module/domain/entities/driver_lo
 import 'package:track_flowers_app/features/auth_module/domain/entities/save_credentials_request_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/saved_credentials_response_entity.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/forget_password_use_cases.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart';
@@ -90,12 +91,15 @@ void main() {
     mockSaveDriverCredentialsUseCase = MockSaveDriverCredentialsUseCase();
     mockDeleteDriverCredentialsUseCase = MockDeleteDriverCredentialsUseCase();
     cubit = AuthModuleCubit(
-      mockLoginDriverUseCase,
-      mockLogoutDriverUseCase,
-      mockGetSavedCredentialsUseCase,
-      mockSaveDriverTokenUseCase,
-      mockSaveDriverCredentialsUseCase,
-      mockDeleteDriverCredentialsUseCase,
+      mockLoginDriverUseCase as SendForgetPasswordCodeUseCase,
+      mockLogoutDriverUseCase as VerifyForgetPasswordCodeUseCase,
+      mockGetSavedCredentialsUseCase as ResetPasswordUseCase,
+      mockSaveDriverTokenUseCase as LoginDriverUseCase,
+      mockSaveDriverCredentialsUseCase as LogoutDriverUseCase,
+      mockDeleteDriverCredentialsUseCase as GetSavedCredentialsUseCase,
+      mockSaveDriverCredentialsUseCase as SaveDriverTokenUseCase,
+      mockDeleteDriverCredentialsUseCase as SaveDriverCredentialsUseCase,
+      mockDeleteDriverCredentialsUseCase as DeleteDriverCredentialsUseCase,
     );
   });
 

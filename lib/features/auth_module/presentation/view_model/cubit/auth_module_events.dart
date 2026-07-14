@@ -1,7 +1,9 @@
 import 'package:track_flowers_app/features/auth_module/domain/entities/forget_password_params.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
 
-sealed class AuthModuleEvent {}
+import 'package:track_flowers_app/config/base_state/base_event.dart';
+
+sealed class AuthModuleEvent implements BaseEvent {}
 
 // ─── Forget Password Events ───────────────────────────────────────────────────
 

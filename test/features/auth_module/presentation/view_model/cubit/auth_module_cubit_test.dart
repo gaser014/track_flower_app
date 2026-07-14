@@ -6,15 +6,28 @@ import 'package:track_flowers_app/config/base_response/result.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
 import 'package:track_flowers_app/features/auth_module/domain/entities/forget_password_params.dart';
 import 'package:track_flowers_app/features/auth_module/domain/use_cases/forget_password_use_cases.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/login_driver_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/logout_driver_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_token_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart';
+import 'package:track_flowers_app/features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view_model/cubit/auth_module_events.dart';
 
-import 'auth_module_cubit_test.mocks.dart';
+import '../auth_module_cubit_test.mocks.dart' hide MockLogoutDriverUseCase, MockGetSavedCredentialsUseCase;
+import 'auth_module_cubit_test.mocks.dart' hide MockLoginDriverUseCase, MockSaveDriverTokenUseCase, MockSaveDriverCredentialsUseCase, MockDeleteDriverCredentialsUseCase;
 
 @GenerateMocks([
   SendForgetPasswordCodeUseCase,
   VerifyForgetPasswordCodeUseCase,
   ResetPasswordUseCase,
+  LoginDriverUseCase,
+  LogoutDriverUseCase,
+  GetSavedCredentialsUseCase,
+  SaveDriverTokenUseCase,
+  SaveDriverCredentialsUseCase,
+  DeleteDriverCredentialsUseCase,
 ])
 void main() {
   provideDummy<Result<void>>(const Success<void>());
@@ -23,15 +36,33 @@ void main() {
   late MockSendForgetPasswordCodeUseCase mockSendForgetPasswordCodeUseCase;
   late MockVerifyForgetPasswordCodeUseCase mockVerifyForgetPasswordCodeUseCase;
   late MockResetPasswordUseCase mockResetPasswordUseCase;
+  late MockLoginDriverUseCase mockLoginDriverUseCase;
+  late MockLogoutDriverUseCase mockLogoutDriverUseCase;
+  late MockGetSavedCredentialsUseCase mockGetSavedCredentialsUseCase;
+  late MockSaveDriverTokenUseCase mockSaveDriverTokenUseCase;
+  late MockSaveDriverCredentialsUseCase mockSaveDriverCredentialsUseCase;
+  late MockDeleteDriverCredentialsUseCase mockDeleteDriverCredentialsUseCase;
 
   setUp(() {
     mockSendForgetPasswordCodeUseCase = MockSendForgetPasswordCodeUseCase();
     mockVerifyForgetPasswordCodeUseCase = MockVerifyForgetPasswordCodeUseCase();
     mockResetPasswordUseCase = MockResetPasswordUseCase();
+    mockLoginDriverUseCase = MockLoginDriverUseCase();
+    mockLogoutDriverUseCase = MockLogoutDriverUseCase();
+    mockGetSavedCredentialsUseCase = MockGetSavedCredentialsUseCase();
+    mockSaveDriverTokenUseCase = MockSaveDriverTokenUseCase();
+    mockSaveDriverCredentialsUseCase = MockSaveDriverCredentialsUseCase();
+    mockDeleteDriverCredentialsUseCase = MockDeleteDriverCredentialsUseCase();
     cubit = AuthModuleCubit(
       mockSendForgetPasswordCodeUseCase,
       mockVerifyForgetPasswordCodeUseCase,
       mockResetPasswordUseCase,
+      mockLoginDriverUseCase,
+      mockLogoutDriverUseCase,
+      mockGetSavedCredentialsUseCase,
+      mockSaveDriverTokenUseCase,
+      mockSaveDriverCredentialsUseCase,
+      mockDeleteDriverCredentialsUseCase,
     );
   });
 
