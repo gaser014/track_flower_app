@@ -8,7 +8,6 @@ import 'package:track_flowers_app/features/auth_module/presentation/view/pages/o
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
-import 'package:track_flowers_app/core/widgets/success_page.dart';
 import 'package:track_flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:track_flowers_app/features/driver_orders/domain/entities/order_entity.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/order_details_page.dart';
