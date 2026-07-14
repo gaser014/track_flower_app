@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
-// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_page.dart';
-// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/apply_success_page.dart';
-// import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/auth_module_page.dart';
+import 'package:track_flowers_app/features/auth_module/presentation/view/pages/onboarding_driver_page.dart';
 import 'package:track_flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:track_flowers_app/features/auth_module/presentation/view/pages/forget_password_page.dart';
 import 'package:track_flowers_app/features/spalsh/splash_page.dart';
@@ -212,7 +211,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.onboardingDriver,
     routes: [
       // GoRoute(
       //   path: Routes.applicationSubmitted,
@@ -222,7 +221,7 @@ abstract class AppRoutes {
       //   },
       // ),
       GoRoute(
-        path: Routes.main,
+        path: Routes.splash,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const MainView(),
@@ -256,7 +255,7 @@ abstract class AppRoutes {
 
       GoRoute(
         path: Routes.splash,
-        name: Routes.splash,
+        name: RoutesName.splash,
         builder: (BuildContext context, GoRouterState state) {
           return const SplashPage();
         },
@@ -270,7 +269,7 @@ abstract class AppRoutes {
       // ),
       GoRoute(
         path: Routes.login,
-        name: Routes.login,
+        name: RoutesName.login,
         builder: (BuildContext context, GoRouterState state) {
           return const LoginPage();
         },
@@ -308,6 +307,27 @@ abstract class AppRoutes {
         name: Routes.forgetPassword,
         builder: (BuildContext context, GoRouterState state) {
           return const ForgetPasswordPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.onboardingDriver,
+        name: RoutesName.onboardingDriver,
+        builder: (BuildContext context, GoRouterState state) {
+          return const OnboardingDriverPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.loginDriver,
+        name: RoutesName.loginDriver,
+        builder: (BuildContext context, GoRouterState state) {
+          return const AuthModulePage();
+        },
+      ),
+      GoRoute(
+        path: Routes.home,
+        name: RoutesName.home,
+        builder: (BuildContext context, GoRouterState state) {
+          return const MainView();
         },
       ),
     ],

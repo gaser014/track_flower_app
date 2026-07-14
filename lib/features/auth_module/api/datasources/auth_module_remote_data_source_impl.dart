@@ -7,12 +7,13 @@ import 'package:track_flowers_app/features/auth_module/data/models/forget_passwo
 import 'package:track_flowers_app/features/auth_module/data/models/forget_password_response_models.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/reset_password_request.dart';
 import 'package:track_flowers_app/features/auth_module/data/models/verify_code_request.dart';
+import 'package:track_flowers_app/features/auth_module/domain/entities/driver_login_request_entity.dart';
+import 'package:track_flowers_app/features/auth_module/data/models/driver_login_response_model.dart';
 
 @Injectable(as: AuthModuleRemoteDataSourceContract)
 class AuthModuleRemoteDataSourceImpl
     implements AuthModuleRemoteDataSourceContract {
   final AuthModuleApiClient _apiClient;
-
   const AuthModuleRemoteDataSourceImpl(this._apiClient);
 
   @override
@@ -32,4 +33,14 @@ class AuthModuleRemoteDataSourceImpl
     ResetPasswordRequest request,
   ) =>
       executeApi(() => _apiClient.resetPassword(request));
+
+  @override
+  Future<Result<DriverLoginResponseModel>> loginDriver(
+    DriverLoginRequestEntity params,
+  ) async {
+    return await executeApi(() async {
+      final response = await _apiClient.loginDriver(params.email, params.password);
+      return DriverLoginResponseModel.fromJson(response as Map<String, dynamic>);
+    });
+  }
 }

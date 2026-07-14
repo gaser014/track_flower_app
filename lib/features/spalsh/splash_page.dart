@@ -4,6 +4,7 @@ import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/dependency_injection/di.dart';
 import 'package:track_flowers_app/config/uses_cases/use_cases.dart';
+import 'package:track_flowers_app/config/database/secure_storage_helper.dart';
 import 'package:track_flowers_app/core/routes/routes.dart';
 import 'package:track_flowers_app/core/values/app_assets.dart';
 import 'package:track_flowers_app/core/values/app_colors.dart';
@@ -65,8 +66,8 @@ class _SplashPageState extends State<SplashPage>
 
     _controller.forward().then((_) async {
       if (mounted) {
-        String? token = await AppSharedPreferences.getString(
-          key: APIkeys.accessToken,
+        String? token = await AppSecureStorage.getString(
+          key: AppStrings.token,
         );
         bool remember =
             await AppSharedPreferences.getBool(key: APIkeys.rememberMe) ??

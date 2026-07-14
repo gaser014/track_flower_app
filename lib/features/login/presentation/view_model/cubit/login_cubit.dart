@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:track_flowers_app/config/api/api_key.dart';
 import 'package:track_flowers_app/config/base_state/base_state.dart';
-import 'package:track_flowers_app/config/database/cache_helper.dart';
 import 'package:track_flowers_app/config/uses_cases/login_params.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/features/login/domain/use_cases/login_use_case.dart';
 import 'package:track_flowers_app/features/login/domain/use_cases/save_user_use_case.dart';
+import 'package:track_flowers_app/features/login/domain/use_cases/save_token_use_case.dart';
 import 'package:track_flowers_app/features/login/presentation/view_model/cubit/login_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -15,11 +15,12 @@ part 'login_states.dart';
 
 @injectable
 class LoginCubit extends Cubit<LoginStates> {
-  LoginCubit(this.loginUseCase, this.saveUserUseCase)
+  LoginCubit(this.loginUseCase, this.saveUserUseCase, this.saveTokenUseCase)
     : super(const LoginStates());
 
   final LoginUseCase loginUseCase;
   final SaveUserUseCase saveUserUseCase;
+  final SaveTokenUseCase saveTokenUseCase;
 
   void doIndented(LoginEvents event) {
     switch (event) {
@@ -41,15 +42,8 @@ class LoginCubit extends Cubit<LoginStates> {
           if (response.user != null) {
             await saveUserUseCase.call(response.user!);
           }
-          await AppSharedPreferences.setBool(
-            key: APIkeys.rememberMe,
-            value: params.remember ?? false,
-          );
-          if (response.token != null) {
-            await AppSharedPreferences.setString(
-              key: APIkeys.accessToken,
-              value: response.token!,
-            );
+          if (params.remember == true && response.token != null) {
+            await saveTokenUseCase.call(response.token!);
           }
         }
         emit(state.copyWith(loginState: BaseState.success(response)));

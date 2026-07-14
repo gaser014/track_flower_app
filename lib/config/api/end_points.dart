@@ -8,7 +8,6 @@ abstract class EndPoints {
   static const String forgetPasswordEndpoint = "/drivers/forgotPassword";
   static const String verifyResetEndpoint = "/drivers/verifyResetCode";
   static const String resetPasswordEndpoint = "/drivers/resetPassword";
-
   static const String productsEndpoint = "/products";
   static const String bestSellersEndpoint = "/best-seller";
   static const String allCategories = "/categories";

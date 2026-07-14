@@ -21,8 +21,8 @@ class AppInterceptors extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     options.cancelToken = getIt<CancelToken>();
-    String? authToken = await AppSharedPreferences.getString(
-      key: APIkeys.accessToken,
+    String? authToken = await fss.read(
+      key: AppStrings.token,
     );
     if (authToken != null && authToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $authToken';
