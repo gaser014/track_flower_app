@@ -215,35 +215,35 @@ abstract class AppRoutes {
 
       GoRoute(
         path: Routes.splash,
-        name: Routes.splash,
+        name: RoutesName.splash,
         builder: (BuildContext context, GoRouterState state) {
           return SplashPage();
         },
       ),
       GoRoute(
         path: Routes.login,
-        name: Routes.login,
+        name: RoutesName.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
         },
       ),
       GoRoute(
         path: Routes.onboardingDriver,
-        name: Routes.onboardingDriver,
+        name: RoutesName.onboardingDriver,
         builder: (BuildContext context, GoRouterState state) {
           return const OnboardingDriverPage();
         },
       ),
       GoRoute(
         path: Routes.loginDriver,
-        name: Routes.loginDriver,
+        name: RoutesName.loginDriver,
         builder: (BuildContext context, GoRouterState state) {
           return const AuthModulePage();
         },
       ),
       GoRoute(
         path: Routes.home,
-        name: Routes.home,
+        name: RoutesName.home,
         builder: (BuildContext context, GoRouterState state) {
           return const MainView();
         },

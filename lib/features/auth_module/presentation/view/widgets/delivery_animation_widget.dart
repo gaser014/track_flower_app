@@ -30,4 +30,3 @@ class DeliveryAnimationWidget extends StatelessWidget {
   }
 }
 
-typedef DeliveryAnimationScreen = DeliveryAnimationWidget;

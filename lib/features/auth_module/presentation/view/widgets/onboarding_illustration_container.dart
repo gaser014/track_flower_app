@@ -83,42 +83,8 @@ class OnboardingIllustrationContainer extends StatelessWidget {
               ),
             ),
           ),
-          // Speed lines
-          SlideTransition(
-            position: bikeSlideIn,
-            child: Positioned(
-              left: 20,
-              bottom: 90,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 5,
-                children: const [
-                  _SpeedLine(width: 30),
-                  _SpeedLine(width: 20),
-                  _SpeedLine(width: 25),
-                ],
-              ),
-            ),
-          ),
+
         ],
-      ),
-    );
-  }
-}
-
-class _SpeedLine extends StatelessWidget {
-  const _SpeedLine({required this.width});
-
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: 3,
-      decoration: BoxDecoration(
-        color: AppColors.pinkE8,
-        borderRadius: BorderRadius.circular(2),
       ),
     );
   }
