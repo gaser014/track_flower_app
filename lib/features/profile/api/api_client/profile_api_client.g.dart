@@ -29,7 +29,7 @@ class _ProfileApiClient implements ProfileApiClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/profile-data',
+            '/drivers/profile-data',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -59,7 +59,7 @@ class _ProfileApiClient implements ProfileApiClient {
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/editProfile',
+            '/drivers/editProfilee',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -100,7 +100,7 @@ class _ProfileApiClient implements ProfileApiClient {
           )
           .compose(
             _dio.options,
-            '/auth/upload-photo',
+            '/drivers/upload-photo',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -127,7 +127,7 @@ class _ProfileApiClient implements ProfileApiClient {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/auth/logout',
+            '/drivers/logout',
             queryParameters: queryParameters,
             data: _data,
           )
