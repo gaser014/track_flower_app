@@ -34,6 +34,7 @@ class ServerFailure extends Failures {
         return ServerFailure(errorMessage: AppStrings.requestCancelled);
       case DioExceptionType.connectionError:
         return ServerFailure(errorMessage: AppStrings.connectionError);
+      case DioExceptionType.transformTimeout:
       case DioExceptionType.unknown:
         return ServerFailure(errorMessage: AppStrings.unknownError);
     }

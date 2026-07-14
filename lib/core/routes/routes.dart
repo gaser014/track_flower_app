@@ -12,6 +12,8 @@ abstract class Routes {
   static const String subjects = "/subjects";
   static const String main = "/main";
   static const String profile = "/profile";
+  static const String editProfile = "/edit-profile";
+  static const String editVehicle = "/edit-vehicle";
   static const String home = "/home";
   static const String occasionPage = "/occasion";
   static const String loginDriver = "/login-driver";

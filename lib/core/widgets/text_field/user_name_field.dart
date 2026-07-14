@@ -11,6 +11,8 @@ class UserNameField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
   final FocusNode? focusNode;
+  final String? labelText;
+  final String? hintText;
 
   const UserNameField({
     super.key,
@@ -20,6 +22,8 @@ class UserNameField extends StatelessWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.focusNode,
+    this.labelText,
+    this.hintText,
   });
 
   @override
@@ -35,9 +39,10 @@ class UserNameField extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       autofillHints: const [AutofillHints.username],
       decoration: InputDecoration(
-        labelText: AppStrings.username,
-        hintText: AppStrings.enterUserName,
+        labelText: labelText ?? AppStrings.username,
+        hintText: hintText ?? AppStrings.enterUserName,
       ),
     );
   }
 }
+

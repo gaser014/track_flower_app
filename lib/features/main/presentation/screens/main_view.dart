@@ -3,7 +3,7 @@ import 'package:track_flowers_app/core/values/app_colors.dart';
 import 'package:track_flowers_app/core/values/app_strings.dart';
 import 'package:track_flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:track_flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
-import 'package:track_flowers_app/features/main_profile/presentation/view/pages/main_profile_page.dart';
+import 'package:track_flowers_app/features/profile/presentation/view/pages/profile_page.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/driver_home_page.dart';
 import 'package:track_flowers_app/features/driver_orders/presentation/view/pages/my_orders_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class MainView extends StatelessWidget {
   final List<Widget> _pages = const <Widget>[
     DriverHomePage(),
     MyOrdersPage(),
-    MainProfilePage(),
+    ProfilePage(),
   ];
 
   @override
