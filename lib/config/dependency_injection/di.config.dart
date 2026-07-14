@@ -32,10 +32,20 @@ import '../../features/auth_module/data/repositories/auth_module_repository_impl
     as _i848;
 import '../../features/auth_module/domain/repositories/auth_module_repository.dart'
     as _i1015;
+import '../../features/auth_module/domain/use_cases/delete_driver_credentials_use_case.dart'
+    as _i935;
 import '../../features/auth_module/domain/use_cases/forget_password_use_cases.dart'
     as _i960;
-import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
-    as _i575;
+import '../../features/auth_module/domain/use_cases/get_saved_credentials_use_case.dart'
+    as _i766;
+import '../../features/auth_module/domain/use_cases/login_driver_use_case.dart'
+    as _i645;
+import '../../features/auth_module/domain/use_cases/logout_driver_use_case.dart'
+    as _i413;
+import '../../features/auth_module/domain/use_cases/save_driver_credentials_use_case.dart'
+    as _i915;
+import '../../features/auth_module/domain/use_cases/save_driver_token_use_case.dart'
+    as _i549;
 import '../../features/auth_module/presentation/view_model/cubit/auth_module_cubit.dart'
     as _i575;
 import '../../features/driver_orders/api/api_client/driver_orders_api_client.dart'
@@ -81,6 +91,8 @@ import '../../features/login/domain/repositories/login_repository.dart'
     as _i902;
 import '../../features/login/domain/use_cases/get_user_use_case.dart' as _i12;
 import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
+import '../../features/login/domain/use_cases/save_token_use_case.dart'
+    as _i113;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
@@ -118,7 +130,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
-    gh.factory<_i575.AuthModuleCubit>(() => _i575.AuthModuleCubit());
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -131,13 +142,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i468.OrderTrackingService(),
     );
     gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
-    gh.factory<_i435.AuthModuleLocalDataSourceContract>(
-      () => _i1034.AuthModuleLocalDataSourceImpl(),
-    );
     gh.lazySingleton<_i934.FirestoreService>(() => _i934.FirestoreService());
-    gh.factory<_i72.AuthModuleRemoteDataSourceContract>(
-      () => _i428.AuthModuleRemoteDataSourceImpl(),
-    );
     gh.factory<_i435.AuthModuleLocalDataSourceContract>(
       () => _i1034.AuthModuleLocalDataSourceImpl(),
     );
@@ -145,9 +150,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1061.TrackingRepositoryImpl(
         firestoreService: gh<_i934.FirestoreService>(),
       ),
-    );
-    gh.factory<_i1015.AuthModuleRepository>(
-      () => _i848.AuthModuleRepositoryImpl(),
     );
     gh.lazySingleton<_i419.AuthModuleApiClient>(
       () => _i419.AuthModuleApiClient(gh<_i361.Dio>()),
@@ -181,14 +183,20 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i428.AuthModuleRemoteDataSourceImpl(gh<_i419.AuthModuleApiClient>()),
     );
-    gh.factory<_i1015.AuthModuleRepository>(
-      () => _i848.AuthModuleRepositoryImpl(
-        gh<_i72.AuthModuleRemoteDataSourceContract>(),
-      ),
-    );
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
+      ),
+    );
+    gh.factory<_i1015.AuthModuleRepository>(
+      () => _i848.AuthModuleRepositoryImpl(
+        gh<_i72.AuthModuleRemoteDataSourceContract>(),
+        gh<_i435.AuthModuleLocalDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i935.DeleteDriverCredentialsUseCase>(
+      () => _i935.DeleteDriverCredentialsUseCase(
+        gh<_i1015.AuthModuleRepository>(),
       ),
     );
     gh.factory<_i960.SendForgetPasswordCodeUseCase>(
@@ -203,6 +211,22 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i960.ResetPasswordUseCase>(
       () => _i960.ResetPasswordUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i766.GetSavedCredentialsUseCase>(
+      () => _i766.GetSavedCredentialsUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i645.LoginDriverUseCase>(
+      () => _i645.LoginDriverUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i413.LogoutDriverUseCase>(
+      () => _i413.LogoutDriverUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i915.SaveDriverCredentialsUseCase>(
+      () =>
+          _i915.SaveDriverCredentialsUseCase(gh<_i1015.AuthModuleRepository>()),
+    );
+    gh.factory<_i549.SaveDriverTokenUseCase>(
+      () => _i549.SaveDriverTokenUseCase(gh<_i1015.AuthModuleRepository>()),
     );
     gh.lazySingleton<_i565.DriverOrdersRemoteDataSourceContract>(
       () => _i1049.DriverOrdersRemoteDataSourceImpl(
@@ -220,6 +244,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
+    gh.factory<_i113.SaveTokenUseCase>(
+      () => _i113.SaveTokenUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
     gh.factory<_i12.GetUserUseCase>(
       () => _i12.GetUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
@@ -236,22 +263,29 @@ extension GetItInjectableX on _i174.GetIt {
         orderTrackingService: gh<_i468.OrderTrackingService>(),
       ),
     );
-    gh.factory<_i818.GetMainProfileUseCase>(
-      () => _i818.GetMainProfileUseCase(
-        gh<_i488.MainProfileRepositoryContract>(),
-      ),
-    );
     gh.factory<_i575.AuthModuleCubit>(
       () => _i575.AuthModuleCubit(
         gh<_i960.SendForgetPasswordCodeUseCase>(),
         gh<_i960.VerifyForgetPasswordCodeUseCase>(),
         gh<_i960.ResetPasswordUseCase>(),
+        gh<_i645.LoginDriverUseCase>(),
+        gh<_i413.LogoutDriverUseCase>(),
+        gh<_i766.GetSavedCredentialsUseCase>(),
+        gh<_i549.SaveDriverTokenUseCase>(),
+        gh<_i915.SaveDriverCredentialsUseCase>(),
+        gh<_i935.DeleteDriverCredentialsUseCase>(),
+      ),
+    );
+    gh.factory<_i818.GetMainProfileUseCase>(
+      () => _i818.GetMainProfileUseCase(
+        gh<_i488.MainProfileRepositoryContract>(),
       ),
     );
     gh.factory<_i753.LoginCubit>(
       () => _i753.LoginCubit(
         gh<_i191.LoginUseCase>(),
         gh<_i71.SaveUserUseCase>(),
+        gh<_i113.SaveTokenUseCase>(),
       ),
     );
     gh.factory<_i60.MainProfileCubit>(
